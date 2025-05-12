@@ -6,8 +6,11 @@ set -euo pipefail
 sudo apt update
 sudo apt upgrade -y
 
-# Install UV and sync the configuration (installs required python packages)
+# Install uv, see https://astral.sh for additional information
 curl -LsSf https://astral.sh/uv/install.sh | sh
+echo 'export UV_LINK_MODE=copy' >> $HOME/.bashrc
+source $HOME/.bashrc
+
 uv sync
 
 # Install Staship prompt
