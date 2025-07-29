@@ -2,7 +2,7 @@
 # See https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/azd-schema for more information
 
 # Name of the application.
-name: ai-gbb-devcontainer
+name: az-ai-devcontainer
 #services:
   ## An example for a python API service.
   ## The service is named 'app'.
@@ -16,9 +16,9 @@ name: ai-gbb-devcontainer
   #   host: containerapp
   #   docker:
   #     path: ./Dockerfile
-hooks:
-  postprovision:
-    shell: sh
-    run: ./infra/hooks/postprovision.sh
-    interactive: true
-    continueOnError: false
+# hooks:
+#   postprovision:
+#     shell: sh
+#     run: ./infra/hooks/postprovision.sh
+#     interactive: true
+#     continueOnError: false

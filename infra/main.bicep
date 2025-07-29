@@ -1,6 +1,6 @@
-metadata name = 'ai-gbb-devcontainer'
-metadata description = 'Deploys the infrastructure for AI GBB DevContainer'
-metadata author = 'Dominique Broeglin <dominique.broeglin@microsoft.com>'
+metadata name = 'az-ai-kickstarter'
+metadata description = 'Deploys the infrastructure for Azure AI App Kickstarter'
+metadata author = 'AI GBB EMEA <eminkevich@microsoft.com>; <dobroegl@microsoft.com>'
 
 /* -------------------------------------------------------------------------- */
 /*                                 PARAMETERS                                 */
@@ -8,20 +8,60 @@ metadata author = 'Dominique Broeglin <dominique.broeglin@microsoft.com>'
 
 @minLength(1)
 @maxLength(64)
-@description('Name of the the environment which is used to generate a short unique hash used in all resources.')
+@description('Name of the environment which is used to generate a short unique hash used in all resources.')
 param environmentName string
 
-@description('Principal ID of the user runing the deployment')
+@description('Principal ID of the user running the deployment')
 param azurePrincipalId string
+
+@description('Location for all resources')
+param location string
 
 @description('Extra tags to be applied to provisioned resources')
 param extraTags object = {}
 
-@description('Location for all resources')
-param location string = resourceGroup().location
+@description('If true, deploy Azure AI Search Service')
+param useAiSearch bool = false
 
-@description('If true, deploys an Azure Search instance')
-param hasAzureAISearch bool = false
+@description('If true, use and setup authentication with Azure Entra ID')
+param useAuthentication bool = false
+
+@description('Set to true to use an existing AI Foundry service.In that case you will need to provide aiFoundryEndpoint, aiFoundryApiVersion, executorAiFoundryDeploymentName and utilityAiFoundryDeploymentName. Defaults to false.')
+param useExistingAiFoundry bool = false
+
+@description('Set to true to use an existing Azure AI Search service.In that case you will need to provide TODO. Defaults to false.')
+param useExistingAiSearch bool = false
+
+/* -----------------------  Azure Open AI  service ------------------------- */
+
+// See also https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models?tabs=global-standard%2Cstandard-chat-completions#availability-1
+@description('Location for the AI Foundry resource')
+@metadata({
+  azd: {
+    type: 'location'
+  }
+})
+param aiFoundryLocation string = ''
+
+/* -------- Optional externally provided AI Foundry configuration -------- */
+
+@description('Optional. The name of the AI Foundry resource to reuse. Used only if useExistingAiFoundry is true.')
+param aiFoundryName string = ''
+
+@description('Optional. The endpoint of the AI Foundry resource to reuse. Used only if useExistingAiFoundry is true.')
+param aiFoundryEndpoint string = ''
+
+@description('Optional. The API version of the AI Foundry resource.')
+param aiFoundryApiVersion string = ''
+
+@description('Optional. The API version of the OpenAI Foundry resource.')
+param azureOpenAiApiVersion string = ''
+
+
+@description('The AI Foundry service resource group name to reuse. Optional: Needed only if resource group is different from current resource group.')
+param aiFoundryResourceGroupName string = ''
+
+/* -----------------------  Azure AI search service ------------------------ */
 
 @description('Optional. Defines the SKU of an Azure AI Search Service, which determines price tier and capacity limits.')
 @allowed([
@@ -35,6 +75,21 @@ param hasAzureAISearch bool = false
 ])
 param aiSearchSkuName string = 'basic'
 
+// See https://learn.microsoft.com/en-us/azure/search/search-region-support
+@description('Location for the Azure OpenAI Service. Optional: needed only if Azure OpenAI is deployed in a different location than the rest of the resources.')
+@metadata({
+  azd: {
+    type: 'location'
+  }
+})
+param azureAiSearchLocation string = ''
+
+@description('Name of the Azure AI Search Service to deploy. Optional: needed if useExistingAiSearchService is true or you want a custom azureAiSearchName.')
+param azureAiSearchName string = ''
+
+@description('The Azure AI Search service resource group name to reuse. Optional: Needed only if resource group is different from current resource group.')
+param azureAiSearchResourceGroupName string = ''
+
 /* ---------------------------- Shared Resources ---------------------------- */
 
 @maxLength(63)
@@ -45,11 +100,31 @@ param logAnalyticsWorkspaceName string = ''
 @description('Name of the application insights to deploy. If not specified, a name will be generated. The maximum length is 255 characters.')
 param applicationInsightsName string = ''
 
+@description('Application Insights Location')
+param appInsightsLocation string = location
+
+@description('The auth tenant id for the app (leave blank in AZD to use your current tenant)')
+param authTenantId string = '' // Make sure authTenantId is set if not using AZD
+
+@description('Name of the authentication client secret in the key vault')
+param authClientSecretName string = 'AZURE-AUTH-CLIENT-SECRET'
+
+@description('The auth client id for the frontend and backend app')
+param authClientAppId string = ''
+
+@description('Client secret of the authentication client')
+@secure()
+param authClientSecret string = ''
+
+@maxLength(50)
+@description('Name of the container registry to deploy. If not specified, a name will be generated. The name is global and must be unique within Azure. The maximum length is 50 characters.')
+param containerRegistryName string = ''
+
 /* -------------------------------------------------------------------------- */
 /*                                  VARIABLES                                 */
 /* -------------------------------------------------------------------------- */
 
-@description('Abbreviations to be used in resource names loaded from a JSON file')
+// Load abbreviations from JSON file
 var abbreviations = loadJsonContent('./abbreviations.json')
 
 @description('Generate a unique token to make global resource names unique')
@@ -62,153 +137,179 @@ var alphaNumericEnvironmentName = replace(replace(environmentName, '-', ''), ' '
 var tags = union(
   {
     'azd-env-name': environmentName
-    solution: 'ai-gbb-devcontainer'
+    solution: 'az-ai-kickstarter'
   },
   extraTags
 )
 
-@description('Azure OpenAI API Version')
-var azureOpenAIApiVersion = '2024-12-01-preview'
-
-// *** Important: Order matters to the Output variables
-@description('Model deployment configurations')
-var deployments = [
-  {
-    name: 'gpt-4o-2024-11-20'
-    sku: {
-      name: 'GlobalStandard'
-      capacity: 50
-    }
-    model: {
-      format: 'OpenAI'
-      name: 'gpt-4o'
-      version: '2024-11-20'
-    }
-    versionUpgradeOption: 'OnceCurrentVersionExpired'
-  }
-  {
-    name: 'gpt-4o-mini-2024-07-18'
-    sku: {
-      name: 'GlobalStandard'
-      capacity: 50
-    }
-    model: {
-      format: 'OpenAI'
-      name: 'gpt-4o-mini'
-      version: '2024-07-18'
-    }
-    versionUpgradeOption: 'OnceCurrentVersionExpired'
-  }
-  // {
-  //   name: 'o3-mini-2025-01-31'
-  //   sku: {
-  //     name: 'GlobalStandard'
-  //     capacity: 50
-  //   }
-  //   model: {
-  //     format: 'OpenAI'
-  //     name: 'o3-mini'
-  //     version: '2025-01-31'
-  //   }
-  //   versionUpgradeOption: 'OnceCurrentVersionExpired'
-  // }
-]
-
 /* --------------------- Globally Unique Resource Names --------------------- */
 
-/****************************** AI GBB Tip ***********************************
- * Define here all the globally unique resources names. They should
- * always include resourceToken to ensure uniqueness.
- ******************************************************************************/
-
-/* ----------------------------- Resource Names ----------------------------- */
-
-/****************************** AI GBB Tip ***********************************
- * Define here all the all other resource names. Use
- * variable alphaNumericEnvironmentName for names that should not
- * contain non-alphanumeric characters. We use the take() function
- * to shorten the names to the maximum length allowed by Azure.
- ******************************************************************************/
-
-var _aiHubName = take('${abbreviations.aiPortalHub}${environmentName}', 260)
-var _aiProjectName = take('${abbreviations.aiPortalProject}${environmentName}', 260)
-var _aiSearchServiceName = take('${abbreviations.searchSearchServices}${environmentName}', 260)
 var _applicationInsightsName = !empty(applicationInsightsName)
   ? applicationInsightsName
   : take('${abbreviations.insightsComponents}${environmentName}', 255)
-var _azureOpenAiName = take(
-  '${abbreviations.cognitiveServicesOpenAI}${alphaNumericEnvironmentName}${resourceToken}',
-  63
-)
-var _keyVaultName = take('${abbreviations.keyVaultVaults}${alphaNumericEnvironmentName}-${resourceToken}', 24)
 var _logAnalyticsWorkspaceName = !empty(logAnalyticsWorkspaceName)
   ? logAnalyticsWorkspaceName
   : take('${abbreviations.operationalInsightsWorkspaces}${environmentName}', 63)
+
 var _storageAccountName = take(
   '${abbreviations.storageStorageAccounts}${alphaNumericEnvironmentName}${resourceToken}',
   24
 )
 
+// TODO: review the naming convention for AI Foundry resource
+var _aiFoundryAccountName = useExistingAiFoundry
+  ? aiFoundryName // if reusing existing service, use the provided name
+  : (empty(aiFoundryName) // else use only if not empty to override the default name
+      ? take('${abbreviations.aiFoundryAccount}${alphaNumericEnvironmentName}${resourceToken}', 63)
+      : aiFoundryName)
+
+var _aiFoundryAccountProjectName = take('${abbreviations.aiFoundryAccountProject}${environmentName}', 260)
+
+var _azureAiSearchName = useExistingAiSearch
+  ? azureAiSearchName // if reusing existing service, use the provided name
+  : (empty(azureAiSearchName) // else use only if not empty to override the default name
+      ? take('${abbreviations.searchSearchServices}${environmentName}', 260)
+      : azureAiSearchName)
+
+var _containerRegistryName = !empty(containerRegistryName)
+  ? containerRegistryName
+  : take('${abbreviations.containerRegistryRegistries}${alphaNumericEnvironmentName}${resourceToken}', 50)
+var _keyVaultName = take('${abbreviations.keyVaultVaults}${alphaNumericEnvironmentName}-${resourceToken}', 24)
+
+/* ----------------------------- Resource Names ----------------------------- */
+
+// These resources only require uniqueness within resource group
+
+@description('Model deployment configurations')
+var deployments = loadYamlContent('./deployments.yaml')
+
+
+@description('AI Foundry Endpoint - Base URL for API calls to AI Foundry')
+var _aiFoundryEndpoint = useExistingAiFoundry ? aiFoundryEndpoint : aiFoundryAccount.outputs.endpoint
+
+@description('AI Foundry API Version')
+var _aiFoundryApiVersion = empty(aiFoundryApiVersion) ? '2025-05-01-preview' : aiFoundryApiVersion
+
+@description('OpenAI API Version')
+var _azureOpenAiApiVersion = empty(azureOpenAiApiVersion) ? '2024-12-01-preview' : azureOpenAiApiVersion
+
+var _aiFoundryProjectEndpoint = aiFoundryAccountProject.properties.endpoints['AI Foundry API']
+
+var _azureAiSearchLocation = empty(azureAiSearchLocation) ? location : azureAiSearchLocation
+var _azureAiSearchEndpoint = 'https://${_azureAiSearchName}.search.windows.net'
+
 /* -------------------------------------------------------------------------- */
 /*                                  RESOURCES                                 */
 /* -------------------------------------------------------------------------- */
 
-/****************************** AI GBB Tip ***********************************
- * Favor using Azure Verified Modules over custom Bicep modules
- * see https://aka.ms/bicep/aztip/azure-verified-modules for more
- * information on Azure Verified Modules
- ******************************************************************************/
+//------------------------------ AI Foundry  ------------------------------ */
 
-module hub 'modules/ai/hub.bicep' = {
-  name: 'hub'
+module aiFoundryAccount 'br/public:avm/res/cognitive-services/account:0.11.0' = if (!useExistingAiFoundry) {
+  name: '${deployment().name}-aiFoundryAccount'
   params: {
-    location: location
+    name: _aiFoundryAccountName
+    location: empty(aiFoundryLocation) ? location : aiFoundryLocation
     tags: tags
-    name: _aiHubName
-    displayName: _aiHubName
-    keyVaultId: keyVault.outputs.resourceId
-    storageAccountId: storageAccount.outputs.resourceId
-    applicationInsightsId: appInsightsComponent.outputs.resourceId
-    openAiName: azureOpenAi.outputs.name
-    openAiConnectionName: 'aoai-connection'
-    openAiContentSafetyConnectionName: 'aoai-content-safety-connection'
-    aiSearchName: hasAzureAISearch ? aiSearchService.outputs.name : ''
-    aiSearchConnectionName: 'search-service-connection'
-  }
-}
-
-module project 'modules/ai/project.bicep' = {
-  name: 'project'
-  params: {
-    location: location
-    tags: tags
-    name: _aiProjectName
-    displayName: _aiProjectName
-    hubName: hub.outputs.name
-  }
-}
-
-module azureOpenAi 'modules/ai/cognitiveservices.bicep' = {
-  name: 'cognitiveServices'
-  params: {
-    location: location
-    tags: tags
-    name: _azureOpenAiName
     kind: 'AIServices'
-    customSubDomainName: _azureOpenAiName
+    customSubDomainName: _aiFoundryAccountName
+    allowProjectManagement: true
+    publicNetworkAccess: 'Enabled'
+    networkAcls: {
+      defaultAction: 'Allow'
+    }
+    disableLocalAuth: false
+    sku: 'S0'
     deployments: deployments
-    logAnalyticsWorkspaceResourceId: logAnalyticsWorkspace.outputs.resourceId
+    managedIdentities: {
+      systemAssigned: true
+    }
+    diagnosticSettings: [
+      {
+        name: 'customSetting'
+        logCategoriesAndGroups: [
+          {
+            category: 'RequestResponse'
+          }
+          {
+            category: 'Audit'
+          }
+        ]
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        workspaceResourceId: logAnalyticsWorkspace.outputs.resourceId
+      }
+    ]
     roleAssignments: [
+      // See also https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/faq
       {
         roleDefinitionIdOrName: 'Cognitive Services OpenAI Contributor'
         principalId: azurePrincipalId
+        principalType: 'User'
+      }
+      {
+        principalId: azurePrincipalId
+        roleDefinitionIdOrName: 'Cognitive Services User'
+        principalType: 'User'
+      }
+      // See also https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/rbac-azure-ai-foundry
+      {
+        principalId: appIdentity.outputs.principalId
+        // Azure AI User (TODO: change when AVM supports it)
+        roleDefinitionIdOrName: '53ca6127-db72-4b80-b1b0-d745d6d5456d' 
+        principalType: 'ServicePrincipal'
       }
     ]
   }
 }
 
-module storageAccount 'br/public:avm/res/storage/storage-account:0.15.0' = {
-  name: 'storageAccount'
+resource aiFoundryAccountAppInsightConnection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01-preview' = {
+  name: '${_aiFoundryAccountName}/appInsights-connection'
+  properties: {
+    authType: 'ApiKey'
+    category: 'AppInsights'
+    credentials: {
+      key: appInsightsComponent.outputs.connectionString
+    }
+    target: appInsightsComponent.outputs.resourceId
+    useWorkspaceManagedIdentity: false
+    isSharedToAll: true
+    sharedUserList: []
+    peRequirement: 'NotRequired'
+    peStatus: 'NotApplicable'
+    metadata: {
+      ApiType: 'Azure'
+      ResourceId: appInsightsComponent.outputs.resourceId
+    }
+  }
+  dependsOn: [
+    aiFoundryAccount // Ensure the AI Foundry account is created before the project
+  ]
+}
+
+resource aiFoundryAccountProject 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview' = {
+  name: '${_aiFoundryAccountName}/${_aiFoundryAccountProjectName}'
+  location: empty(aiFoundryLocation) ? location : aiFoundryLocation
+  identity: {
+    type: 'SystemAssigned'
+  }
+
+  properties: {
+
+  }
+  dependsOn: [
+    aiFoundryAccount // Ensure the AI Foundry account is created before the project
+  ]
+}
+
+@description('Azure OpenAI Model Deployment Name')
+var _aiFoundryDeploymentName = deployments[0].name
+
+// ------------------------------ Storage Account ------------------------------
+module storageAccount 'br/public:avm/res/storage/storage-account:0.19.0' = {
+  name: '${deployment().name}-storageAccount'
   scope: resourceGroup()
   params: {
     location: location
@@ -251,9 +352,16 @@ module storageAccount 'br/public:avm/res/storage/storage-account:0.15.0' = {
           roleAssignments: [
             {
               roleDefinitionIdOrName: 'Storage Blob Data Contributor'
-              principalId: azurePrincipalId
+              principalId: appIdentity.outputs.principalId
+              principalType: 'ServicePrincipal'
             }
           ]
+        }
+      ]
+      roleAssignments: [
+        {
+          roleDefinitionIdOrName: 'Storage Blob Data Contributor'
+          principalId: azurePrincipalId
         }
       ]
       deleteRetentionPolicy: {
@@ -268,21 +376,55 @@ module storageAccount 'br/public:avm/res/storage/storage-account:0.15.0' = {
   }
 }
 
-module aiSearchService 'br/public:avm/res/search/search-service:0.8.2' = if (hasAzureAISearch) {
-  name: _aiSearchServiceName
+module aiSearchService 'br/public:avm/res/search/search-service:0.10.0' = if (useAiSearch && !useExistingAiSearch) {
+  name: '${deployment().name}-aiSearchService'
   scope: resourceGroup()
   params: {
-    location: location
+    name: _azureAiSearchName
+    location: _azureAiSearchLocation
     tags: tags
-    name: _aiSearchServiceName
     sku: aiSearchSkuName
+    partitionCount: 1
+    replicaCount: 1
+    roleAssignments: [
+      // See also https://learn.microsoft.com/en-us/azure/search/search-security-rbac
+      {
+        roleDefinitionIdOrName: 'Search Index Data Contributor'
+        principalId: appIdentity.outputs.principalId
+        principalType: 'ServicePrincipal'
+      }
+      {
+        roleDefinitionIdOrName: 'Search Index Data Contributor'
+        principalId: azurePrincipalId
+        principalType: 'User'
+      }
+      {
+        roleDefinitionIdOrName: 'Search Service Contributor'
+        principalId: azurePrincipalId
+        principalType: 'User'
+      }
+    ]
   }
 }
 
+/* ------------------------------ CosmosDB  --------------------------------- */
+
+/* module cosmosDbAccount 'br/public:avm/res/document-db/database-account:0.12.0' = {
+  name: '${deployment().name}-cosmosDbAccount'
+  params: {
+    name: _cosmosDbAccountName
+    location: location
+    sqlRoleAssignmentsPrincipalIds: [
+      azurePrincipalId
+      appIdentity.outputs.principalId
+    ]
+  }
+} */
+
 /* ---------------------------- Observability  ------------------------------ */
 
-module logAnalyticsWorkspace 'br/public:avm/res/operational-insights/workspace:0.9.1' = {
-  name: 'workspaceDeployment'
+module logAnalyticsWorkspace 'br/public:avm/res/operational-insights/workspace:0.11.1' = {
+  name: '${deployment().name}-workspaceDeployment'
   params: {
     name: _logAnalyticsWorkspaceName
     location: location
@@ -291,32 +433,12 @@ module logAnalyticsWorkspace 'br/public:avm/res/operational-insights/workspace:0
   }
 }
 
-module appInsightsComponent 'br/public:avm/res/insights/component:0.4.2' = {
-  name: _applicationInsightsName
+module appInsightsComponent 'br/public:avm/res/insights/component:0.6.0' = {
+  name: '${deployment().name}-applicationInsights'
   params: {
     name: _applicationInsightsName
-    location: location
+    location: appInsightsLocation
     workspaceResourceId: logAnalyticsWorkspace.outputs.resourceId
-  }
-}
-
-/* ------------------------ Common App Resources  -------------------------- */
-
-module keyVault 'br/public:avm/res/key-vault/vault:0.11.0' = {
-  name: 'keyVault'
-  scope: resourceGroup()
-  params: {
-    location: location
-    tags: tags
-    name: _keyVaultName
-    enableRbacAuthorization: true
-    enablePurgeProtection: false // Set to true to if you deploy in production and want to protect against accidental deletion
-    roleAssignments: [
-      {
-        principalId: azurePrincipalId
-        roleDefinitionIdOrName: 'Key Vault Administrator'
-      }
-    ]
   }
 }
 
@@ -324,42 +446,101 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.11.0' = {
 /*                                   OUTPUTS                                  */
 /* -------------------------------------------------------------------------- */
 
-/****************************** AI GBB Tip ***********************************
- * Outputs are automatically saved in the local azd environment
- * To see these outputs, run `azd env get-values`,  or
- * `azd env get-values --output json` for json output.
- * Generate your own `.env` file: `azd env get-values > .env` (not recommended)
- ******************************************************************************/
+// Outputs are automatically saved in the local azd environment .env file.
+// To see these outputs, run `azd env get-values`,  or
+// `azd env get-values --output json` for json output.
+// To generate your own `.env` file run `azd env get-values > .env`
 
-@description('Principal ID of the user runing the deployment')
+/* -------------------------- Feature flags ------------------------------- */
+
+@description('If true, use and setup authentication with Azure Entra ID')
+output USE_AUTHENTICATION bool = useAuthentication
+
+@description('If true, deploy Azure AI Search Service')
+output USE_AI_SEARCH bool = useAiSearch
+
+@description('If true, reuse existing AI Foundry Service')
+output USE_EXISTING_AI_FOUNDRY bool = useExistingAiFoundry
+
+@description('If true, reuse existing Azure AI Search Service')
+output USE_EXISTING_AI_SEARCH bool = useExistingAiSearch
+
+/* --------------------------- Apps Deployment ----------------------------- */
+
+@description('The endpoint of the container registry.') // necessary for azd deploy
+output AZURE_CONTAINER_REGISTRY_ENDPOINT string = containerRegistry.outputs.loginServer
+
+/* ------------------------ Authentication & RBAC ------------------------- */
+
+@description('ID of the tenant we are deploying to')
+output AZURE_AUTH_TENANT_ID string = authTenantId
+
+@description('Principal ID of the user running the deployment')
 output AZURE_PRINCIPAL_ID string = azurePrincipalId
 
-/* --------------------------- Azure AI Foundry --------------------------- */
+@description('Application registration client ID')
+output AZURE_CLIENT_APP_ID string = authClientAppId
 
-@description('Azure AI Project connection string')
-output AZURE_AI_PROJECT_CONNECTION_STRING string = project.outputs.connectionString
+/* -------------------------- Azure AI Foundry ----------------------------- */
 
-@description('Azure AI Search endpoint')
-output AZURE_AI_SEARCH_ENDPOINT string = 'https://${aiSearchService.name}.search.windows.net'
+@description('Azure AI Project Endpoint')
+output AI_FOUNDRY_PROJECT_ENDPOINT string = _aiFoundryProjectEndpoint
 
-/* ------------------------------- Models --------------------------------- */
+@description('Azure AI Foundry Project Endpoins - Endpoint for the AI Foundry Project')
+output AZURE_AI_FOUNDRY_PROJECT_ENDPOINT string = aiFoundryAccountProject.properties.endpoints['AI Foundry API']
 
-@description('Azure OpenAI endpoint')
-output AZURE_OPENAI_ENDPOINT string = azureOpenAi.outputs.endpoint
+@description('Azure AI Foundry Project Endpoint - Base URL for API calls to AI Foundry Project')
+// Duplicate of AI_FOUNDRY_PROJECT_ENDPOINT because it is used by SK; 
+// https://learn.microsoft.com/en-us/semantic-kernel/frameworks/agent/agent-types/azure-ai-agent
+output AZURE_AI_AGENT_ENDPOINT string = _aiFoundryProjectEndpoint
 
-@description('Azure OpenAI API Version')
-output AZURE_OPENAI_API_VERSION string = azureOpenAIApiVersion
+@description('AI Foundry service name')
+output AI_FOUNDRY_NAME string = _aiFoundryAccountName
 
-@description('Azure OpenAI Model Deployment Name - GPT-4O')
-output AZURE_OPENAI_GPT4O_DEPLOYMENT_NAME string = deployments[0].name
+@description('AI Foundry Project name')
+output AI_FOUNDRY_PROJECT_NAME string = aiFoundryAccountProject.name
 
-@description('Azure OpenAI Model Deployment Name - GPT-4O Mini')
-output AZURE_OPENAI_GPT4O_MINI_DEPLOYMENT_NAME string = deployments[1].name
+@description('AI Foundry endpoint - Base URL for API calls to AI Foundry')
+output AI_FOUNDRY_ENDPOINT string = _aiFoundryEndpoint
 
-//@description('Azure OpenAI Model Deployment Name - O3 Mini')
-//output AZURE_OPENAI_O3_MINI_DEPLOYMENT_NAME string = deployments[2].name
+@description('AI Foundry Agent Model Deployment Name')
+output AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME string = _aiFoundryAgentModelDeploymentName
 
-/* --------------------------- Observability ------------------------------ */
+
+@description('AI Foundry API Version - API version to use when calling AI Foundry')
+output AI_FOUNDRY_API_VERSION string = _aiFoundryApiVersion
+
+@description('Azure OpenAI API Version - API version to use when calling Azure OpenAI')
+output AZURE_OPENAI_API_VERSION string = _azureOpenAiApiVersion
+
+// @description('Azure OpenAI Default Model Deployment Name')
+output AI_FOUNDRY_DEPLOYMENT_NAME string = _aiFoundryDeploymentName
+
+@description('JSON deployment configuration for the models')
+output AI_FOUNDRY_DEPLOYMENTS object[] = deployments
+
+//@description('Azure AI Content Understanding endpoint')
+//output AZURE_CONTENT_UNDERSTANDING_ENDPOINT string = 'https://${_azureAiFoundryName}.services.ai.azure.com/'
+
+/* ------------------------------ AI Search --------------------------------- */
+
+@description('Azure AI Search service name')
+output AZURE_AI_SEARCH_NAME string = _azureAiSearchName
+
+@description('Azure AI Search service resource group name')
+output AZURE_AI_SEARCH_RESOURCE_GROUP_NAME string = azureAiSearchResourceGroupName
+
+@description('Azure AI Search deployment location')
+output AZURE_AI_SEARCH_LOCATION string = azureAiSearchLocation
+
+@description('Azure AI Search endpoint SKU name')
+output AZURE_AI_SEARCH_SKU_NAME string = aiSearchSkuName
+
+@description('Azure OpenAI endpoint - Base URL for API calls to Azure OpenAI')
+// This environment variable name is used as a default by Semantic Kernel
+output AZURE_AI_SEARCH_ENDPOINT string = _azureAiSearchEndpoint
+
+/* -------------------------- Diagnostic Settings --------------------------- */
 
 @description('Application Insights name')
 output AZURE_APPLICATION_INSIGHTS_NAME string = appInsightsComponent.outputs.name
@@ -369,3 +550,9 @@ output AZURE_LOG_ANALYTICS_WORKSPACE_NAME string = logAnalyticsWorkspace.outputs
 
 @description('Application Insights connection string')
 output APPLICATIONINSIGHTS_CONNECTION_STRING string = appInsightsComponent.outputs.connectionString
+
+@description('Semantic Kernel Diagnostics')
+output SEMANTICKERNEL_EXPERIMENTAL_GENAI_ENABLE_OTEL_DIAGNOSTICS bool = true
+
+@description('Semantic Kernel Diagnostics: if set, content of the messages is traced. Set to false in production')
+output SEMANTICKERNEL_EXPERIMENTAL_GENAI_ENABLE_OTEL_DIAGNOSTICS_SENSITIVE bool = true

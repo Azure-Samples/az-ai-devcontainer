@@ -8,11 +8,73 @@
     "location": {
       "value": "${AZURE_LOCATION}"
     },
+
+    "useAiSearch": {
+      "value": "${USE_AI_SEARCH=false}"
+    },
+    "useAuthentication": {
+      "value": "${USE_AUTHENTICATION=false}"
+    },
+    "useExistingAiFoundry": {
+      "value": "${USE_EXISTING_AI_FOUNDRY=false}"
+    },
+    "useExistingAiSearch": {
+      "value": "${USE_EXISTING_AI_SEARCH=false}"
+    },
+
+    "frontendExists": {
+      "value": "${SERVICE_FRONTEND_RESOURCE_EXISTS=false}"
+    },
+    "backendExists": {
+      "value": "${SERVICE_BACKEND_RESOURCE_EXISTS=false}"
+    },
+
+    "authTenantId": {
+      "value": "${AZURE_AUTH_TENANT_ID}"
+    },
     "azurePrincipalId": {
       "value": "${AZURE_PRINCIPAL_ID}"
     },
-    "hasAzureAISearch": {
-      "value": "${HAS_AZURE_AI_SEARCH=false}"
+    "authClientAppId": {
+      "value": "${AZURE_CLIENT_APP_ID}"
+    },
+    "authClientSecret": {
+      "value": "${AZURE_CLIENT_APP_SECRET}"
+    },
+
+    "azureAiFoundryName": {
+      "value": "${AZURE_AI_FOUNDRY_NAME}"
+    },
+    "azureAiFoundryEndpoint": {
+      "value": "${AZURE_AI_FOUNDRY_ENDPOINT}"
+    },
+    "azureAiFoundryApiVersion": {
+      "value": "${AZURE_AI_FOUNDRY_API_VERSION}"
+    },
+    "azureOpenAiApiVersion": {
+      "value": "${AZURE_OPENAI_API_VERSION}"
+    },
+    "azureOpenAiResourceGroupName": {
+      "value": "${AZURE_AI_FOUNDRY_RESOURCE_GROUP_NAME}"
+    },
+    "executorAiFoundryDeploymentName": {
+      "value": "${EXECUTOR_AI_FOUNDRY_DEPLOYMENT_NAME}"
+    },
+    "utilityAiFoundryDeploymentName": {
+      "value": "${UTILITY_AI_FOUNDRY_DEPLOYMENT_NAME}"
+    },
+
+    "azureAiSearchName": {
+      "value": "${AZURE_AI_SEARCH_NAME}"
+    },
+    "azureAiSearchResourceGroupName": {
+      "value": "${AZURE_AI_SEARCH_RESOURCE_GROUP_NAME}"
+    },
+    "azureAiSearchLocation": {
+      "value": "${AZURE_AI_SEARCH_LOCATION}"
+    },
+    "aiSearchSkuName": {
+      "value": "${AI_SEARCH_SKU_NAME=basic}"
     }
   }
 }
