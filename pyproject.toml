@@ -1,7 +1,7 @@
 [project]
-name = "aigbb-devcontainer"
+name = "az-ai-devcontainer"
 version = "0.1.0"
-description = "Add your description here"
+description = "DevContainer environment for AI experimentation"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
