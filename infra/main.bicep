@@ -116,10 +116,6 @@ param authClientAppId string = ''
 @secure()
 param authClientSecret string = ''
 
-@maxLength(50)
-@description('Name of the container registry to deploy. If not specified, a name will be generated. The name is global and must be unique within Azure. The maximum length is 50 characters.')
-param containerRegistryName string = ''
-
 /* -------------------------------------------------------------------------- */
 /*                                  VARIABLES                                 */
 /* -------------------------------------------------------------------------- */
@@ -171,9 +167,6 @@ var _azureAiSearchName = useExistingAiSearch
       ? take('${abbreviations.searchSearchServices}${environmentName}', 260)
       : azureAiSearchName)
 
-var _containerRegistryName = !empty(containerRegistryName)
-  ? containerRegistryName
-  : take('${abbreviations.containerRegistryRegistries}${alphaNumericEnvironmentName}${resourceToken}', 50)
 var _keyVaultName = take('${abbreviations.keyVaultVaults}${alphaNumericEnvironmentName}-${resourceToken}', 24)
 
 /* ----------------------------- Resource Names ----------------------------- */
@@ -183,6 +176,7 @@ var _keyVaultName = take('${abbreviations.keyVaultVaults}${alphaNumericEnvironme
 @description('Model deployment configurations')
 var deployments = loadYamlContent('./deployments.yaml')
 
+var _aiFoundryAgentModelDeploymentName = deployments[0].name
 
 @description('AI Foundry Endpoint - Base URL for API calls to AI Foundry')
 var _aiFoundryEndpoint = useExistingAiFoundry ? aiFoundryEndpoint : aiFoundryAccount.outputs.endpoint
@@ -255,12 +249,6 @@ module aiFoundryAccount 'br/public:avm/res/cognitive-services/account:0.11.0' = 
         principalType: 'User'
       }
       // See also https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/rbac-azure-ai-foundry
-      {
-        principalId: appIdentity.outputs.principalId
-        // Azure AI User (TODO: change when AVM supports it)
-        roleDefinitionIdOrName: '53ca6127-db72-4b80-b1b0-d745d6d5456d' 
-        principalType: 'ServicePrincipal'
-      }
     ]
   }
 }
@@ -350,11 +338,6 @@ module storageAccount 'br/public:avm/res/storage/storage-account:0.19.0' = {
         {
           name: 'default'
           roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Storage Blob Data Contributor'
-              principalId: appIdentity.outputs.principalId
-              principalType: 'ServicePrincipal'
-            }
           ]
         }
       ]
@@ -390,11 +373,6 @@ module aiSearchService 'br/public:avm/res/search/search-service:0.10.0' = if (us
       // See also https://learn.microsoft.com/en-us/azure/search/search-security-rbac
       {
         roleDefinitionIdOrName: 'Search Index Data Contributor'
-        principalId: appIdentity.outputs.principalId
-        principalType: 'ServicePrincipal'
-      }
-      {
-        roleDefinitionIdOrName: 'Search Index Data Contributor'
         principalId: azurePrincipalId
         principalType: 'User'
       }
@@ -416,7 +394,6 @@ module aiSearchService 'br/public:avm/res/search/search-service:0.10.0' = if (us
     location: location
     sqlRoleAssignmentsPrincipalIds: [
       azurePrincipalId
-      appIdentity.outputs.principalId
     ]
   }
 } */
@@ -464,11 +441,6 @@ output USE_EXISTING_AI_FOUNDRY bool = useExistingAiFoundry
 
 @description('If true, reuse existing Azure AI Search Service')
 output USE_EXISTING_AI_SEARCH bool = useExistingAiSearch
-
-/* --------------------------- Apps Deployment ----------------------------- */
-
-@description('The endpoint of the container registry.') // necessary for azd deploy
-output AZURE_CONTAINER_REGISTRY_ENDPOINT string = containerRegistry.outputs.loginServer
 
 /* ------------------------ Authentication & RBAC ------------------------- */
 
