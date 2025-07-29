@@ -304,6 +304,7 @@ module storageAccount 'br/public:avm/res/storage/storage-account:0.19.0' = {
     tags: tags
     name: _storageAccountName
     kind: 'StorageV2'
+    skuName: 'Standard_ZRS'
     blobServices: {
       corsRules: [
         {
