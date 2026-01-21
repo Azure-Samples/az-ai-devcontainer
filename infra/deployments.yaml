@@ -1,14 +1,25 @@
-- name: gpt-4.1-2025-04-14
+# =============================================================================
+# Azure AI Foundry Model Deployments - GlobalStandard (Pay-as-you-go)
+# All models use GlobalStandard SKU = no running cost, pay only when used
+# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# OpenAI Models
+# -----------------------------------------------------------------------------
+
+# GPT-4.1 Series
+- name: gpt-4.1
   sku:
     name: GlobalStandard
-    capacity: 232
+    capacity: 50
   model:
     format: OpenAI
     name: gpt-4.1
     version: 2025-04-14
   versionUpgradeOption: OnceCurrentVersionExpired
 
-- name: gpt-4.1-mini-2025-04-14
+- name: gpt-4.1-mini
   sku:
     name: GlobalStandard
     capacity: 500
@@ -18,7 +29,7 @@
     version: 2025-04-14
   versionUpgradeOption: OnceCurrentVersionExpired
 
-- name: gpt-4.1-nano-2025-04-14
+- name: gpt-4.1-nano
   sku:
     name: GlobalStandard
     capacity: 500
@@ -28,7 +39,8 @@
     version: 2025-04-14
   versionUpgradeOption: OnceCurrentVersionExpired
 
-- name: gpt-4o-2024-11-20
+# GPT-4o Series
+- name: gpt-4o
   sku:
     name: GlobalStandard
     capacity: 50
@@ -37,8 +49,8 @@
     name: gpt-4o
     version: 2024-11-20
   versionUpgradeOption: OnceCurrentVersionExpired
-  
-- name: gpt-4o-mini-2024-07-18
+
+- name: gpt-4o-mini
   sku:
     name: GlobalStandard
     capacity: 50
@@ -48,17 +60,8 @@
     version: 2024-07-18
   versionUpgradeOption: OnceCurrentVersionExpired
 
-- name: o3-mini-2025-01-31
-  sku:
-    name: GlobalStandard
-    capacity: 50
-  model:
-    format: OpenAI
-    name: o3-mini
-    version: 2025-01-31
-  versionUpgradeOption: OnceCurrentVersionExpired
-
-- name: o1-2024-12-17
+# O-Series Reasoning Models
+- name: o1
   sku:
     name: GlobalStandard
     capacity: 50
@@ -68,16 +71,196 @@
     version: 2024-12-17
   versionUpgradeOption: OnceCurrentVersionExpired
 
-- name: o1-mini-2024-09-12
+- name: o3-mini
   sku:
     name: GlobalStandard
     capacity: 50
   model:
     format: OpenAI
-    name: o1-mini
-    version: 2024-09-12
-  versionUpgradeOption: OnceNewDefaultVersionAvailable
+    name: o3-mini
+    version: 2025-01-31
+  versionUpgradeOption: OnceCurrentVersionExpired
 
+- name: o3
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: o3
+    version: 2025-04-16
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+# o3-pro: Only available in East US2 & Sweden Central
+# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&pivots=azure-openai#o-series-models
+- name: o3-pro
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: o3-pro
+    version: 2025-06-10
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: o4-mini
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: o4-mini
+    version: 2025-04-16
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+# codex-mini: Only available in East US2 & Sweden Central
+# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&pivots=azure-openai#o-series-models
+- name: codex-mini
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: codex-mini
+    version: 2025-05-16
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+# GPT-5 Series
+- name: gpt-5
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-5
+    version: 2025-08-07
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: gpt-5-mini
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-5-mini
+    version: 2025-08-07
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: gpt-5-nano
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-5-nano
+    version: 2025-08-07
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: gpt-5-chat
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-5-chat
+    version: 2025-08-07
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: gpt-5-pro
+  sku:
+    name: GlobalStandard
+    capacity: 5
+  model:
+    format: OpenAI
+    name: gpt-5-pro
+    version: 2025-10-06
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+# GPT-5.1 Series
+- name: gpt-5.1
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-5.1
+    version: 2025-11-13
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: gpt-5.1-chat
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-5.1-chat
+    version: 2025-11-13
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: gpt-5.1-codex
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-5.1-codex
+    version: 2025-11-13
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: gpt-5.1-codex-mini
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-5.1-codex-mini
+    version: 2025-11-13
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: gpt-5.1-codex-max
+  sku:
+    name: GlobalStandard
+    capacity: 500
+  model:
+    format: OpenAI
+    name: gpt-5.1-codex-max
+    version: 2025-12-04
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+# GPT-5.2 Series
+- name: gpt-5.2
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-5.2
+    version: 2025-12-11
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: gpt-5.2-chat
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-5.2-chat
+    version: 2025-12-11
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+# gpt-5.2-codex: Only available in East US2 & Sweden Central
+# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&pivots=azure-openai#gpt-52
+- name: gpt-5.2-codex
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-5.2-codex
+    version: 2026-01-14
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+# OpenAI Embeddings
 - name: text-embedding-ada-002
   sku:
     name: GlobalStandard
@@ -108,12 +291,561 @@
     version: "1"
   versionUpgradeOption: NoAutoUpgrade
 
-# - name: gpt-image-1-2025-04-15
+# -----------------------------------------------------------------------------
+# DeepSeek Models
+# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry
+# -----------------------------------------------------------------------------
+
+# - name: DeepSeek-R1 # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: DeepSeek
+#     name: DeepSeek-R1
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: DeepSeek-R1-0528
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: DeepSeek
+    name: DeepSeek-R1-0528
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: DeepSeek-V3-0324
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: DeepSeek
+    name: DeepSeek-V3-0324
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: DeepSeek-V3.1 # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: DeepSeek
+#     name: DeepSeek-V3.1
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: DeepSeek-V3.2 # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: DeepSeek
+#     name: DeepSeek-V3.2
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: DeepSeek-V3.2-Speciale # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: DeepSeek
+#     name: DeepSeek-V3.2-Speciale
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# # -----------------------------------------------------------------------------
+# # Meta Llama Models
+# # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry
+# # -----------------------------------------------------------------------------
+
+- name: Llama-3.3-70B-Instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Meta
+    name: Llama-3.3-70B-Instruct
+    version: "3"
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Llama-4-Maverick-17B-128E-Instruct-FP8 # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Meta
+#     name: Llama-4-Maverick-17B-128E-Instruct-FP8
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Meta-Llama-3-8B-Instruct # Model not available
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Meta
+#     name: Meta-Llama-3-8B-Instruct
+#     version: "9"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Meta-Llama-3-70B-Instruct # Model not available
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Meta
+#     name: Meta-Llama-3-70B-Instruct
+#     version: "9"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Meta-Llama-3.1-8B-Instruct # Model not available
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Meta
+#     name: Meta-Llama-3.1-8B-Instruct
+#     version: "4"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Meta-Llama-3.1-70B-Instruct # Model not available
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Meta
+#     name: Meta-Llama-3.1-70B-Instruct
+#     version: "4"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Meta-Llama-3.1-405B-Instruct # Model not available
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Meta
+#     name: Meta-Llama-3.1-405B-Instruct
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Llama-3.2-11B-Vision-Instruct # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Meta
+#     name: Llama-3.2-11B-Vision-Instruct
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Llama-3.2-90B-Vision-Instruct # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Meta
+#     name: Llama-3.2-90B-Vision-Instruct
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# -----------------------------------------------------------------------------
+# Mistral AI Models
+# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry
+# -----------------------------------------------------------------------------
+
+# - name: Mistral-Large-2411 # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Mistral AI
+#     name: Mistral-Large-2411
+#     version: "2"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Mistral-Large-3 # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Mistral AI
+#     name: Mistral-Large-3
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Mistral-Nemo # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Mistral AI
+#     name: Mistral-Nemo
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Mistral-small-2503 # Model not supported in this region
+# sku:
+#   name: GlobalStandard
+#   capacity: 1
+# model:
+#   format: Mistral AI
+#   name: Mistral-small-2503
+#   version: "1"
+# versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Ministral-3B # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Mistral AI
+#     name: Ministral-3B
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Codestral-2501 # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Mistral AI
+#     name: Codestral-2501
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: mistral-document-ai-2505 # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Mistral AI
+#     name: mistral-document-ai-2505
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# # -----------------------------------------------------------------------------
+# # Cohere Models
+# # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry
+# # -----------------------------------------------------------------------------
+
+# - name: Cohere-command-a # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Cohere
+#     name: Cohere-command-a
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Cohere-command-r-08-2024 # Model not available
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Cohere
+#     name: Cohere-command-r-08-2024
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Cohere-command-r-plus-08-2024 # Model not available
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Cohere
+#     name: Cohere-command-r-plus-08-2024
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: embed-v-4-0 # Model not available
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Cohere
+#     name: embed-v-4-0
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# Note: Cohere rerank models (Cohere-rerank-v4.0-pro, Cohere-rerank-v4.0-fast) 
+# require Cohere API for inference, not standard deployment
+
+# -----------------------------------------------------------------------------
+# xAI Grok Models
+# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry
+# -----------------------------------------------------------------------------
+
+# - name: grok-3 # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: xAI
+#     name: grok-3
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: grok-3-mini # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: xAI
+#     name: grok-3-mini
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: grok-4 # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: xAI
+#     name: grok-4
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: grok-4-fast-reasoning # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: xAI
+#     name: grok-4-fast-reasoning
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: grok-4-fast-non-reasoning # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: xAI
+#     name: grok-4-fast-non-reasoning
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: grok-code-fast-1 # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: xAI
+#     name: grok-code-fast-1
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# # -----------------------------------------------------------------------------
+# # Microsoft Models
+# # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry
+# # -----------------------------------------------------------------------------
+
+# - name: MAI-DS-R1 # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Microsoft
+#     name: MAI-DS-R1
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: model-router # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Microsoft
+#     name: model-router
+#     version: "2025-08-07"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Phi-4 # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Microsoft
+#     name: Phi-4
+#     version: "7"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Phi-4-mini-instruct # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Microsoft
+#     name: Phi-4-mini-instruct
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Phi-4-multimodal-instruct # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Microsoft
+#     name: Phi-4-multimodal-instruct
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Phi-3.5-mini-instruct # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Microsoft
+#     name: Phi-3.5-mini-instruct
+#     version: "6"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Phi-3.5-MoE-instruct # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Microsoft
+#     name: Phi-3.5-MoE-instruct
+#     version: "4"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# - name: Phi-3.5-vision-instruct # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Microsoft
+#     name: Phi-3.5-vision-instruct
+#     version: "2"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# -----------------------------------------------------------------------------
+# Moonshot AI Models
+# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry
+# -----------------------------------------------------------------------------
+
+# - name: Kimi-K2-Thinking # Model not available in Sweden Central
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Moonshot AI
+#     name: Kimi-K2-Thinking
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# # -----------------------------------------------------------------------------
+# # Core42 Models
+# # Source: https://github.com/Azure-Samples/azureai-model-inference-bicep
+# # -----------------------------------------------------------------------------
+
+# - name: jais-30b-chat # Model not available
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Core42
+#     name: jais-30b-chat
+#     version: "1"
+#   versionUpgradeOption: OnceCurrentVersionExpired
+
+# =============================================================================
+# Commented Out Models (Image/Video Generation - require separate registration)
+# =============================================================================
+
+# OpenAI Image Generation Models
+# Registration required: https://aka.ms/oai/gptimage1access
+# Regions: West US 3, East US 2, UAE North, Poland Central, Sweden Central
+# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&pivots=azure-openai#image-generation-models
+
+# - name: gpt-image-1
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: OpenAI
+#     name: gpt-image-1
+#     version: 2025-04-15
+#   versionUpgradeOption: OnceNewDefaultVersionAvailable
+
+# - name: gpt-image-1-mini
 #   sku:
 #     name: GlobalStandard
 #     capacity: 2
 #   model:
 #     format: OpenAI
-#     name: gpt-image-1
-#     version: 2025-04-15
+#     name: gpt-image-1-mini
+#     version: 2025-10-06
+#   versionUpgradeOption: OnceNewDefaultVersionAvailable
+
+# - name: gpt-image-1.5
+#   sku:
+#     name: GlobalStandard
+#     capacity: 2
+#   model:
+#     format: OpenAI
+#     name: gpt-image-1.5
+#     version: 2025-12-16
+#   versionUpgradeOption: OnceNewDefaultVersionAvailable
+
+# OpenAI Video Generation Models (Sora)
+# Regions: East US 2, Sweden Central only
+# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&pivots=azure-openai#video-generation-models
+
+# - name: sora
+#   sku:
+#     name: GlobalStandard
+#     capacity: 2
+#   model:
+#     format: OpenAI
+#     name: sora
+#     version: 2025-05-02
+#   versionUpgradeOption: OnceNewDefaultVersionAvailable
+
+# - name: sora-2
+#   sku:
+#     name: GlobalStandard
+#     capacity: 2
+#   model:
+#     format: OpenAI
+#     name: sora-2
+#     version: 2025-10-06
+#   versionUpgradeOption: OnceNewDefaultVersionAvailable
+
+# Black Forest Labs Image Generation Models
+# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry
+
+# - name: FLUX.2-pro
+#   sku:
+#     name: GlobalStandard
+#     capacity: 2
+#   model:
+#     format: Black Forest Labs
+#     name: FLUX.2-pro
+#     version: "1"
+#   versionUpgradeOption: OnceNewDefaultVersionAvailable
+
+# - name: FLUX.1-Kontext-pro
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Black Forest Labs
+#     name: FLUX.1-Kontext-pro
+#     version: "1"
+#   versionUpgradeOption: OnceNewDefaultVersionAvailable
+
+# - name: FLUX-1.1-pro
+#   sku:
+#     name: GlobalStandard
+#     capacity: 1
+#   model:
+#     format: Black Forest Labs
+#     name: FLUX-1.1-pro
+#     version: "1"
 #   versionUpgradeOption: OnceNewDefaultVersionAvailable

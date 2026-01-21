@@ -43,6 +43,40 @@ azd up
 
 🚀 You can start working straight away by modifying `notebooks/SampleNotebook.ipynb`!
 
+## Pre-configured AI Models
+
+This template deploys a comprehensive set of AI models from Azure AI Foundry using **GlobalStandard** SKU (pay-as-you-go, no running cost). All models are defined in [`infra/deployments.yaml`](infra/deployments.yaml).
+
+### Active Deployments (30 models)
+
+| Provider | Models |
+|----------|--------|
+| **OpenAI** | GPT-4.1 (+ mini, nano), GPT-4o (+ mini), O-series (o1, o3, o3-mini, o3-pro, o4-mini, codex-mini), GPT-5 (+ mini, nano, chat, pro), GPT-5.1 (+ chat, codex, codex-mini, codex-max), GPT-5.2 (+ chat, codex), Embeddings (ada-002, 3-small, 3-large) |
+| **DeepSeek** | DeepSeek-R1-0528, DeepSeek-V3-0324 |
+| **Meta** | Llama-3.3-70B-Instruct |
+
+### Commented Out (available in other regions or require registration)
+
+Additional models are available but commented out in `deployments.yaml`. Uncomment to enable:
+
+| Provider | Models | Notes |
+|----------|--------|-------|
+| **DeepSeek** | DeepSeek-R1, DeepSeek-V3.1, DeepSeek-V3.2, DeepSeek-V3.2-Speciale | May require different region |
+| **Meta** | Llama-4-Maverick, Llama-3.2 Vision, Meta-Llama-3.x series | May require different region |
+| **Mistral AI** | Mistral-Large-2411/3, Mistral-Nemo, Ministral-3B, Codestral-2501 | May require different region |
+| **Cohere** | Cohere-command-a/r, embed-v-4-0 | May require different region |
+| **xAI** | grok-3, grok-3-mini, grok-4 series | May require different region |
+| **Microsoft** | Phi-4, Phi-3.5 series, MAI-DS-R1, model-router | May require different region |
+| **Moonshot AI** | Kimi-K2-Thinking | May require different region |
+| **OpenAI (Image/Video)** | gpt-image-1 series, sora, sora-2 | Require registration |
+| **Black Forest Labs** | FLUX.2-pro, FLUX.1-Kontext-pro, FLUX-1.1-pro | Image generation |
+
+> [!NOTE]
+> Model availability varies by Azure region. This template is tested in **Sweden Central**.
+> Some models (o3-pro, codex-mini, gpt-5.2-codex) are only available in East US2 & Sweden Central.
+> 
+> For the latest model availability, see [Azure AI Foundry Models Documentation](https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure).
+
 ## Contents
 
   - `notebook/SampleNotebook.ipynb` contains a sample for using [Azure AI Foundry SDK](https://learn.microsoft.com/en-us/azure/ai-studio/how-to/develop/sdk-overview)
