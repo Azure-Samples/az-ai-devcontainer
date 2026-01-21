@@ -2,26 +2,55 @@
 set -euo pipefail
 [[ ${DEBUG-} =~ ^1|yes|true$ ]] && set -o xtrace
 
-# Update the package list and upgrade all packages
-sudo apt update
-sudo apt upgrade -y
+# Color codes for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
 
-# Install uv, see https://astral.sh for additional information
-curl -LsSf https://astral.sh/uv/install.sh | sh
-echo 'export UV_LINK_MODE=copy' >> $HOME/.bashrc
-source $HOME/.bashrc
+log_info() { printf "${GREEN}[INFO]${NC} %s\n" "$1"; }
+log_warn() { printf "${YELLOW}[WARN]${NC} %s\n" "$1"; }
+log_error() { printf "${RED}[ERROR]${NC} %s\n" "$1"; }
 
+# Update packages (with caching check)
+log_info "Updating package list..."
+sudo apt-get update -qq
+sudo apt-get upgrade -y -qq
+
+# Install uv if not already installed
+if ! command -v uv &> /dev/null; then
+    log_info "Installing UV package manager..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+else
+    log_info "UV already installed, skipping..."
+fi
+
+# Sync dependencies
+log_info "Installing Python dependencies..."
 uv sync
 
-# Install Staship prompt
-curl -sS https://starship.rs/install.sh | sh -s -- -y
-echo 'eval "$(starship init bash)"' >> ~/.bashrc
-source ~/.bashrc
+# Install Starship if not already installed
+if ! command -v starship &> /dev/null; then
+    log_info "Installing Starship prompt..."
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
+else
+    log_info "Starship already installed, skipping..."
+fi
 
-printf "\n\n\033[1m✅ DevContainer was successfully created!\033[0m\n\n"
-printf "Next steps: \n"
+# Add Starship to bashrc if not present
+if ! grep -q "starship init bash" "$HOME/.bashrc"; then
+    log_info "Adding Starship to .bashrc..."
+    echo 'eval "$(starship init bash)"' >> ~/.bashrc
+fi
+
+# Install mise (polyglot runtime manager) if not already installed
+log_info "Installing mise (runtime version manager)..."
+curl -sSf https://mise.run | sh
+
+printf "\n${GREEN}✅ DevContainer setup complete!${NC}\n\n"
+printf "Next steps:\n"
 printf "  - Start hacking your AI App right away! 🚀\n"
-printf "  - Add python dependencies to pyproject.yaml by running 'uv add <package>'\n"
-printf "  - See https://docs.astral.sh/uv/ for more information\n"
+printf "  - Add python dependencies with 'uv add <package>'\n"
+printf "  - See https://docs.astral.sh/uv/ for more information\n\n"
 
 

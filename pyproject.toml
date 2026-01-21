@@ -3,12 +3,64 @@ name = "az-ai-devcontainer"
 version = "0.1.0"
 description = "DevContainer environment for AI experimentation"
 readme = "README.md"
-requires-python = ">=3.12"
+license = { text = "MIT" }
+requires-python = ">=3.13"
+authors = [
+    { name = "Dominique Broeglin", email = "dominique.broeglin@microsoft.com" }
+]
+keywords = ["azure", "ai", "devcontainer", "jupyter", "foundry"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+]
 dependencies = [
-    "python-dotenv >=1.0.1,<1.2.0",
-    "ipykernel >=6.29.5,<7.0.0",
-    "ipywidgets >=8.1.5,<9.0.0",
+    "python-dotenv>=1.0.1",
+    "ipykernel>=6.29.5",
+    "ipywidgets>=8.1.5",
     "azure-ai-projects>=1.0.0b6",
     "azure-identity>=1.20.0",
     "openai>=1.63.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/dbroeglin/az-ai-devcontainer"
+Repository = "https://github.com/dbroeglin/az-ai-devcontainer"
+Issues = "https://github.com/dbroeglin/az-ai-devcontainer/issues"
+Documentation = "https://github.com/dbroeglin/az-ai-devcontainer#readme"
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.8.0",
+    "pytest>=8.0.0",
+    "pytest-cov>=5.0.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501",  # Line too long (handled by formatter)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["az-ai-devcontainer"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

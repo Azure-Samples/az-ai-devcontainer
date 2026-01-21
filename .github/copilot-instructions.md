@@ -12,7 +12,7 @@ This file provides instructions for GitHub Copilot when working in this reposito
 Azure AI DevContainer template with Python, Bicep infrastructure, and Jupyter notebooks.
 
 ### Key Technologies
-- **Python 3.12** with UV package manager
+- **Python 3.13** with UV package manager
 - **Bicep** for Azure infrastructure
 - **Azure AI Foundry** SDK for AI development
 - **DevContainers** for development environment

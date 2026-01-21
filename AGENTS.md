@@ -37,7 +37,7 @@ This is an **Azure AI DevContainer template** for Python-based AI development pr
 
 | Category | Technology |
 |----------|------------|
-| Language | Python 3.12 |
+| Language | Python 3.13 |
 | Package Manager | [UV](https://docs.astral.sh/uv/) (preferred) |
 | Infrastructure | [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/) |
 | CLI Tools | Azure CLI (`az`), Azure Developer CLI (`azd`), GitHub CLI (`gh`) |

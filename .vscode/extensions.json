@@ -17,6 +17,10 @@
         "ms-azuretools.vscode-azurestorage",
         "ms-azuretools.vscode-azure-github-copilot",
         "ms-vscode-remote.remote-containers",
-        "ms-python.black-formatter"
+        "ms-python.python",
+        "ms-python.debugpy",
+        "charliermarsh.ruff",
+        "usernamehw.errorlens",
+        "eamodio.gitlens"
     ]
 }
