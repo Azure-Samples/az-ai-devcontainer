@@ -664,15 +664,15 @@
 #     version: "2025-08-07"
 #   versionUpgradeOption: OnceCurrentVersionExpired
 
-# - name: Phi-4 # Model not available in Sweden Central
-#   sku:
-#     name: GlobalStandard
-#     capacity: 1
-#   model:
-#     format: Microsoft
-#     name: Phi-4
-#     version: "7"
-#   versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-4
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-4
+    version: "7"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 # - name: Phi-4-mini-instruct # Model not available in Sweden Central
 #   sku:
