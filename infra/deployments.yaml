@@ -296,15 +296,15 @@
 # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry
 # -----------------------------------------------------------------------------
 
-# - name: DeepSeek-R1 # Model not available in Sweden Central
-#   sku:
-#     name: GlobalStandard
-#     capacity: 1
-#   model:
-#     format: DeepSeek
-#     name: DeepSeek-R1
-#     version: "1"
-#   versionUpgradeOption: OnceCurrentVersionExpired
+- name: DeepSeek-R1 # Model not available in Sweden Central
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: DeepSeek
+    name: DeepSeek-R1
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 - name: DeepSeek-R1-0528
   sku:
