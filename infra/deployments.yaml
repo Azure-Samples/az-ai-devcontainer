@@ -371,15 +371,15 @@
     version: "3"
   versionUpgradeOption: OnceCurrentVersionExpired
 
-# - name: Llama-4-Maverick-17B-128E-Instruct-FP8 # Model not available in Sweden Central
-#   sku:
-#     name: GlobalStandard
-#     capacity: 1
-#   model:
-#     format: Meta
-#     name: Llama-4-Maverick-17B-128E-Instruct-FP8
-#     version: "1"
-#   versionUpgradeOption: OnceCurrentVersionExpired
+- name: Llama-4-Maverick-17B-128E-Instruct-FP8 # Model not available in Sweden Central
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Meta
+    name: Llama-4-Maverick-17B-128E-Instruct-FP8
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 # - name: Meta-Llama-3-8B-Instruct # Model not available
 #   sku:
