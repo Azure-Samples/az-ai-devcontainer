@@ -371,7 +371,7 @@
     version: "3"
   versionUpgradeOption: OnceCurrentVersionExpired
 
-- name: Llama-4-Maverick-17B-128E-Instruct-FP8 # Model not available in Sweden Central
+- name: Llama-4-Maverick-17B-128E-Instruct-FP8
   sku:
     name: GlobalStandard
     capacity: 1
@@ -456,7 +456,7 @@
 # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry
 # -----------------------------------------------------------------------------
 
-# - name: Mistral-Large-2411 # Model not available in Sweden Central
+# - name: Mistral-Large-2411 # Requires marketplace purchase
 #   sku:
 #     name: GlobalStandard
 #     capacity: 1
@@ -466,15 +466,15 @@
 #     version: "2"
 #   versionUpgradeOption: OnceCurrentVersionExpired
 
-# - name: Mistral-Large-3 # Model not available in Sweden Central
-#   sku:
-#     name: GlobalStandard
-#     capacity: 1
-#   model:
-#     format: Mistral AI
-#     name: Mistral-Large-3
-#     version: "1"
-#   versionUpgradeOption: OnceCurrentVersionExpired
+- name: Mistral-Large-3
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Mistral AI
+    name: Mistral-Large-3
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 # - name: Mistral-Nemo # Model not available in Sweden Central
 #   sku:
