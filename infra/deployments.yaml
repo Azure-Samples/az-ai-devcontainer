@@ -346,15 +346,15 @@
     version: "1"
   versionUpgradeOption: OnceCurrentVersionExpired
 
-# - name: DeepSeek-V3.2-Speciale # Model not available in Sweden Central
-#   sku:
-#     name: GlobalStandard
-#     capacity: 1
-#   model:
-#     format: DeepSeek
-#     name: DeepSeek-V3.2-Speciale
-#     version: "1"
-#   versionUpgradeOption: OnceCurrentVersionExpired
+- name: DeepSeek-V3.2-Speciale
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: DeepSeek
+    name: DeepSeek-V3.2-Speciale
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 # # -----------------------------------------------------------------------------
 # # Meta Llama Models
