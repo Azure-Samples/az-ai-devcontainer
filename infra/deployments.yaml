@@ -326,15 +326,15 @@
     version: "1"
   versionUpgradeOption: OnceCurrentVersionExpired
 
-# - name: DeepSeek-V3.1 # Model not available in Sweden Central
-#   sku:
-#     name: GlobalStandard
-#     capacity: 1
-#   model:
-#     format: DeepSeek
-#     name: DeepSeek-V3.1
-#     version: "1"
-#   versionUpgradeOption: OnceCurrentVersionExpired
+- name: DeepSeek-V3.1 # Model not available in Sweden Central
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: DeepSeek
+    name: DeepSeek-V3.1
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 # - name: DeepSeek-V3.2 # Model not available in Sweden Central
 #   sku:
