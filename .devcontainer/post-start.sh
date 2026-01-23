@@ -14,3 +14,9 @@ log_info() { printf "${GREEN}[INFO]${NC} %s\n" "$1"; }
 log_info "Container started successfully!"
 log_info "Use 'uv add <package>' to add Python dependencies"
 log_info "Run 'azd up' to provision Azure resources"
+
+printf "\n${GREEN}✅ DevContainer setup complete!${NC}\n\n"
+printf "Next steps:\n"
+printf "  - Start hacking your AI App right away! 🚀\n"
+printf "  - Add python dependencies with 'uv add <package>'\n"
+printf "  - Run 'azd up' to provision Azure resources\n"

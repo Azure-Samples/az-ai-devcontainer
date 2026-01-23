@@ -50,6 +50,4 @@ printf "\n${GREEN}✅ DevContainer setup complete!${NC}\n\n"
 printf "Next steps:\n"
 printf "  - Start hacking your AI App right away! 🚀\n"
 printf "  - Add python dependencies with 'uv add <package>'\n"
-printf "  - See https://docs.astral.sh/uv/ for more information\n\n"
-
-
+printf "  - Run 'azd up' to provision Azure resources\n"
