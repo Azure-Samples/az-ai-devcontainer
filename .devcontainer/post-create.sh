@@ -31,13 +31,16 @@ uv sync
 
 # Install mise (polyglot runtime manager) if not already installed
 log_info "Installing mise (runtime version manager)..."
-curl -sSf https://mise.run | sh
+curl https://mise.run/bash | sh
+
+log_info "Installing uv..."
+mise use -g uv
+
+log_info "Installing ruff..."
+mise use -g ruff 
 
 log_info "Installing Starship prompt..."
-mise install uv
-
-log_info "Installing Starship prompt..."
-mise install uv
+mise use -g starship 
 
 mise install starship 
 log_info "Adding Starship to .bashrc..."
