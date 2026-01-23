@@ -29,23 +29,19 @@ fi
 log_info "Installing Python dependencies..."
 uv sync
 
-# Install Starship if not already installed
-if ! command -v starship &> /dev/null; then
-    log_info "Installing Starship prompt..."
-    curl -sS https://starship.rs/install.sh | sh -s -- -y
-else
-    log_info "Starship already installed, skipping..."
-fi
-
-# Add Starship to bashrc if not present
-if ! grep -q "starship init bash" "$HOME/.bashrc"; then
-    log_info "Adding Starship to .bashrc..."
-    echo 'eval "$(starship init bash)"' >> ~/.bashrc
-fi
-
 # Install mise (polyglot runtime manager) if not already installed
 log_info "Installing mise (runtime version manager)..."
 curl -sSf https://mise.run | sh
+
+log_info "Installing Starship prompt..."
+mise install uv
+
+log_info "Installing Starship prompt..."
+mise install uv
+
+mise install starship 
+log_info "Adding Starship to .bashrc..."
+echo 'eval "$(starship init bash)"' >> ~/.bashrc
 
 printf "\n${GREEN}✅ DevContainer setup complete!${NC}\n\n"
 printf "Next steps:\n"
