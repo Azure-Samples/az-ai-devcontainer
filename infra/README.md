@@ -3,8 +3,9 @@
 ## Current deployment flow
 
 - The Foundry account, project, and supporting resources are provisioned by Bicep during `azd up` or `azd provision`.
-- The model catalog is still sourced from `infra/deployments.yaml` during provisioning today.
-- A separate post-provision model deployment stage is planned, but it is intentionally not enabled yet.
+- The model catalog is sourced from `infra/deployments.yaml` and reconciled after provisioning by `infra/scripts/deploy_models.py`.
+- AZD runs `infra/hooks/postprovision.sh` automatically after provisioning unless `DEPLOY_AI_FOUNDRY_MODELS=false` is set in the AZD environment.
+- You can run the same reconciler manually with `uv run python infra/scripts/deploy_models.py --mode manual`.
 
 ## Deploy with authentication enabled
 
@@ -34,7 +35,7 @@ azd env set AI_FOUNDRY_ENDPOINT _existing_ai_foundry_endpoint_
 azd env set AI_FOUNDRY_API_VERSION _existing_ai_foundry_api_version_
 ```
 
-The template still creates a project under the existing Foundry resource. Model rollout automation is a separate stage and is not enabled yet.
+The template still creates a project under the existing Foundry resource. The post-provision reconciler then ensures the selected model deployments exist on that resource.
 
 ### Reusing an existing Azure AI Search Service
 

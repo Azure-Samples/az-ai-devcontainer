@@ -209,7 +209,6 @@ module aiFoundryAccount 'br/public:avm/res/cognitive-services/account:0.11.0' = 
     }
     disableLocalAuth: false
     sku: 'S0'
-    deployments: deployments
     managedIdentities: {
       systemAssigned: true
     }
@@ -280,9 +279,7 @@ resource aiFoundryAccountProject 'Microsoft.CognitiveServices/accounts/projects@
     type: 'SystemAssigned'
   }
 
-  properties: {
-
-  }
+  properties: {}
   dependsOn: [
     aiFoundryAccount // Ensure the AI Foundry account is created before the project
   ]
@@ -334,8 +331,7 @@ module storageAccount 'br/public:avm/res/storage/storage-account:0.19.0' = {
       containers: [
         {
           name: 'default'
-          roleAssignments: [
-          ]
+          roleAssignments: []
         }
       ]
       roleAssignments: [
@@ -477,7 +473,6 @@ output AI_FOUNDRY_ENDPOINT string = _aiFoundryEndpoint
 
 @description('AI Foundry Agent Model Deployment Name')
 output AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME string = _aiFoundryAgentModelDeploymentName
-
 
 @description('AI Foundry API Version - API version to use when calling AI Foundry')
 output AI_FOUNDRY_API_VERSION string = _aiFoundryApiVersion

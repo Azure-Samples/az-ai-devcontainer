@@ -45,9 +45,21 @@ azd up
 
 ## Pre-configured AI Models
 
-This template declares its default Azure AI Foundry model catalog in [`infra/deployments.yaml`](infra/deployments.yaml). Un-commented entries in that file are currently attempted during infrastructure provisioning.
+This template declares its default Azure AI Foundry model catalog in [`infra/deployments.yaml`](infra/deployments.yaml).
 
-The repo is being prepared for an optional post-provision model rollout stage so the Foundry foundation and the model catalog can evolve independently. That stage is not enabled yet.
+The Foundry account and project are provisioned by Bicep first. Model deployments are then reconciled in a separate post-provision step by [`infra/scripts/deploy_models.py`](infra/scripts/deploy_models.py), which is triggered automatically by AZD and can also be run manually.
+
+To run the model deployment stage manually:
+
+```bash
+uv run python infra/scripts/deploy_models.py --mode manual
+```
+
+To skip the automatic post-provision rollout for an environment:
+
+```bash
+azd env set DEPLOY_AI_FOUNDRY_MODELS false
+```
 
 The active catalog includes a mix of OpenAI, Microsoft, and partner models. Some entries remain commented out because they are region-limited, require registration, or need extra access configuration.
 

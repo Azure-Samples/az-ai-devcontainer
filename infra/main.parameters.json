@@ -8,7 +8,6 @@
     "location": {
       "value": "${AZURE_LOCATION}"
     },
-
     "useAiSearch": {
       "value": "${USE_AI_SEARCH=false}"
     },
@@ -21,7 +20,6 @@
     "useExistingAiSearch": {
       "value": "${USE_EXISTING_AI_SEARCH=false}"
     },
-
     "authTenantId": {
       "value": "${AZURE_AUTH_TENANT_ID}"
     },
@@ -34,7 +32,6 @@
     "authClientSecret": {
       "value": "${AZURE_CLIENT_APP_SECRET}"
     },
-
     "aiFoundryName": {
       "value": "${AI_FOUNDRY_NAME}"
     },
@@ -47,7 +44,6 @@
     "azureOpenAiApiVersion": {
       "value": "${AZURE_OPENAI_API_VERSION}"
     },
-
     "azureAiSearchName": {
       "value": "${AZURE_AI_SEARCH_NAME}"
     },

@@ -44,6 +44,13 @@ This is an **Azure AI DevContainer template** for Python-based AI development pr
 | Cloud | Azure (AI Foundry, Storage, Search, App Insights) |
 | Container | DevContainers / GitHub Codespaces |
 
+Always use `uv` for dependency management but also to run commands in the proper
+environment. The DevContainer automatically sets up a Python virtual environment 
+and installs dependencies from `pyproject.toml` when the container is created.
+Run python commands with `uv run python <script>` to ensure they execute in 
+the correct environment. For Python tools use `uvx <tool>` (e.g. `uvx black .` to 
+format code with Black).
+
 ## Coding Guidelines
 
 ### Python

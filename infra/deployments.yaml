@@ -2,6 +2,13 @@
 # Azure AI Foundry Model Deployments - GlobalStandard (Pay-as-you-go)
 # All models use GlobalStandard SKU = no running cost, pay only when used
 # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure
+#
+# Optional per-entry flags used by infra/scripts/deploy_models.py:
+#   enabled: false
+#   runModes: [manual, hook]
+#   allowedRegions: [eastus2, swedencentral]
+#   requiresRegistration: true
+#   notes: Human-readable deployment note
 # =============================================================================
 
 # -----------------------------------------------------------------------------
@@ -102,6 +109,10 @@
     name: o3-pro
     version: 2025-06-10
   versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - swedencentral
+  notes: Available only in East US2 and Sweden Central.
 
 - name: o4-mini
   sku:
@@ -124,6 +135,11 @@
     name: codex-mini
     version: 2025-05-16
   versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - swedencentral
+  notes: Available only in East US2 and Sweden Central.
+
 
 # GPT-5 Series
 - name: gpt-5

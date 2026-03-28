@@ -3,24 +3,22 @@
 
 # Name of the application.
 name: az-ai-devcontainer
-# Post-provision model rollout is intentionally not enabled yet.
-# Keep any future hook disabled until the workflow and validation gates are agreed.
+hooks:
+  postprovision:
+    shell: sh
+    run: ./infra/hooks/postprovision.sh
+    interactive: false
+    continueOnError: false
 #services:
-  ## An example for a python API service.
-  ## The service is named 'app'.
-  ## The language is 'python'.
-  ## The source code is located in the ./src directory (relative to azure.yaml).
-  ## The service will be hosted on Azure Container Apps.
-  ## A Docker file is available to build the image.
-  # app:
-  #   language: python
-  #   project: ./src
-  #   host: containerapp
-  #   docker:
-  #     path: ./Dockerfile
-# hooks:
-#   postprovision:
-#     shell: sh
-#     run: ./infra/hooks/postprovision.sh
-#     interactive: true
-#     continueOnError: false
+## An example for a python API service.
+## The service is named 'app'.
+## The language is 'python'.
+## The source code is located in the ./src directory (relative to azure.yaml).
+## The service will be hosted on Azure Container Apps.
+## A Docker file is available to build the image.
+# app:
+#   language: python
+#   project: ./src
+#   host: containerapp
+#   docker:
+#     path: ./Dockerfile
