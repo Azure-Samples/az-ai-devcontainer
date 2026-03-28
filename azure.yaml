@@ -3,6 +3,8 @@
 
 # Name of the application.
 name: az-ai-devcontainer
+# Post-provision model rollout is intentionally not enabled yet.
+# Keep any future hook disabled until the workflow and validation gates are agreed.
 #services:
   ## An example for a python API service.
   ## The service is named 'app'.

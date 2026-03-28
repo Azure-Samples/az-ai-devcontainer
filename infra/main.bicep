@@ -26,13 +26,13 @@ param useAiSearch bool = false
 @description('If true, use and setup authentication with Azure Entra ID')
 param useAuthentication bool = false
 
-@description('Set to true to use an existing AI Foundry service.In that case you will need to provide aiFoundryEndpoint, aiFoundryApiVersion, executorAiFoundryDeploymentName and utilityAiFoundryDeploymentName. Defaults to false.')
+@description('Set to true to reuse an existing AI Foundry resource. When true, provide aiFoundryName, aiFoundryEndpoint, and optionally aiFoundryApiVersion. A project is still created under that resource.')
 param useExistingAiFoundry bool = false
 
 @description('Set to true to use an existing Azure AI Search service.In that case you will need to provide TODO. Defaults to false.')
 param useExistingAiSearch bool = false
 
-/* -----------------------  Azure Open AI  service ------------------------- */
+/* -------------------------- AI Foundry service --------------------------- */
 
 // See also https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models?tabs=global-standard%2Cstandard-chat-completions#availability-1
 @description('Location for the AI Foundry resource')
@@ -54,12 +54,8 @@ param aiFoundryEndpoint string = ''
 @description('Optional. The API version of the AI Foundry resource.')
 param aiFoundryApiVersion string = ''
 
-@description('Optional. The API version of the OpenAI Foundry resource.')
+@description('Optional. API version to use for OpenAI-compatible inference clients.')
 param azureOpenAiApiVersion string = ''
-
-
-@description('The AI Foundry service resource group name to reuse. Optional: Needed only if resource group is different from current resource group.')
-param aiFoundryResourceGroupName string = ''
 
 /* -----------------------  Azure AI search service ------------------------ */
 
@@ -76,7 +72,7 @@ param aiFoundryResourceGroupName string = ''
 param aiSearchSkuName string = 'basic'
 
 // See https://learn.microsoft.com/en-us/azure/search/search-region-support
-@description('Location for the Azure OpenAI Service. Optional: needed only if Azure OpenAI is deployed in a different location than the rest of the resources.')
+@description('Location for the Azure AI Search service. Optional: needed only if search is deployed in a different location than the rest of the resources.')
 @metadata({
   azd: {
     type: 'location'
@@ -253,7 +249,7 @@ module aiFoundryAccount 'br/public:avm/res/cognitive-services/account:0.11.0' = 
   }
 }
 
-resource aiFoundryAccountAppInsightConnection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01-preview' = {
+resource aiFoundryAccountAppInsightConnection 'Microsoft.CognitiveServices/accounts/connections@2025-12-01' = {
   name: '${_aiFoundryAccountName}/appInsights-connection'
   properties: {
     authType: 'ApiKey'
@@ -277,7 +273,7 @@ resource aiFoundryAccountAppInsightConnection 'Microsoft.CognitiveServices/accou
   ]
 }
 
-resource aiFoundryAccountProject 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview' = {
+resource aiFoundryAccountProject 'Microsoft.CognitiveServices/accounts/projects@2025-12-01' = {
   name: '${_aiFoundryAccountName}/${_aiFoundryAccountProjectName}'
   location: empty(aiFoundryLocation) ? location : aiFoundryLocation
   identity: {
@@ -459,8 +455,8 @@ output AZURE_CLIENT_APP_ID string = authClientAppId
 @description('Azure AI Project Endpoint')
 output AI_FOUNDRY_PROJECT_ENDPOINT string = _aiFoundryProjectEndpoint
 
-@description('Azure AI Foundry Project Endpoins - Endpoint for the AI Foundry Project')
-output AZURE_AI_FOUNDRY_PROJECT_ENDPOINT string = aiFoundryAccountProject.properties.endpoints['AI Foundry API']
+@description('Azure AI Foundry project endpoint')
+output AZURE_AI_FOUNDRY_PROJECT_ENDPOINT string = _aiFoundryProjectEndpoint
 
 @description('Azure AI Foundry Project Endpoint - Base URL for API calls to AI Foundry Project')
 // Duplicate of AI_FOUNDRY_PROJECT_ENDPOINT because it is used by SK; 
@@ -471,9 +467,12 @@ output AZURE_AI_AGENT_ENDPOINT string = _aiFoundryProjectEndpoint
 output AI_FOUNDRY_NAME string = _aiFoundryAccountName
 
 @description('AI Foundry Project name')
-output AI_FOUNDRY_PROJECT_NAME string = aiFoundryAccountProject.name
+output AI_FOUNDRY_PROJECT_NAME string = _aiFoundryAccountProjectName
 
-@description('AI Foundry endpoint - Base URL for API calls to AI Foundry')
+@description('AI Foundry Project resource ID')
+output AI_FOUNDRY_PROJECT_ID string = aiFoundryAccountProject.id
+
+@description('AI Foundry account endpoint')
 output AI_FOUNDRY_ENDPOINT string = _aiFoundryEndpoint
 
 @description('AI Foundry Agent Model Deployment Name')
@@ -483,13 +482,13 @@ output AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME string = _aiFoundryAgentModelDeploym
 @description('AI Foundry API Version - API version to use when calling AI Foundry')
 output AI_FOUNDRY_API_VERSION string = _aiFoundryApiVersion
 
-@description('Azure OpenAI API Version - API version to use when calling Azure OpenAI')
+@description('OpenAI-compatible inference API version')
 output AZURE_OPENAI_API_VERSION string = _azureOpenAiApiVersion
 
-// @description('Azure OpenAI Default Model Deployment Name')
+@description('Default deployment name from the declared model catalog')
 output AI_FOUNDRY_DEPLOYMENT_NAME string = _aiFoundryDeploymentName
 
-@description('JSON deployment configuration for the models')
+@description('Declared model deployment catalog loaded from infra/deployments.yaml')
 output AI_FOUNDRY_DEPLOYMENTS object[] = deployments
 
 //@description('Azure AI Content Understanding endpoint')

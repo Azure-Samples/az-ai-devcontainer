@@ -31,7 +31,7 @@ azd up
 
 If you want to deploy Azure AI Search run:
 ```bash
-azd env set HAS_AZURE_AI_SEARCH true
+azd env set USE_AI_SEARCH true
 azd up
 ``` 
 
@@ -45,15 +45,11 @@ azd up
 
 ## Pre-configured AI Models
 
-This template deploys a comprehensive set of AI models from Azure AI Foundry using **GlobalStandard** SKU (pay-as-you-go, no running cost). All models are defined in [`infra/deployments.yaml`](infra/deployments.yaml).
+This template declares its default Azure AI Foundry model catalog in [`infra/deployments.yaml`](infra/deployments.yaml). Un-commented entries in that file are currently attempted during infrastructure provisioning.
 
-### Active Deployments (30 models)
+The repo is being prepared for an optional post-provision model rollout stage so the Foundry foundation and the model catalog can evolve independently. That stage is not enabled yet.
 
-| Provider | Models |
-|----------|--------|
-| **OpenAI** | GPT-4.1 (+ mini, nano), GPT-4o (+ mini), O-series (o1, o3, o3-mini, o3-pro, o4-mini, codex-mini), GPT-5 (+ mini, nano, chat, pro), GPT-5.1 (+ chat, codex, codex-mini, codex-max), GPT-5.2 (+ chat, codex), Embeddings (ada-002, 3-small, 3-large) |
-| **DeepSeek** | DeepSeek-R1-0528, DeepSeek-V3-0324 |
-| **Meta** | Llama-3.3-70B-Instruct |
+The active catalog includes a mix of OpenAI, Microsoft, and partner models. Some entries remain commented out because they are region-limited, require registration, or need extra access configuration.
 
 ### Commented Out (available in other regions or require registration)
 

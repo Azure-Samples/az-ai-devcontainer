@@ -22,13 +22,6 @@
       "value": "${USE_EXISTING_AI_SEARCH=false}"
     },
 
-    "frontendExists": {
-      "value": "${SERVICE_FRONTEND_RESOURCE_EXISTS=false}"
-    },
-    "backendExists": {
-      "value": "${SERVICE_BACKEND_RESOURCE_EXISTS=false}"
-    },
-
     "authTenantId": {
       "value": "${AZURE_AUTH_TENANT_ID}"
     },
@@ -42,26 +35,17 @@
       "value": "${AZURE_CLIENT_APP_SECRET}"
     },
 
-    "azureAiFoundryName": {
-      "value": "${AZURE_AI_FOUNDRY_NAME}"
+    "aiFoundryName": {
+      "value": "${AI_FOUNDRY_NAME}"
     },
-    "azureAiFoundryEndpoint": {
-      "value": "${AZURE_AI_FOUNDRY_ENDPOINT}"
+    "aiFoundryEndpoint": {
+      "value": "${AI_FOUNDRY_ENDPOINT}"
     },
-    "azureAiFoundryApiVersion": {
-      "value": "${AZURE_AI_FOUNDRY_API_VERSION}"
+    "aiFoundryApiVersion": {
+      "value": "${AI_FOUNDRY_API_VERSION}"
     },
     "azureOpenAiApiVersion": {
       "value": "${AZURE_OPENAI_API_VERSION}"
-    },
-    "azureOpenAiResourceGroupName": {
-      "value": "${AZURE_AI_FOUNDRY_RESOURCE_GROUP_NAME}"
-    },
-    "executorAiFoundryDeploymentName": {
-      "value": "${EXECUTOR_AI_FOUNDRY_DEPLOYMENT_NAME}"
-    },
-    "utilityAiFoundryDeploymentName": {
-      "value": "${UTILITY_AI_FOUNDRY_DEPLOYMENT_NAME}"
     },
 
     "azureAiSearchName": {

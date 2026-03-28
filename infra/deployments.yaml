@@ -260,6 +260,72 @@
     version: 2026-01-14
   versionUpgradeOption: OnceCurrentVersionExpired
 
+# GPT-5.3 Series
+- name: gpt-5.3-chat
+  sku:
+    name: GlobalStandard
+    capacity: 500
+  model:
+    format: OpenAI
+    name: gpt-5.3-chat
+    version: 2026-02-24
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+# gpt-5.3-codex: Only available in East US2 & Sweden Central
+# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&pivots=azure-openai#gpt-52
+- name: gpt-5.3-codex
+  sku:
+    name: GlobalStandard
+    capacity: 500
+  model:
+    format: OpenAI
+    name: gpt-5.3-codex
+    version: 2026-02-24
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+#
+# GPT-5.4 Series
+#
+- name: gpt-5.4
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-5.4
+    version: 2026-03-17
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: gpt-5.4-nano
+  sku:
+    name: GlobalStandard
+    capacity: 2500
+  model:
+    format: OpenAI
+    name: gpt-5.4-nano
+    version: 2026-03-17
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: gpt-5.4-mini
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-5.4-mini
+    version: 2026-03-17
+  versionUpgradeOption: OnceCurrentVersionExpired
+
+- name: gpt-5.4-pro
+  sku:
+    name: GlobalStandard
+    capacity: 80
+  model:
+    format: OpenAI
+    name: gpt-5.4-pro
+    version: 2026-03-05
+  versionUpgradeOption: OnceCurrentVersionExpired
+
 # OpenAI Embeddings
 - name: text-embedding-ada-002
   sku:
@@ -326,7 +392,7 @@
     version: "1"
   versionUpgradeOption: OnceCurrentVersionExpired
 
-- name: DeepSeek-V3.1 
+- name: DeepSeek-V3.1
   sku:
     name: GlobalStandard
     capacity: 1
@@ -571,7 +637,7 @@
 #     version: "1"
 #   versionUpgradeOption: OnceCurrentVersionExpired
 
-# Note: Cohere rerank models (Cohere-rerank-v4.0-pro, Cohere-rerank-v4.0-fast) 
+# Note: Cohere rerank models (Cohere-rerank-v4.0-pro, Cohere-rerank-v4.0-fast)
 # require Cohere API for inference, not standard deployment
 
 # -----------------------------------------------------------------------------
@@ -673,7 +739,6 @@
     name: Phi-4
     version: "7"
   versionUpgradeOption: OnceCurrentVersionExpired
-
 # - name: Phi-4-mini-instruct # Model not available in Sweden Central
 #   sku:
 #     name: GlobalStandard
