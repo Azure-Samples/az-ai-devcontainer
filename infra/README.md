@@ -4,6 +4,9 @@
 
 - The Foundry account, project, and supporting resources are provisioned by Bicep during `azd up` or `azd provision`.
 - The model catalog is sourced from `infra/deployments.yaml` and reconciled after provisioning by `infra/scripts/deploy_models.py`.
+- You can refresh API-backed fields in `infra/deployments.yaml` from the live account model catalog with `uv run python infra/scripts/sync_deployments_catalog.py --dry-run` and then rerun without `--dry-run` once the diff looks correct.
+- Existing `sku.capacity` values are preserved by default so the sync does not overwrite your chosen deployment quota; pass `--sync-capacity` only if you want to reset them to Azure's current default capacity.
+- Keep `--append-new` for manual curation only for now. The normal workflow is to review and add new models deliberately instead of bulk-appending everything Azure currently exposes.
 - AZD runs `infra/hooks/postprovision.sh` automatically after provisioning unless `DEPLOY_AI_FOUNDRY_MODELS=false` is set in the AZD environment.
 - You can run the same reconciler manually with `uv run python infra/scripts/deploy_models.py --mode manual`.
 

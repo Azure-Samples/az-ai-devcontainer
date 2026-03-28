@@ -38,9 +38,7 @@ def format_registration_guidance(entry: dict[str, Any]) -> str:
             f"request it at {registration_url}."
         )
     if entry.get("requiresRegistration", False):
-        return (
-            " This model is marked as requiring gated access in the catalog."
-        )
+        return " This model is marked as requiring gated access in the catalog."
     return ""
 
 

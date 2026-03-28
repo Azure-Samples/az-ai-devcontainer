@@ -49,11 +49,24 @@ This template declares its default Azure AI Foundry model catalog in [`infra/dep
 
 The Foundry account and project are provisioned by Bicep first. Model deployments are then reconciled in a separate post-provision step by [`infra/scripts/deploy_models.py`](infra/scripts/deploy_models.py), which is triggered automatically by AZD and can also be run manually.
 
+You can refresh API-backed model metadata in [`infra/deployments.yaml`](infra/deployments.yaml) from the live Foundry account with [`infra/scripts/sync_deployments_catalog.py`](infra/scripts/sync_deployments_catalog.py). The sync script uses the Azure management `models` endpoint behind `az cognitiveservices account list-models` and updates the current catalog entries in place.
+
 To run the model deployment stage manually:
 
 ```bash
 uv run python infra/scripts/deploy_models.py --mode manual
 ```
+
+To refresh the catalog from Azure before deploying:
+
+```bash
+uv run python infra/scripts/sync_deployments_catalog.py --dry-run
+uv run python infra/scripts/sync_deployments_catalog.py
+```
+
+The catalog sync preserves local curation fields such as `runModes`, `allowedRegions`, `requiresRegistration`, `registrationUrl`, and `notes`. Existing `sku.capacity` values are also preserved by default so the sync does not overwrite your chosen quota allocations. Use `--sync-capacity` only if you explicitly want to reset them to Azure's current default capacity.
+
+`--append-new` is intentionally not part of the normal workflow right now. Keep new model additions curated manually so each new entry can be reviewed for region limits, registration requirements, and deployment intent before it is committed to the catalog.
 
 To skip the automatic post-provision rollout for an environment:
 
