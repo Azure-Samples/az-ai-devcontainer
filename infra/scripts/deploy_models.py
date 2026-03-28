@@ -30,6 +30,20 @@ class DeploymentResult:
     detail: str
 
 
+def format_registration_guidance(entry: dict[str, Any]) -> str:
+    registration_url = entry.get("registrationUrl")
+    if isinstance(registration_url, str) and registration_url:
+        return (
+            " If this subscription still needs gated access for this model, "
+            f"request it at {registration_url}."
+        )
+    if entry.get("requiresRegistration", False):
+        return (
+            " This model is marked as requiring gated access in the catalog."
+        )
+    return ""
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
@@ -62,7 +76,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--allow-registration-required",
         action="store_true",
-        help="Attempt entries flagged with requiresRegistration instead of skipping them.",
+        help=(
+            "Deprecated compatibility flag. Registration-required entries are "
+            "attempted by default."
+        ),
     )
     parser.add_argument("--account-name", help="Override AI_FOUNDRY_NAME.")
     parser.add_argument("--resource-group", help="Override AZURE_RESOURCE_GROUP.")
@@ -169,6 +186,8 @@ def should_skip_entry(
 ) -> DeploymentResult | None:
     name = str(entry.get("name", "<unnamed>"))
 
+    del allow_registration_required
+
     if entry.get("enabled", True) is False:
         return DeploymentResult(
             name=name, status="skipped", detail="disabled in catalog"
@@ -202,13 +221,6 @@ def should_skip_entry(
             name=name,
             status="skipped",
             detail=f"region '{location}' is not in allowedRegions",
-        )
-
-    if entry.get("requiresRegistration", False) and not allow_registration_required:
-        return DeploymentResult(
-            name=name,
-            status="skipped",
-            detail="requiresRegistration is true",
         )
 
     return None
@@ -373,6 +385,14 @@ def print_summary(results: list[DeploymentResult]) -> None:
     print(f"Summary: {summary}")
 
 
+def format_entry_error(entry: dict[str, Any], error: Exception) -> str:
+    detail = str(error)
+    guidance = format_registration_guidance(entry)
+    if guidance and guidance.strip() not in detail:
+        detail = f"{detail}{guidance}"
+    return detail
+
+
 def main() -> int:
     args = parse_args()
     if args.offline and not args.dry_run:
@@ -447,7 +467,7 @@ def main() -> int:
                 DeploymentResult(
                     name=name,
                     status="error",
-                    detail=str(error),
+                    detail=format_entry_error(entry, error),
                 )
             )
 

@@ -8,7 +8,11 @@
 #   runModes: [manual, hook]
 #   allowedRegions: [eastus2, swedencentral]
 #   requiresRegistration: true
+#   registrationUrl: https://aka.ms/oai/gpt5access
 #   notes: Human-readable deployment note
+# Commented-out entries later in this file are archival references only.
+# Re-check Microsoft Learn before enabling them; some old inline availability notes
+# are intentionally left non-authoritative.
 # =============================================================================
 
 # -----------------------------------------------------------------------------
@@ -140,7 +144,6 @@
     - swedencentral
   notes: Available only in East US2 and Sweden Central.
 
-
 # GPT-5 Series
 - name: gpt-5
   sku:
@@ -151,6 +154,9 @@
     name: gpt-5
     version: 2025-08-07
   versionUpgradeOption: OnceCurrentVersionExpired
+  requiresRegistration: true
+  registrationUrl: https://aka.ms/oai/gpt5access
+  notes: Registration is required for gpt-5. gpt-5-mini, gpt-5-nano, and gpt-5-chat do not require registration.
 
 - name: gpt-5-mini
   sku:
@@ -181,6 +187,7 @@
     name: gpt-5-chat
     version: 2025-08-07
   versionUpgradeOption: OnceCurrentVersionExpired
+  notes: Preview model. Azure also publishes a newer 2025-10-03 preview version.
 
 - name: gpt-5-pro
   sku:
@@ -212,6 +219,7 @@
     name: gpt-5.1-chat
     version: 2025-11-13
   versionUpgradeOption: OnceCurrentVersionExpired
+  notes: Preview model.
 
 - name: gpt-5.1-codex
   sku:
@@ -242,6 +250,10 @@
     name: gpt-5.1-codex-max
     version: 2025-12-04
   versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - swedencentral
+  notes: Available only in East US2 and Sweden Central for Global Standard.
 
 # GPT-5.2 Series
 - name: gpt-5.2
@@ -253,6 +265,9 @@
     name: gpt-5.2
     version: 2025-12-11
   versionUpgradeOption: OnceCurrentVersionExpired
+  requiresRegistration: true
+  registrationUrl: https://aka.ms/oai/gpt5access
+  notes: Registration is required for gpt-5.2.
 
 - name: gpt-5.2-chat
   sku:
@@ -263,6 +278,7 @@
     name: gpt-5.2-chat
     version: 2025-12-11
   versionUpgradeOption: OnceCurrentVersionExpired
+  notes: Preview model. Azure also publishes a newer 2026-02-10 preview version with narrower regional availability.
 
 # gpt-5.2-codex: Only available in East US2 & Sweden Central
 # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&pivots=azure-openai#gpt-52
@@ -275,6 +291,12 @@
     name: gpt-5.2-codex
     version: 2026-01-14
   versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - swedencentral
+  requiresRegistration: true
+  registrationUrl: https://aka.ms/oai/gpt5access
+  notes: Available only in East US2 and Sweden Central for Global Standard. Registration is required.
 
 # GPT-5.3 Series
 - name: gpt-5.3-chat
@@ -284,11 +306,15 @@
   model:
     format: OpenAI
     name: gpt-5.3-chat
-    version: 2026-02-24
+    version: 2026-03-03
   versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - swedencentral
+  notes: Global Standard availability is currently limited to East US2 and Sweden Central.
 
-# gpt-5.3-codex: Only available in East US2 & Sweden Central
-# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&pivots=azure-openai#gpt-52
+# gpt-5.3-codex: Available only in Central US, East US2, South Central US, and Sweden Central
+# Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&pivots=azure-openai#gpt-53
 - name: gpt-5.3-codex
   sku:
     name: GlobalStandard
@@ -298,6 +324,14 @@
     name: gpt-5.3-codex
     version: 2026-02-24
   versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - centralus
+    - eastus2
+    - southcentralus
+    - swedencentral
+  requiresRegistration: true
+  registrationUrl: https://aka.ms/OAI/gpt53codexaccess
+  notes: Global Standard availability is currently limited to Central US, East US2, South Central US, and Sweden Central. Registration is required.
 
 #
 # GPT-5.4 Series
@@ -309,8 +343,16 @@
   model:
     format: OpenAI
     name: gpt-5.4
-    version: 2026-03-17
+    version: 2026-03-05
   versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - polandcentral
+    - southcentralus
+    - swedencentral
+  requiresRegistration: true
+  registrationUrl: https://aka.ms/OAI/gpt53codexaccess
+  notes: Global Standard availability is currently limited to East US2, Poland Central, South Central US, and Sweden Central. Registration is required.
 
 - name: gpt-5.4-nano
   sku:
@@ -321,6 +363,12 @@
     name: gpt-5.4-nano
     version: 2026-03-17
   versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - polandcentral
+    - southcentralus
+    - swedencentral
+  notes: Global Standard availability is currently limited to East US2, Poland Central, South Central US, and Sweden Central.
 
 - name: gpt-5.4-mini
   sku:
@@ -331,6 +379,12 @@
     name: gpt-5.4-mini
     version: 2026-03-17
   versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - polandcentral
+    - southcentralus
+    - swedencentral
+  notes: Global Standard availability is currently limited to East US2, Poland Central, South Central US, and Sweden Central.
 
 - name: gpt-5.4-pro
   sku:
@@ -341,6 +395,14 @@
     name: gpt-5.4-pro
     version: 2026-03-05
   versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - polandcentral
+    - southcentralus
+    - swedencentral
+  requiresRegistration: true
+  registrationUrl: https://aka.ms/OAI/gpt53codexaccess
+  notes: Global Standard availability is currently limited to East US2, Poland Central, South Central US, and Sweden Central. Registration is required.
 
 # OpenAI Embeddings
 - name: text-embedding-ada-002
@@ -378,7 +440,7 @@
 # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry
 # -----------------------------------------------------------------------------
 
-- name: DeepSeek-R1 # Model not available in Sweden Central
+- name: DeepSeek-R1
   sku:
     name: GlobalStandard
     capacity: 1
