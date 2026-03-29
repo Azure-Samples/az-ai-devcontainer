@@ -25,6 +25,8 @@ This is an **Azure AI DevContainer template** for Python-based AI development pr
 │   ├── main.bicep          # Main infrastructure definition
 │   ├── main.parameters.json # Parameters
 │   ├── deployments.yaml    # AI model deployment configs
+│   ├── hooks/              # AZD lifecycle hooks
+│   ├── scripts/            # Model catalog and deployment utilities
 │   └── abbreviations.json  # Resource naming abbreviations
 ├── notebooks/              # Jupyter notebooks
 │   └── SampleNotebook.ipynb
@@ -107,9 +109,16 @@ Key environment variables (set by AZD after `azd up`):
 
 | Variable | Description |
 |----------|-------------|
+| `AI_FOUNDRY_PROJECT_ENDPOINT` | Primary Azure AI Foundry project endpoint used by the sample notebook |
 | `AZURE_AI_FOUNDRY_PROJECT_ENDPOINT` | AI Foundry project endpoint |
+| `AI_FOUNDRY_PROJECT_NAME` | Azure AI Foundry project name |
+| `AI_FOUNDRY_NAME` | Azure AI Foundry account name |
+| `AI_FOUNDRY_ENDPOINT` | Azure AI Foundry account endpoint |
 | `AI_FOUNDRY_DEPLOYMENT_NAME` | Default model deployment name |
+| `AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME` | Fallback deployment name used by agent-oriented samples |
 | `AZURE_OPENAI_API_VERSION` | API version for OpenAI calls |
+| `AZURE_RESOURCE_GROUP` | Resource group that contains the deployed resources |
+| `AZURE_SUBSCRIPTION_ID` | Azure subscription that contains the deployed resources |
 | `AZURE_AI_SEARCH_ENDPOINT` | Azure AI Search endpoint (if enabled) |
 | `APPLICATIONINSIGHTS_CONNECTION_STRING` | App Insights connection |
 

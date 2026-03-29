@@ -11,26 +11,14 @@
     "useAiSearch": {
       "value": "${USE_AI_SEARCH=false}"
     },
-    "useAuthentication": {
-      "value": "${USE_AUTHENTICATION=false}"
-    },
     "useExistingAiFoundry": {
       "value": "${USE_EXISTING_AI_FOUNDRY=false}"
     },
     "useExistingAiSearch": {
       "value": "${USE_EXISTING_AI_SEARCH=false}"
     },
-    "authTenantId": {
-      "value": "${AZURE_AUTH_TENANT_ID}"
-    },
     "azurePrincipalId": {
       "value": "${AZURE_PRINCIPAL_ID}"
-    },
-    "authClientAppId": {
-      "value": "${AZURE_CLIENT_APP_ID}"
-    },
-    "authClientSecret": {
-      "value": "${AZURE_CLIENT_APP_SECRET}"
     },
     "aiFoundryName": {
       "value": "${AI_FOUNDRY_NAME}"

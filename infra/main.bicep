@@ -1,5 +1,5 @@
-metadata name = 'az-ai-kickstarter'
-metadata description = 'Deploys the infrastructure for Azure AI App Kickstarter'
+metadata name = 'az-ai-devcontainer'
+metadata description = 'Deploys the infrastructure for the Azure AI DevContainer template'
 metadata author = 'AI GBB EMEA <eminkevich@microsoft.com>; <dobroegl@microsoft.com>'
 
 /* -------------------------------------------------------------------------- */
@@ -23,13 +23,10 @@ param extraTags object = {}
 @description('If true, deploy Azure AI Search Service')
 param useAiSearch bool = false
 
-@description('If true, use and setup authentication with Azure Entra ID')
-param useAuthentication bool = false
-
 @description('Set to true to reuse an existing AI Foundry resource. When true, provide aiFoundryName, aiFoundryEndpoint, and optionally aiFoundryApiVersion. A project is still created under that resource.')
 param useExistingAiFoundry bool = false
 
-@description('Set to true to use an existing Azure AI Search service.In that case you will need to provide TODO. Defaults to false.')
+@description('Set to true to reuse an existing Azure AI Search service. When true, provide azureAiSearchName and optionally azureAiSearchResourceGroupName and azureAiSearchLocation.')
 param useExistingAiSearch bool = false
 
 /* -------------------------- AI Foundry service --------------------------- */
@@ -99,19 +96,6 @@ param applicationInsightsName string = ''
 @description('Application Insights Location')
 param appInsightsLocation string = location
 
-@description('The auth tenant id for the app (leave blank in AZD to use your current tenant)')
-param authTenantId string = '' // Make sure authTenantId is set if not using AZD
-
-@description('Name of the authentication client secret in the key vault')
-param authClientSecretName string = 'AZURE-AUTH-CLIENT-SECRET'
-
-@description('The auth client id for the frontend and backend app')
-param authClientAppId string = ''
-
-@description('Client secret of the authentication client')
-@secure()
-param authClientSecret string = ''
-
 /* -------------------------------------------------------------------------- */
 /*                                  VARIABLES                                 */
 /* -------------------------------------------------------------------------- */
@@ -129,7 +113,7 @@ var alphaNumericEnvironmentName = replace(replace(environmentName, '-', ''), ' '
 var tags = union(
   {
     'azd-env-name': environmentName
-    solution: 'az-ai-kickstarter'
+    solution: 'az-ai-devcontainer'
   },
   extraTags
 )
@@ -163,8 +147,6 @@ var _azureAiSearchName = useExistingAiSearch
       ? take('${abbreviations.searchSearchServices}${environmentName}', 260)
       : azureAiSearchName)
 
-var _keyVaultName = take('${abbreviations.keyVaultVaults}${alphaNumericEnvironmentName}-${resourceToken}', 24)
-
 /* ----------------------------- Resource Names ----------------------------- */
 
 // These resources only require uniqueness within resource group
@@ -175,7 +157,7 @@ var deployments = loadYamlContent('./deployments.yaml')
 var _aiFoundryAgentModelDeploymentName = deployments[0].name
 
 @description('AI Foundry Endpoint - Base URL for API calls to AI Foundry')
-var _aiFoundryEndpoint = useExistingAiFoundry ? aiFoundryEndpoint : aiFoundryAccount.outputs.endpoint
+var _aiFoundryEndpoint = useExistingAiFoundry ? aiFoundryEndpoint : aiFoundryAccount!.outputs.endpoint
 
 @description('AI Foundry API Version')
 var _aiFoundryApiVersion = empty(aiFoundryApiVersion) ? '2025-05-01-preview' : aiFoundryApiVersion
@@ -423,9 +405,6 @@ module appInsightsComponent 'br/public:avm/res/insights/component:0.6.0' = {
 
 /* -------------------------- Feature flags ------------------------------- */
 
-@description('If true, use and setup authentication with Azure Entra ID')
-output USE_AUTHENTICATION bool = useAuthentication
-
 @description('If true, deploy Azure AI Search Service')
 output USE_AI_SEARCH bool = useAiSearch
 
@@ -435,16 +414,8 @@ output USE_EXISTING_AI_FOUNDRY bool = useExistingAiFoundry
 @description('If true, reuse existing Azure AI Search Service')
 output USE_EXISTING_AI_SEARCH bool = useExistingAiSearch
 
-/* ------------------------ Authentication & RBAC ------------------------- */
-
-@description('ID of the tenant we are deploying to')
-output AZURE_AUTH_TENANT_ID string = authTenantId
-
 @description('Principal ID of the user running the deployment')
 output AZURE_PRINCIPAL_ID string = azurePrincipalId
-
-@description('Application registration client ID')
-output AZURE_CLIENT_APP_ID string = authClientAppId
 
 /* -------------------------- Azure AI Foundry ----------------------------- */
 
@@ -495,16 +466,17 @@ output AI_FOUNDRY_DEPLOYMENTS object[] = deployments
 output AZURE_AI_SEARCH_NAME string = _azureAiSearchName
 
 @description('Azure AI Search service resource group name')
-output AZURE_AI_SEARCH_RESOURCE_GROUP_NAME string = azureAiSearchResourceGroupName
+output AZURE_AI_SEARCH_RESOURCE_GROUP_NAME string = empty(azureAiSearchResourceGroupName)
+  ? resourceGroup().name
+  : azureAiSearchResourceGroupName
 
 @description('Azure AI Search deployment location')
-output AZURE_AI_SEARCH_LOCATION string = azureAiSearchLocation
+output AZURE_AI_SEARCH_LOCATION string = _azureAiSearchLocation
 
 @description('Azure AI Search endpoint SKU name')
 output AZURE_AI_SEARCH_SKU_NAME string = aiSearchSkuName
 
-@description('Azure OpenAI endpoint - Base URL for API calls to Azure OpenAI')
-// This environment variable name is used as a default by Semantic Kernel
+@description('Azure AI Search endpoint - Base URL for API calls to Azure AI Search')
 output AZURE_AI_SEARCH_ENDPOINT string = _azureAiSearchEndpoint
 
 /* -------------------------- Diagnostic Settings --------------------------- */

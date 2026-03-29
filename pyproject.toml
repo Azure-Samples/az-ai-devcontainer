@@ -29,10 +29,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/dbroeglin/az-ai-devcontainer"
-Repository = "https://github.com/dbroeglin/az-ai-devcontainer"
-Issues = "https://github.com/dbroeglin/az-ai-devcontainer/issues"
-Documentation = "https://github.com/dbroeglin/az-ai-devcontainer#readme"
+Homepage = "https://github.com/Azure-Samples/az-ai-devcontainer"
+Repository = "https://github.com/Azure-Samples/az-ai-devcontainer"
+Issues = "https://github.com/Azure-Samples/az-ai-devcontainer/issues"
+Documentation = "https://github.com/Azure-Samples/az-ai-devcontainer#readme"
 
 [project.optional-dependencies]
 dev = [

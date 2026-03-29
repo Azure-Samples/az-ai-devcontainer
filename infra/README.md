@@ -10,21 +10,11 @@
 - AZD runs `infra/hooks/postprovision.sh` automatically after provisioning unless `DEPLOY_AI_FOUNDRY_MODELS=false` is set in the AZD environment.
 - You can run the same reconciler manually with `uv run python infra/scripts/deploy_models.py --mode manual`.
 
-## Deploy with authentication enabled
+## Authentication status
 
-> [!WARNING] 
-> The account executing `azd` needs to be able to create Application Registrations in your Azure Entra ID tenant.
+This template does not currently provision application registrations, secrets, or frontend/backend authentication resources.
 
-AZD can automatically configure authentication to secure the frontend and/or backend. To do so execute the following command before `azd up`:
-```bash
-azd env set USE_AUTHENTICATION true
-```
-
-If you already executed `azd up` just set the variable and run provisioning again:
-```bash
-azd env set USE_AUTHENTICATION true
-azd provision
-```
+If you need authenticated application components, add them explicitly in your own infrastructure and application code rather than relying on a built-in `USE_AUTHENTICATION` workflow.
 
 ## Reusing existing resources
 
@@ -43,8 +33,8 @@ The template still creates a project under the existing Foundry resource. The po
 ### Reusing an existing Azure AI Search Service
 
 > [!CAUTION]
-> Make sure you add the "Cognitive Services OpenAI User" role is assigned to the 
-> User Assigned managed identity created for this deployment.
+> This template does not create RBAC assignments for an existing Azure AI Search service.
+> Grant any required roles separately to the identities or users that will access that service.
 
 
 ```bash
@@ -55,4 +45,7 @@ azd env set AZURE_AI_SEARCH_NAME _existing_ai_search_name_
 
 # If your Azure AI Search Service is in another resource group:
 azd env set AZURE_AI_SEARCH_RESOURCE_GROUP_NAME _existing_ai_search_resource_group_name_
+
+# Optional: set the location if you want it propagated in the AZD environment:
+azd env set AZURE_AI_SEARCH_LOCATION _existing_ai_search_location_
 ```
