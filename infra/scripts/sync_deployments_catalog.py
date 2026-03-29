@@ -129,7 +129,9 @@ def az_rest(method: str, url: str) -> Any:
     command = ["az", "rest", "--method", method, "--url", url, "--output", "json"]
     result = subprocess.run(command, capture_output=True, text=True, check=False)
     if result.returncode != 0:
-        raise RuntimeError(result.stderr.strip() or result.stdout.strip() or "az rest failed")
+        raise RuntimeError(
+            result.stderr.strip() or result.stdout.strip() or "az rest failed"
+        )
     return json.loads(result.stdout)
 
 
@@ -181,7 +183,9 @@ def pick_sku(item: dict[str, Any], sku_name: str) -> dict[str, Any] | None:
     return None
 
 
-def normalize_catalog_models(items: list[dict[str, Any]], sku_name: str) -> dict[str, CatalogModel]:
+def normalize_catalog_models(
+    items: list[dict[str, Any]], sku_name: str
+) -> dict[str, CatalogModel]:
     by_name: dict[str, list[dict[str, Any]]] = {}
     for item in items:
         if not isinstance(item, dict):
@@ -191,7 +195,11 @@ def normalize_catalog_models(items: list[dict[str, Any]], sku_name: str) -> dict
         name = item.get("name")
         model_format = item.get("format")
         version = item.get("version")
-        if not isinstance(name, str) or not isinstance(model_format, str) or not isinstance(version, str):
+        if (
+            not isinstance(name, str)
+            or not isinstance(model_format, str)
+            or not isinstance(version, str)
+        ):
             continue
         by_name.setdefault(name, []).append(item)
 
@@ -202,7 +210,9 @@ def normalize_catalog_models(items: list[dict[str, Any]], sku_name: str) -> dict
         if chosen_sku is None:
             continue
         capacity_data = chosen_sku.get("capacity", {})
-        default_capacity = capacity_data.get("default") if isinstance(capacity_data, dict) else None
+        default_capacity = (
+            capacity_data.get("default") if isinstance(capacity_data, dict) else None
+        )
         if not isinstance(default_capacity, int):
             continue
         normalized[name] = CatalogModel(
@@ -285,7 +295,9 @@ def ensure_commented_map(parent: CommentedMap, key: str) -> CommentedMap:
     return replacement
 
 
-def set_if_changed(entry: CommentedMap, key: str, value: Any, changes: list[str]) -> None:
+def set_if_changed(
+    entry: CommentedMap, key: str, value: Any, changes: list[str]
+) -> None:
     if entry.get(key) != value:
         entry[key] = value
         changes.append(key)
@@ -375,7 +387,9 @@ def main() -> int:
     for name, entry in existing_entries.items():
         model = api_models.get(name)
         if model is None:
-            summary.append(f"[missing] {name}: not returned by Azure for sku={args.sku_name}")
+            summary.append(
+                f"[missing] {name}: not returned by Azure for sku={args.sku_name}"
+            )
             continue
 
         changes = apply_model_to_entry(
@@ -385,9 +399,7 @@ def main() -> int:
         )
         if changes:
             updated_count += 1
-            summary.append(
-                f"[updated] {name}: refreshed {', '.join(changes)}"
-            )
+            summary.append(f"[updated] {name}: refreshed {', '.join(changes)}")
         else:
             unchanged_count += 1
             summary.append(f"[unchanged] {name}: already matches Azure")
