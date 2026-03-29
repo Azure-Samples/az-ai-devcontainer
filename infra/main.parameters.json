@@ -32,6 +32,9 @@
     "azureOpenAiApiVersion": {
       "value": "${AZURE_OPENAI_API_VERSION}"
     },
+    "documentIntelligenceEndpoint": {
+      "value": "${DOCUMENTINTELLIGENCE_ENDPOINT}"
+    },
     "azureAiSearchName": {
       "value": "${AZURE_AI_SEARCH_NAME}"
     },

@@ -16,6 +16,22 @@ This template does not currently provision application registrations, secrets, o
 
 If you need authenticated application components, add them explicitly in your own infrastructure and application code rather than relying on a built-in `USE_AUTHENTICATION` workflow.
 
+## Service endpoints exposed through AZD
+
+After provisioning, AZD writes Bicep outputs into the local environment file used by `azd env get-values`.
+
+- `CONTENTUNDERSTANDING_ENDPOINT` and `AZURE_CONTENT_UNDERSTANDING_ENDPOINT` always reuse the Foundry account endpoint because Azure Content Understanding uses the Microsoft Foundry resource endpoint.
+- `DOCUMENTINTELLIGENCE_ENDPOINT` and `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT` default to the same Foundry endpoint so you can start with a shared endpoint and no extra deployment.
+
+If you want to override the Document Intelligence endpoint without changing the template, set it in the AZD environment before running `azd up`:
+
+```bash
+azd env set DOCUMENTINTELLIGENCE_ENDPOINT https://<your-document-intelligence-resource>.cognitiveservices.azure.com/
+azd up
+```
+
+This is the recommended path when you need a dedicated single-service Document Intelligence resource, such as Microsoft Entra ID authentication with the Document Intelligence SDK.
+
 ## Reusing existing resources
 
 ### Reusing an existing Azure AI Foundry resource

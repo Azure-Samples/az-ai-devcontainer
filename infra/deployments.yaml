@@ -20,515 +20,520 @@
 # -----------------------------------------------------------------------------
 
 # GPT-4.1 Series
-  - name: gpt-4.1
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-4.1
-      version: '2025-04-14'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-4.1
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-4.1
+    version: "2025-04-14"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: gpt-4.1-mini
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-4.1-mini
-      version: '2025-04-14'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-4.1-mini
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-4.1-mini
+    version: "2025-04-14"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: gpt-4.1-nano
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-4.1-nano
-      version: '2025-04-14'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-4.1-nano
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-4.1-nano
+    version: "2025-04-14"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 # GPT-4o Series
-  - name: gpt-4o
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-4o
-      version: '2024-08-06'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-4o
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-4o
+    version: "2024-08-06"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: gpt-4o-mini
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-4o-mini
-      version: '2024-07-18'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-4o-mini
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-4o-mini
+    version: "2024-07-18"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 # O-Series Reasoning Models
-  - name: o1
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: o1
-      version: '2024-12-17'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: o1
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: o1
+    version: "2024-12-17"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: o3-mini
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: o3-mini
-      version: '2025-01-31'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: o3-mini
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: o3-mini
+    version: "2025-01-31"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: o3
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: o3
-      version: '2025-04-16'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: o3
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: o3
+    version: "2025-04-16"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 # o3-pro: Only available in East US2 & Sweden Central
 # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&pivots=azure-openai#o-series-models
-  - name: o3-pro
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: o3-pro
-      version: '2025-06-10'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    allowedRegions:
-      - eastus2
-      - swedencentral
-    notes: Available only in East US2 and Sweden Central.
+- name: o3-pro
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: o3-pro
+    version: "2025-06-10"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - swedencentral
+  notes: Available only in East US2 and Sweden Central.
 
-  - name: o4-mini
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: o4-mini
-      version: '2025-04-16'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: o4-mini
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: o4-mini
+    version: "2025-04-16"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 # codex-mini: Only available in East US2 & Sweden Central
 # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&pivots=azure-openai#o-series-models
-  - name: codex-mini
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: codex-mini
-      version: '2025-05-16'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    allowedRegions:
-      - eastus2
-      - swedencentral
-    notes: Available only in East US2 and Sweden Central.
+- name: codex-mini
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: codex-mini
+    version: "2025-05-16"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - swedencentral
+  notes: Available only in East US2 and Sweden Central.
 
 # GPT-5 Series
-  - name: gpt-5
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5
-      version: '2025-08-07'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    requiresRegistration: true
-    registrationUrl: https://aka.ms/oai/gpt5access
-    notes: Registration is required for gpt-5. gpt-5-mini, gpt-5-nano, and gpt-5-chat do not require registration.
+- name: gpt-5
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5
+    version: "2025-08-07"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  requiresRegistration: true
+  registrationUrl: https://aka.ms/oai/gpt5access
+  notes: Registration is required for gpt-5. gpt-5-mini, gpt-5-nano, and gpt-5-chat do not require registration.
 
-  - name: gpt-5-mini
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5-mini
-      version: '2025-08-07'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-5-mini
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5-mini
+    version: "2025-08-07"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: gpt-5-nano
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5-nano
-      version: '2025-08-07'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-5-nano
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5-nano
+    version: "2025-08-07"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: gpt-5-chat
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5-chat
-      version: '2025-10-03'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    notes: Preview model. Azure also publishes a newer 2025-10-03 preview version.
+- name: gpt-5-chat
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5-chat
+    version: "2025-10-03"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  notes: Preview model. Azure also publishes a newer 2025-10-03 preview version.
 
-  - name: gpt-5-pro
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5-pro
-      version: '2025-10-06'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-5-pro
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5-pro
+    version: "2025-10-06"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 # GPT-5.1 Series
-  - name: gpt-5.1
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.1
-      version: '2025-11-13'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-5.1
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.1
+    version: "2025-11-13"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: gpt-5.1-chat
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.1-chat
-      version: '2025-11-13'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    notes: Preview model.
+- name: gpt-5.1-chat
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.1-chat
+    version: "2025-11-13"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  notes: Preview model.
 
-  - name: gpt-5.1-codex
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.1-codex
-      version: '2025-11-13'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-5.1-codex
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.1-codex
+    version: "2025-11-13"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: gpt-5.1-codex-mini
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.1-codex-mini
-      version: '2025-11-13'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-5.1-codex-mini
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.1-codex-mini
+    version: "2025-11-13"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: gpt-5.1-codex-max
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.1-codex-max
-      version: '2025-12-04'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    allowedRegions:
-      - eastus2
-      - swedencentral
-    notes: Available only in East US2 and Sweden Central for Global Standard.
+- name: gpt-5.1-codex-max
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.1-codex-max
+    version: "2025-12-04"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - swedencentral
+  notes: Available only in East US2 and Sweden Central for Global Standard.
 
 # GPT-5.2 Series
-  - name: gpt-5.2
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.2
-      version: '2025-12-11'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    requiresRegistration: true
-    registrationUrl: https://aka.ms/oai/gpt5access
-    notes: Registration is required for gpt-5.2.
+- name: gpt-5.2
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.2
+    version: "2025-12-11"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  requiresRegistration: true
+  registrationUrl: https://aka.ms/oai/gpt5access
+  notes: Registration is required for gpt-5.2.
 
-  - name: gpt-5.2-chat
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.2-chat
-      version: '2026-02-10'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    notes: Preview model. Azure also publishes a newer 2026-02-10 preview version with narrower regional availability.
+- name: gpt-5.2-chat
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.2-chat
+    version: "2026-02-10"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  notes: Preview model. Azure also publishes a newer 2026-02-10 preview version with narrower regional availability.
 
 # gpt-5.2-codex: Only available in East US2 & Sweden Central
 # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&pivots=azure-openai#gpt-52
-  - name: gpt-5.2-codex
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.2-codex
-      version: '2026-01-14'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    allowedRegions:
-      - eastus2
-      - swedencentral
-    requiresRegistration: true
-    registrationUrl: https://aka.ms/oai/gpt5access
-    notes: Available only in East US2 and Sweden Central for Global Standard. Registration is required.
+- name: gpt-5.2-codex
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.2-codex
+    version: "2026-01-14"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - swedencentral
+  requiresRegistration: true
+  registrationUrl: https://aka.ms/oai/gpt5access
+  notes: Available only in East US2 and Sweden Central for Global Standard. Registration is required.
 
 # GPT-5.3 Series
-  - name: gpt-5.3-chat
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.3-chat
-      version: '2026-03-03'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    allowedRegions:
-      - eastus2
-      - swedencentral
-    notes: Global Standard availability is currently limited to East US2 and Sweden Central.
+- name: gpt-5.3-chat
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.3-chat
+    version: "2026-03-03"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - swedencentral
+  notes: Global Standard availability is currently limited to East US2 and Sweden Central.
 
 # gpt-5.3-codex: Available only in Central US, East US2, South Central US, and Sweden Central
 # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&pivots=azure-openai#gpt-53
-  - name: gpt-5.3-codex
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.3-codex
-      version: '2026-02-24'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    allowedRegions:
-      - centralus
-      - eastus2
-      - southcentralus
-      - swedencentral
-    requiresRegistration: true
-    registrationUrl: https://aka.ms/OAI/gpt53codexaccess
-    notes: Global Standard availability is currently limited to Central US, East US2, South Central US, and Sweden 
-      Central. Registration is required.
+- name: gpt-5.3-codex
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.3-codex
+    version: "2026-02-24"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - centralus
+    - eastus2
+    - southcentralus
+    - swedencentral
+  requiresRegistration: true
+  registrationUrl: https://aka.ms/OAI/gpt53codexaccess
+  notes:
+    Global Standard availability is currently limited to Central US, East US2, South Central US, and Sweden
+    Central. Registration is required.
 
 #
 # GPT-5.4 Series
 #
-  - name: gpt-5.4
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.4
-      version: '2026-03-05'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    allowedRegions:
-      - eastus2
-      - polandcentral
-      - southcentralus
-      - swedencentral
-    requiresRegistration: true
-    registrationUrl: https://aka.ms/OAI/gpt53codexaccess
-    notes: Global Standard availability is currently limited to East US2, Poland Central, South Central US, and Sweden 
-      Central. Registration is required.
+- name: gpt-5.4
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.4
+    version: "2026-03-05"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - polandcentral
+    - southcentralus
+    - swedencentral
+  requiresRegistration: true
+  registrationUrl: https://aka.ms/OAI/gpt53codexaccess
+  notes:
+    Global Standard availability is currently limited to East US2, Poland Central, South Central US, and Sweden
+    Central. Registration is required.
 
-  - name: gpt-5.4-nano
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.4-nano
-      version: '2026-03-17'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    allowedRegions:
-      - eastus2
-      - polandcentral
-      - southcentralus
-      - swedencentral
-    notes: Global Standard availability is currently limited to East US2, Poland Central, South Central US, and Sweden 
-      Central.
+- name: gpt-5.4-nano
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.4-nano
+    version: "2026-03-17"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - polandcentral
+    - southcentralus
+    - swedencentral
+  notes:
+    Global Standard availability is currently limited to East US2, Poland Central, South Central US, and Sweden
+    Central.
 
-  - name: gpt-5.4-mini
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.4-mini
-      version: '2026-03-17'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    allowedRegions:
-      - eastus2
-      - polandcentral
-      - southcentralus
-      - swedencentral
-    notes: Global Standard availability is currently limited to East US2, Poland Central, South Central US, and Sweden 
-      Central.
+- name: gpt-5.4-mini
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.4-mini
+    version: "2026-03-17"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - polandcentral
+    - southcentralus
+    - swedencentral
+  notes:
+    Global Standard availability is currently limited to East US2, Poland Central, South Central US, and Sweden
+    Central.
 
-  - name: gpt-5.4-pro
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5.4-pro
-      version: '2026-03-05'
-    versionUpgradeOption: OnceCurrentVersionExpired
-    allowedRegions:
-      - eastus2
-      - polandcentral
-      - southcentralus
-      - swedencentral
-    requiresRegistration: true
-    registrationUrl: https://aka.ms/OAI/gpt53codexaccess
-    notes: Global Standard availability is currently limited to East US2, Poland Central, South Central US, and Sweden 
-      Central. Registration is required.
+- name: gpt-5.4-pro
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5.4-pro
+    version: "2026-03-05"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  allowedRegions:
+    - eastus2
+    - polandcentral
+    - southcentralus
+    - swedencentral
+  requiresRegistration: true
+  registrationUrl: https://aka.ms/OAI/gpt53codexaccess
+  notes:
+    Global Standard availability is currently limited to East US2, Poland Central, South Central US, and Sweden
+    Central. Registration is required.
 
 # OpenAI Embeddings
-  - name: text-embedding-ada-002
-    sku:
-      name: GlobalStandard
-      capacity: 120
-    model:
-      format: OpenAI
-      name: text-embedding-ada-002
-      version: "2"
-    versionUpgradeOption: NoAutoUpgrade
+- name: text-embedding-ada-002
+  sku:
+    name: GlobalStandard
+    capacity: 120
+  model:
+    format: OpenAI
+    name: text-embedding-ada-002
+    version: "2"
+  versionUpgradeOption: NoAutoUpgrade
 
-  - name: text-embedding-3-small
-    sku:
-      name: GlobalStandard
-      capacity: 120
-    model:
-      format: OpenAI
-      name: text-embedding-3-small
-      version: "1"
-    versionUpgradeOption: NoAutoUpgrade
+- name: text-embedding-3-small
+  sku:
+    name: GlobalStandard
+    capacity: 120
+  model:
+    format: OpenAI
+    name: text-embedding-3-small
+    version: "1"
+  versionUpgradeOption: NoAutoUpgrade
 
-  - name: text-embedding-3-large
-    sku:
-      name: GlobalStandard
-      capacity: 120
-    model:
-      format: OpenAI
-      name: text-embedding-3-large
-      version: "1"
-    versionUpgradeOption: NoAutoUpgrade
+- name: text-embedding-3-large
+  sku:
+    name: GlobalStandard
+    capacity: 120
+  model:
+    format: OpenAI
+    name: text-embedding-3-large
+    version: "1"
+  versionUpgradeOption: NoAutoUpgrade
 
 # -----------------------------------------------------------------------------
 # DeepSeek Models
 # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry
 # -----------------------------------------------------------------------------
 
-  - name: DeepSeek-R1
-    sku:
-      name: GlobalStandard
-      capacity: 5000
-    model:
-      format: DeepSeek
-      name: DeepSeek-R1
-      version: "1"
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: DeepSeek-R1
+  sku:
+    name: GlobalStandard
+    capacity: 5000
+  model:
+    format: DeepSeek
+    name: DeepSeek-R1
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: DeepSeek-R1-0528
-    sku:
-      name: GlobalStandard
-      capacity: 5000
-    model:
-      format: DeepSeek
-      name: DeepSeek-R1-0528
-      version: "1"
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: DeepSeek-R1-0528
+  sku:
+    name: GlobalStandard
+    capacity: 5000
+  model:
+    format: DeepSeek
+    name: DeepSeek-R1-0528
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: DeepSeek-V3-0324
-    sku:
-      name: GlobalStandard
-      capacity: 5000
-    model:
-      format: DeepSeek
-      name: DeepSeek-V3-0324
-      version: "1"
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: DeepSeek-V3-0324
+  sku:
+    name: GlobalStandard
+    capacity: 5000
+  model:
+    format: DeepSeek
+    name: DeepSeek-V3-0324
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: DeepSeek-V3.1
-    sku:
-      name: GlobalStandard
-      capacity: 5000
-    model:
-      format: DeepSeek
-      name: DeepSeek-V3.1
-      version: "1"
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: DeepSeek-V3.1
+  sku:
+    name: GlobalStandard
+    capacity: 5000
+  model:
+    format: DeepSeek
+    name: DeepSeek-V3.1
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: DeepSeek-V3.2
-    sku:
-      name: GlobalStandard
-      capacity: 5000
-    model:
-      format: DeepSeek
-      name: DeepSeek-V3.2
-      version: "1"
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: DeepSeek-V3.2
+  sku:
+    name: GlobalStandard
+    capacity: 5000
+  model:
+    format: DeepSeek
+    name: DeepSeek-V3.2
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: DeepSeek-V3.2-Speciale
-    sku:
-      name: GlobalStandard
-      capacity: 5000
-    model:
-      format: DeepSeek
-      name: DeepSeek-V3.2-Speciale
-      version: "1"
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: DeepSeek-V3.2-Speciale
+  sku:
+    name: GlobalStandard
+    capacity: 5000
+  model:
+    format: DeepSeek
+    name: DeepSeek-V3.2-Speciale
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 # # -----------------------------------------------------------------------------
 # # Meta Llama Models
 # # Source: https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry
 # # -----------------------------------------------------------------------------
 
-  - name: Llama-3.3-70B-Instruct
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: Meta
-      name: Llama-3.3-70B-Instruct
-      version: "9"
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: Llama-3.3-70B-Instruct
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: Meta
+    name: Llama-3.3-70B-Instruct
+    version: "9"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: Llama-4-Maverick-17B-128E-Instruct-FP8
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: Meta
-      name: Llama-4-Maverick-17B-128E-Instruct-FP8
-      version: "1"
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: Llama-4-Maverick-17B-128E-Instruct-FP8
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: Meta
+    name: Llama-4-Maverick-17B-128E-Instruct-FP8
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 # - name: Meta-Llama-3-8B-Instruct # Model not available
 #   sku:
@@ -615,15 +620,15 @@
 #     version: "2"
 #   versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: Mistral-Large-3
-    sku:
-      name: GlobalStandard
-      capacity: 5000
-    model:
-      format: Mistral AI
-      name: Mistral-Large-3
-      version: "1"
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: Mistral-Large-3
+  sku:
+    name: GlobalStandard
+    capacity: 5000
+  model:
+    format: Mistral AI
+    name: Mistral-Large-3
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
 
 # - name: Mistral-Nemo # Model not available in Sweden Central
 #   sku:
@@ -813,15 +818,15 @@
 #     version: "2025-08-07"
 #   versionUpgradeOption: OnceCurrentVersionExpired
 
-  - name: Phi-4
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-4
-      version: "7"
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-4
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-4
+    version: "7"
+  versionUpgradeOption: OnceCurrentVersionExpired
 # - name: Phi-4-mini-instruct # Model not available in Sweden Central
 #   sku:
 #     name: GlobalStandard
@@ -997,822 +1002,824 @@
 #     name: FLUX-1.1-pro
 #     version: "1"
 #   versionUpgradeOption: OnceNewDefaultVersionAvailable
-  - name: AI21-Jamba-1.5-Large
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: AI21 Labs
-      name: AI21-Jamba-1.5-Large
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: AI21-Jamba-1.5-Mini
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: AI21 Labs
-      name: AI21-Jamba-1.5-Mini
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: AI21-Jamba-Instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: AI21 Labs
-      name: AI21-Jamba-Instruct
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: qwen3-32b
-    sku:
-      name: GlobalStandard
-      capacity: 50
-    model:
-      format: Alibaba
-      name: qwen3-32b
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: claude-haiku-4-5
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: Anthropic
-      name: claude-haiku-4-5
-      version: '20251001'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: claude-opus-4-1
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: Anthropic
-      name: claude-opus-4-1
-      version: '20250805'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: claude-opus-4-5
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: Anthropic
-      name: claude-opus-4-5
-      version: '20251101'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: claude-opus-4-6
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: Anthropic
-      name: claude-opus-4-6
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: claude-sonnet-4-5
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: Anthropic
-      name: claude-sonnet-4-5
-      version: '20250929'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: claude-sonnet-4-6
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: Anthropic
-      name: claude-sonnet-4-6
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: FLUX-1.1-pro
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Black Forest Labs
-      name: FLUX-1.1-pro
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: FLUX.1-Kontext-pro
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Black Forest Labs
-      name: FLUX.1-Kontext-pro
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: FLUX.2-flex
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Black Forest Labs
-      name: FLUX.2-flex
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: FLUX.2-pro
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Black Forest Labs
-      name: FLUX.2-pro
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: cohere-command-a
-    sku:
-      name: GlobalStandard
-      capacity: 100
-    model:
-      format: Cohere
-      name: cohere-command-a
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Cohere-command-r
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Cohere
-      name: Cohere-command-r
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Cohere-command-r-08-2024
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Cohere
-      name: Cohere-command-r-08-2024
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Cohere-command-r-plus
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Cohere
-      name: Cohere-command-r-plus
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Cohere-command-r-plus-08-2024
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Cohere
-      name: Cohere-command-r-plus-08-2024
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Cohere-embed-v3-english
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Cohere
-      name: Cohere-embed-v3-english
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Cohere-embed-v3-multilingual
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Cohere
-      name: Cohere-embed-v3-multilingual
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Cohere-rerank-v4.0-fast
-    sku:
-      name: GlobalStandard
-      capacity: 500
-    model:
-      format: Cohere
-      name: Cohere-rerank-v4.0-fast
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Cohere-rerank-v4.0-pro
-    sku:
-      name: GlobalStandard
-      capacity: 500
-    model:
-      format: Cohere
-      name: Cohere-rerank-v4.0-pro
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: embed-v-4-0
-    sku:
-      name: GlobalStandard
-      capacity: 15000
-    model:
-      format: Cohere
-      name: embed-v-4-0
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: jais-30b-chat
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Core42
-      name: jais-30b-chat
-      version: '3'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: DeepSeek-V3
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: DeepSeek
-      name: DeepSeek-V3
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Llama-3.2-11B-Vision-Instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Meta
-      name: Llama-3.2-11B-Vision-Instruct
-      version: '2'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Llama-3.2-90B-Vision-Instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Meta
-      name: Llama-3.2-90B-Vision-Instruct
-      version: '3'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Llama-4-Scout-17B-16E-Instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Meta
-      name: Llama-4-Scout-17B-16E-Instruct
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Meta-Llama-3-70B-Instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Meta
-      name: Meta-Llama-3-70B-Instruct
-      version: '9'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Meta-Llama-3-8B-Instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Meta
-      name: Meta-Llama-3-8B-Instruct
-      version: '9'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Meta-Llama-3.1-405B-Instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Meta
-      name: Meta-Llama-3.1-405B-Instruct
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Meta-Llama-3.1-70B-Instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Meta
-      name: Meta-Llama-3.1-70B-Instruct
-      version: '4'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Meta-Llama-3.1-8B-Instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Meta
-      name: Meta-Llama-3.1-8B-Instruct
-      version: '5'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: MAI-DS-R1
-    sku:
-      name: GlobalStandard
-      capacity: 5000
-    model:
-      format: Microsoft
-      name: MAI-DS-R1
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Phi-3-medium-128k-instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-3-medium-128k-instruct
-      version: '7'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Phi-3-medium-4k-instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-3-medium-4k-instruct
-      version: '6'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Phi-3-mini-128k-instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-3-mini-128k-instruct
-      version: '13'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Phi-3-mini-4k-instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-3-mini-4k-instruct
-      version: '15'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Phi-3-small-128k-instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-3-small-128k-instruct
-      version: '5'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Phi-3-small-8k-instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-3-small-8k-instruct
-      version: '5'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Phi-3.5-mini-instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-3.5-mini-instruct
-      version: '6'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Phi-3.5-MoE-instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-3.5-MoE-instruct
-      version: '5'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Phi-3.5-vision-instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-3.5-vision-instruct
-      version: '2'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Phi-4-mini-instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-4-mini-instruct
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Phi-4-mini-reasoning
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-4-mini-reasoning
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Phi-4-multimodal-instruct
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-4-multimodal-instruct
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Phi-4-reasoning
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Microsoft
-      name: Phi-4-reasoning
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Codestral-2501
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Mistral AI
-      name: Codestral-2501
-      version: '2'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Ministral-3B
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Mistral AI
-      name: Ministral-3B
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: mistral-document-ai-2505
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Mistral AI
-      name: mistral-document-ai-2505
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: mistral-document-ai-2512
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Mistral AI
-      name: mistral-document-ai-2512
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Mistral-large
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Mistral AI
-      name: Mistral-large
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Mistral-large-2407
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Mistral AI
-      name: Mistral-large-2407
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Mistral-Large-2411
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Mistral AI
-      name: Mistral-Large-2411
-      version: '2'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: mistral-medium-2505
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Mistral AI
-      name: mistral-medium-2505
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Mistral-Nemo
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Mistral AI
-      name: Mistral-Nemo
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Mistral-small
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Mistral AI
-      name: Mistral-small
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: mistral-small-2503
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: Mistral AI
-      name: mistral-small-2503
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Kimi-K2-Thinking
-    sku:
-      name: GlobalStandard
-      capacity: 500
-    model:
-      format: MoonshotAI
-      name: Kimi-K2-Thinking
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: Kimi-K2.5
-    sku:
-      name: GlobalStandard
-      capacity: 500
-    model:
-      format: MoonshotAI
-      name: Kimi-K2.5
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: computer-use-preview
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: computer-use-preview
-      version: '2025-03-11'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-4
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-4
-      version: turbo-2024-04-09
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-4o-audio-preview
-    sku:
-      name: GlobalStandard
-      capacity: 100
-    model:
-      format: OpenAI
-      name: gpt-4o-audio-preview
-      version: '2024-12-17'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-4o-mini-realtime-preview
-    sku:
-      name: GlobalStandard
-      capacity: 100
-    model:
-      format: OpenAI
-      name: gpt-4o-mini-realtime-preview
-      version: '2024-12-17'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-4o-mini-transcribe
-    sku:
-      name: GlobalStandard
-      capacity: 60
-    model:
-      format: OpenAI
-      name: gpt-4o-mini-transcribe
-      version: '2025-12-15'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-4o-realtime-preview
-    sku:
-      name: GlobalStandard
-      capacity: 100
-    model:
-      format: OpenAI
-      name: gpt-4o-realtime-preview
-      version: '2025-06-03'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-4o-transcribe
-    sku:
-      name: GlobalStandard
-      capacity: 50
-    model:
-      format: OpenAI
-      name: gpt-4o-transcribe
-      version: '2025-03-20'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-4o-transcribe-diarize
-    sku:
-      name: GlobalStandard
-      capacity: 50
-    model:
-      format: OpenAI
-      name: gpt-4o-transcribe-diarize
-      version: '2025-10-15'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-5-codex
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: gpt-5-codex
-      version: '2025-09-15'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-audio
-    sku:
-      name: GlobalStandard
-      capacity: 100
-    model:
-      format: OpenAI
-      name: gpt-audio
-      version: '2025-08-28'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-audio-1.5
-    sku:
-      name: GlobalStandard
-      capacity: 100
-    model:
-      format: OpenAI
-      name: gpt-audio-1.5
-      version: '2026-02-23'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-audio-mini
-    sku:
-      name: GlobalStandard
-      capacity: 100
-    model:
-      format: OpenAI
-      name: gpt-audio-mini
-      version: '2025-12-15'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-image-1
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: OpenAI
-      name: gpt-image-1
-      version: '2025-04-15'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-image-1-mini
-    sku:
-      name: GlobalStandard
-      capacity: 1
-    model:
-      format: OpenAI
-      name: gpt-image-1-mini
-      version: '2025-10-06'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-image-1.5
-    sku:
-      name: GlobalStandard
-      capacity: 3
-    model:
-      format: OpenAI
-      name: gpt-image-1.5
-      version: '2025-12-16'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-realtime
-    sku:
-      name: GlobalStandard
-      capacity: 100
-    model:
-      format: OpenAI
-      name: gpt-realtime
-      version: '2025-08-28'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-realtime-1.5
-    sku:
-      name: GlobalStandard
-      capacity: 100
-    model:
-      format: OpenAI
-      name: gpt-realtime-1.5
-      version: '2026-02-23'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-realtime-mini
-    sku:
-      name: GlobalStandard
-      capacity: 100
-    model:
-      format: OpenAI
-      name: gpt-realtime-mini
-      version: '2025-12-15'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: model-router
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: model-router
-      version: '2025-11-18'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: o1-mini
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: OpenAI
-      name: o1-mini
-      version: '2024-09-12'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: sora
-    sku:
-      name: GlobalStandard
-      capacity: 60
-    model:
-      format: OpenAI
-      name: sora
-      version: '2025-05-02'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: sora-2
-    sku:
-      name: GlobalStandard
-      capacity: 60
-    model:
-      format: OpenAI
-      name: sora-2
-      version: '2025-10-06'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-oss-120b
-    sku:
-      name: GlobalStandard
-      capacity: 500
-    model:
-      format: OpenAI-OSS
-      name: gpt-oss-120b
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: gpt-oss-20b
-    sku:
-      name: GlobalStandard
-      capacity: 50
-    model:
-      format: OpenAI-OSS
-      name: gpt-oss-20b
-      version: '11'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: grok-3
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: xAI
-      name: grok-3
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: grok-3-mini
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: xAI
-      name: grok-3-mini
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: grok-4-1-fast-non-reasoning
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: xAI
-      name: grok-4-1-fast-non-reasoning
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: grok-4-1-fast-reasoning
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: xAI
-      name: grok-4-1-fast-reasoning
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: grok-4-fast-non-reasoning
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: xAI
-      name: grok-4-fast-non-reasoning
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
-  - name: grok-4-fast-reasoning
-    sku:
-      name: GlobalStandard
-      capacity: 10
-    model:
-      format: xAI
-      name: grok-4-fast-reasoning
-      version: '1'
-    versionUpgradeOption: OnceCurrentVersionExpired
+- name: AI21-Jamba-1.5-Large
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: AI21 Labs
+    name: AI21-Jamba-1.5-Large
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: AI21-Jamba-1.5-Mini
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: AI21 Labs
+    name: AI21-Jamba-1.5-Mini
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: AI21-Jamba-Instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: AI21 Labs
+    name: AI21-Jamba-Instruct
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: qwen3-32b
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: Alibaba
+    name: qwen3-32b
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: claude-haiku-4-5
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: Anthropic
+    name: claude-haiku-4-5
+    version: "20251001"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: claude-opus-4-1
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: Anthropic
+    name: claude-opus-4-1
+    version: "20250805"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: claude-opus-4-5
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: Anthropic
+    name: claude-opus-4-5
+    version: "20251101"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: claude-opus-4-6
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: Anthropic
+    name: claude-opus-4-6
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: claude-sonnet-4-5
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: Anthropic
+    name: claude-sonnet-4-5
+    version: "20250929"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: claude-sonnet-4-6
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: Anthropic
+    name: claude-sonnet-4-6
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: FLUX-1.1-pro
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Black Forest Labs
+    name: FLUX-1.1-pro
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: FLUX.1-Kontext-pro
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Black Forest Labs
+    name: FLUX.1-Kontext-pro
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: FLUX.2-flex
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Black Forest Labs
+    name: FLUX.2-flex
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: FLUX.2-pro
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Black Forest Labs
+    name: FLUX.2-pro
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: cohere-command-a
+  sku:
+    name: GlobalStandard
+    capacity: 100
+  model:
+    format: Cohere
+    name: cohere-command-a
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Cohere-command-r
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Cohere
+    name: Cohere-command-r
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Cohere-command-r-08-2024
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Cohere
+    name: Cohere-command-r-08-2024
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Cohere-command-r-plus
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Cohere
+    name: Cohere-command-r-plus
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Cohere-command-r-plus-08-2024
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Cohere
+    name: Cohere-command-r-plus-08-2024
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Cohere-embed-v3-english
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Cohere
+    name: Cohere-embed-v3-english
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Cohere-embed-v3-multilingual
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Cohere
+    name: Cohere-embed-v3-multilingual
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Cohere-rerank-v4.0-fast
+  sku:
+    name: GlobalStandard
+    capacity: 500
+  model:
+    format: Cohere
+    name: Cohere-rerank-v4.0-fast
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Cohere-rerank-v4.0-pro
+  sku:
+    name: GlobalStandard
+    capacity: 500
+  model:
+    format: Cohere
+    name: Cohere-rerank-v4.0-pro
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: embed-v-4-0
+  sku:
+    name: GlobalStandard
+    capacity: 15000
+  model:
+    format: Cohere
+    name: embed-v-4-0
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: jais-30b-chat
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Core42
+    name: jais-30b-chat
+    version: "3"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: DeepSeek-V3
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: DeepSeek
+    name: DeepSeek-V3
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Llama-3.2-11B-Vision-Instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Meta
+    name: Llama-3.2-11B-Vision-Instruct
+    version: "2"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Llama-3.2-90B-Vision-Instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Meta
+    name: Llama-3.2-90B-Vision-Instruct
+    version: "3"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Llama-4-Scout-17B-16E-Instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Meta
+    name: Llama-4-Scout-17B-16E-Instruct
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Meta-Llama-3-70B-Instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Meta
+    name: Meta-Llama-3-70B-Instruct
+    version: "9"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Meta-Llama-3-8B-Instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Meta
+    name: Meta-Llama-3-8B-Instruct
+    version: "9"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Meta-Llama-3.1-405B-Instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Meta
+    name: Meta-Llama-3.1-405B-Instruct
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Meta-Llama-3.1-70B-Instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Meta
+    name: Meta-Llama-3.1-70B-Instruct
+    version: "4"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Meta-Llama-3.1-8B-Instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Meta
+    name: Meta-Llama-3.1-8B-Instruct
+    version: "5"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: MAI-DS-R1
+  sku:
+    name: GlobalStandard
+    capacity: 5000
+  model:
+    format: Microsoft
+    name: MAI-DS-R1
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-3-medium-128k-instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-3-medium-128k-instruct
+    version: "7"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-3-medium-4k-instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-3-medium-4k-instruct
+    version: "6"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-3-mini-128k-instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-3-mini-128k-instruct
+    version: "13"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-3-mini-4k-instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-3-mini-4k-instruct
+    version: "15"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-3-small-128k-instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-3-small-128k-instruct
+    version: "5"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-3-small-8k-instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-3-small-8k-instruct
+    version: "5"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-3.5-mini-instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-3.5-mini-instruct
+    version: "6"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-3.5-MoE-instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-3.5-MoE-instruct
+    version: "5"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-3.5-vision-instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-3.5-vision-instruct
+    version: "2"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-4-mini-instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-4-mini-instruct
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-4-mini-reasoning
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-4-mini-reasoning
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-4-multimodal-instruct
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-4-multimodal-instruct
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Phi-4-reasoning
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Microsoft
+    name: Phi-4-reasoning
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Codestral-2501
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Mistral AI
+    name: Codestral-2501
+    version: "2"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Ministral-3B
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Mistral AI
+    name: Ministral-3B
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: mistral-document-ai-2505
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Mistral AI
+    name: mistral-document-ai-2505
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: mistral-document-ai-2512
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Mistral AI
+    name: mistral-document-ai-2512
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Mistral-large
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Mistral AI
+    name: Mistral-large
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Mistral-large-2407
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Mistral AI
+    name: Mistral-large-2407
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Mistral-Large-2411
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Mistral AI
+    name: Mistral-Large-2411
+    version: "2"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: mistral-medium-2505
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Mistral AI
+    name: mistral-medium-2505
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Mistral-Nemo
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Mistral AI
+    name: Mistral-Nemo
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Mistral-small
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Mistral AI
+    name: Mistral-small
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: mistral-small-2503
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: Mistral AI
+    name: mistral-small-2503
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Kimi-K2-Thinking
+  sku:
+    name: GlobalStandard
+    capacity: 500
+  model:
+    format: MoonshotAI
+    name: Kimi-K2-Thinking
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: Kimi-K2.5
+  sku:
+    name: GlobalStandard
+    capacity: 500
+  model:
+    format: MoonshotAI
+    name: Kimi-K2.5
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: computer-use-preview
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: computer-use-preview
+    version: "2025-03-11"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-4
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-4
+    version: turbo-2024-04-09
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-4o-audio-preview
+  sku:
+    name: GlobalStandard
+    capacity: 100
+  model:
+    format: OpenAI
+    name: gpt-4o-audio-preview
+    version: "2024-12-17"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-4o-mini-realtime-preview
+  sku:
+    name: GlobalStandard
+    capacity: 100
+  model:
+    format: OpenAI
+    name: gpt-4o-mini-realtime-preview
+    version: "2024-12-17"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-4o-mini-transcribe
+  sku:
+    name: GlobalStandard
+    capacity: 60
+  model:
+    format: OpenAI
+    name: gpt-4o-mini-transcribe
+    version: "2025-12-15"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-4o-realtime-preview
+  sku:
+    name: GlobalStandard
+    capacity: 100
+  model:
+    format: OpenAI
+    name: gpt-4o-realtime-preview
+    version: "2025-06-03"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-4o-transcribe
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-4o-transcribe
+    version: "2025-03-20"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-4o-transcribe-diarize
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI
+    name: gpt-4o-transcribe-diarize
+    version: "2025-10-15"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-5-codex
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: gpt-5-codex
+    version: "2025-09-15"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-audio
+  sku:
+    name: GlobalStandard
+    capacity: 100
+  model:
+    format: OpenAI
+    name: gpt-audio
+    version: "2025-08-28"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-audio-1.5
+  sku:
+    name: GlobalStandard
+    capacity: 100
+  model:
+    format: OpenAI
+    name: gpt-audio-1.5
+    version: "2026-02-23"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-audio-mini
+  sku:
+    name: GlobalStandard
+    capacity: 100
+  model:
+    format: OpenAI
+    name: gpt-audio-mini
+    version: "2025-12-15"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-image-1
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: OpenAI
+    name: gpt-image-1
+    version: "2025-04-15"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-image-1-mini
+  sku:
+    name: GlobalStandard
+    capacity: 1
+  model:
+    format: OpenAI
+    name: gpt-image-1-mini
+    version: "2025-10-06"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-image-1.5
+  sku:
+    name: GlobalStandard
+    capacity: 3
+  model:
+    format: OpenAI
+    name: gpt-image-1.5
+    version: "2025-12-16"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-realtime
+  sku:
+    name: GlobalStandard
+    capacity: 100
+  model:
+    format: OpenAI
+    name: gpt-realtime
+    version: "2025-08-28"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-realtime-1.5
+  sku:
+    name: GlobalStandard
+    capacity: 100
+  model:
+    format: OpenAI
+    name: gpt-realtime-1.5
+    version: "2026-02-23"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-realtime-mini
+  sku:
+    name: GlobalStandard
+    capacity: 100
+  model:
+    format: OpenAI
+    name: gpt-realtime-mini
+    version: "2025-12-15"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: model-router
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: model-router
+    version: "2025-11-18"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: o1-mini
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: OpenAI
+    name: o1-mini
+    version: "2024-09-12"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: sora
+  sku:
+    name: GlobalStandard
+    capacity: 60
+  model:
+    format: OpenAI
+    name: sora
+    version: "2025-05-02"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: sora-2
+  sku:
+    name: GlobalStandard
+    capacity: 60
+  model:
+    format: OpenAI
+    name: sora-2
+    version: "2025-10-06"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-oss-120b
+  sku:
+    name: GlobalStandard
+    capacity: 500
+  model:
+    format: OpenAI-OSS
+    name: gpt-oss-120b
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: gpt-oss-20b
+  enabled: false
+  sku:
+    name: GlobalStandard
+    capacity: 50
+  model:
+    format: OpenAI-OSS
+    name: gpt-oss-20b
+    version: "11"
+  versionUpgradeOption: OnceCurrentVersionExpired
+  notes: GlobalStandard is the advertised SKU, but current inference capacity is 0 in Sweden Central.
+- name: grok-3
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: xAI
+    name: grok-3
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: grok-3-mini
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: xAI
+    name: grok-3-mini
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: grok-4-1-fast-non-reasoning
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: xAI
+    name: grok-4-1-fast-non-reasoning
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: grok-4-1-fast-reasoning
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: xAI
+    name: grok-4-1-fast-reasoning
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: grok-4-fast-non-reasoning
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: xAI
+    name: grok-4-fast-non-reasoning
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired
+- name: grok-4-fast-reasoning
+  sku:
+    name: GlobalStandard
+    capacity: 10
+  model:
+    format: xAI
+    name: grok-4-fast-reasoning
+    version: "1"
+  versionUpgradeOption: OnceCurrentVersionExpired

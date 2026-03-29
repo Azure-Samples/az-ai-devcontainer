@@ -54,6 +54,9 @@ param aiFoundryApiVersion string = ''
 @description('Optional. API version to use for OpenAI-compatible inference clients.')
 param azureOpenAiApiVersion string = ''
 
+@description('Optional. Endpoint to expose as DOCUMENTINTELLIGENCE_ENDPOINT. If empty, the AI Foundry endpoint is reused for simple shared-resource access.')
+param documentIntelligenceEndpoint string = ''
+
 /* -----------------------  Azure AI search service ------------------------ */
 
 @description('Optional. Defines the SKU of an Azure AI Search Service, which determines price tier and capacity limits.')
@@ -165,6 +168,11 @@ var _aiFoundryApiVersion = empty(aiFoundryApiVersion) ? '2025-05-01-preview' : a
 @description('OpenAI API Version')
 var _azureOpenAiApiVersion = empty(azureOpenAiApiVersion) ? '2024-12-01-preview' : azureOpenAiApiVersion
 
+@description('Document Intelligence endpoint exposed through the AZD environment')
+var _documentIntelligenceEndpoint = empty(documentIntelligenceEndpoint)
+  ? _aiFoundryEndpoint
+  : documentIntelligenceEndpoint
+
 var _aiFoundryProjectEndpoint = aiFoundryAccountProject.properties.endpoints['AI Foundry API']
 
 var _azureAiSearchLocation = empty(azureAiSearchLocation) ? location : azureAiSearchLocation
@@ -176,7 +184,7 @@ var _azureAiSearchEndpoint = 'https://${_azureAiSearchName}.search.windows.net'
 
 //------------------------------ AI Foundry  ------------------------------ */
 
-module aiFoundryAccount 'br/public:avm/res/cognitive-services/account:0.11.0' = if (!useExistingAiFoundry) {
+module aiFoundryAccount 'br/public:avm/res/cognitive-services/account:0.14.2' = if (!useExistingAiFoundry) {
   name: '${deployment().name}-aiFoundryAccount'
   params: {
     name: _aiFoundryAccountName
@@ -189,7 +197,7 @@ module aiFoundryAccount 'br/public:avm/res/cognitive-services/account:0.11.0' = 
     networkAcls: {
       defaultAction: 'Allow'
     }
-    disableLocalAuth: false
+    disableLocalAuth: true
     sku: 'S0'
     managedIdentities: {
       systemAssigned: true
@@ -230,7 +238,7 @@ module aiFoundryAccount 'br/public:avm/res/cognitive-services/account:0.11.0' = 
   }
 }
 
-resource aiFoundryAccountAppInsightConnection 'Microsoft.CognitiveServices/accounts/connections@2025-12-01' = {
+resource aiFoundryAccountAppInsightConnection 'Microsoft.CognitiveServices/accounts/connections@2025-10-01-preview' = {
   name: '${_aiFoundryAccountName}/appInsights-connection'
   properties: {
     authType: 'ApiKey'
@@ -254,7 +262,7 @@ resource aiFoundryAccountAppInsightConnection 'Microsoft.CognitiveServices/accou
   ]
 }
 
-resource aiFoundryAccountProject 'Microsoft.CognitiveServices/accounts/projects@2025-12-01' = {
+resource aiFoundryAccountProject 'Microsoft.CognitiveServices/accounts/projects@2025-10-01-preview' = {
   name: '${_aiFoundryAccountName}/${_aiFoundryAccountProjectName}'
   location: empty(aiFoundryLocation) ? location : aiFoundryLocation
   identity: {
@@ -271,7 +279,7 @@ resource aiFoundryAccountProject 'Microsoft.CognitiveServices/accounts/projects@
 var _aiFoundryDeploymentName = deployments[0].name
 
 // ------------------------------ Storage Account ------------------------------
-module storageAccount 'br/public:avm/res/storage/storage-account:0.19.0' = {
+module storageAccount 'br/public:avm/res/storage/storage-account:0.32.0' = {
   name: '${deployment().name}-storageAccount'
   scope: resourceGroup()
   params: {
@@ -280,6 +288,12 @@ module storageAccount 'br/public:avm/res/storage/storage-account:0.19.0' = {
     name: _storageAccountName
     kind: 'StorageV2'
     skuName: 'Standard_ZRS'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Storage Blob Data Contributor'
+        principalId: azurePrincipalId
+      }
+    ]
     blobServices: {
       corsRules: [
         {
@@ -316,16 +330,10 @@ module storageAccount 'br/public:avm/res/storage/storage-account:0.19.0' = {
           roleAssignments: []
         }
       ]
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Storage Blob Data Contributor'
-          principalId: azurePrincipalId
-        }
-      ]
-      deleteRetentionPolicy: {
-        allowPermanentDelete: false
-        enabled: false
-      }
+      deleteRetentionPolicyEnabled: false
+      deleteRetentionPolicyAllowPermanentDelete: false
+    }
+    fileServices: {
       shareDeleteRetentionPolicy: {
         enabled: true
         days: 7
@@ -334,7 +342,7 @@ module storageAccount 'br/public:avm/res/storage/storage-account:0.19.0' = {
   }
 }
 
-module aiSearchService 'br/public:avm/res/search/search-service:0.10.0' = if (useAiSearch && !useExistingAiSearch) {
+module aiSearchService 'br/public:avm/res/search/search-service:0.12.0' = if (useAiSearch && !useExistingAiSearch) {
   name: '${deployment().name}-aiSearchService'
   scope: resourceGroup()
   params: {
@@ -344,6 +352,7 @@ module aiSearchService 'br/public:avm/res/search/search-service:0.10.0' = if (us
     sku: aiSearchSkuName
     partitionCount: 1
     replicaCount: 1
+    disableLocalAuth: false
     roleAssignments: [
       // See also https://learn.microsoft.com/en-us/azure/search/search-security-rbac
       {
@@ -375,7 +384,7 @@ module aiSearchService 'br/public:avm/res/search/search-service:0.10.0' = if (us
 
 /* ---------------------------- Observability  ------------------------------ */
 
-module logAnalyticsWorkspace 'br/public:avm/res/operational-insights/workspace:0.11.1' = {
+module logAnalyticsWorkspace 'br/public:avm/res/operational-insights/workspace:0.15.0' = {
   name: '${deployment().name}-workspaceDeployment'
   params: {
     name: _logAnalyticsWorkspaceName
@@ -385,7 +394,7 @@ module logAnalyticsWorkspace 'br/public:avm/res/operational-insights/workspace:0
   }
 }
 
-module appInsightsComponent 'br/public:avm/res/insights/component:0.6.0' = {
+module appInsightsComponent 'br/public:avm/res/insights/component:0.7.1' = {
   name: '${deployment().name}-applicationInsights'
   params: {
     name: _applicationInsightsName
@@ -442,6 +451,18 @@ output AI_FOUNDRY_PROJECT_ID string = aiFoundryAccountProject.id
 @description('AI Foundry account endpoint')
 output AI_FOUNDRY_ENDPOINT string = _aiFoundryEndpoint
 
+@description('Content Understanding endpoint expected by the Azure SDKs')
+output CONTENTUNDERSTANDING_ENDPOINT string = _aiFoundryEndpoint
+
+@description('Content Understanding endpoint alias for Azure-oriented env naming')
+output AZURE_CONTENT_UNDERSTANDING_ENDPOINT string = _aiFoundryEndpoint
+
+@description('Document Intelligence endpoint expected by the Azure SDKs')
+output DOCUMENTINTELLIGENCE_ENDPOINT string = _documentIntelligenceEndpoint
+
+@description('Document Intelligence endpoint alias for Azure-oriented env naming')
+output AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT string = _documentIntelligenceEndpoint
+
 @description('AI Foundry Agent Model Deployment Name')
 output AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME string = _aiFoundryAgentModelDeploymentName
 
@@ -456,9 +477,6 @@ output AI_FOUNDRY_DEPLOYMENT_NAME string = _aiFoundryDeploymentName
 
 @description('Declared model deployment catalog loaded from infra/deployments.yaml')
 output AI_FOUNDRY_DEPLOYMENTS object[] = deployments
-
-//@description('Azure AI Content Understanding endpoint')
-//output AZURE_CONTENT_UNDERSTANDING_ENDPOINT string = 'https://${_azureAiFoundryName}.services.ai.azure.com/'
 
 /* ------------------------------ AI Search --------------------------------- */
 

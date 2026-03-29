@@ -43,6 +43,34 @@ azd up
 
 🚀 You can start working straight away by modifying `notebooks/SampleNotebook.ipynb`!
 
+## Document Intelligence And Content Understanding
+
+After `azd up`, the AZD environment includes SDK-friendly endpoint variables that the sample notebook already loads via `azd env get-values`:
+
+- `CONTENTUNDERSTANDING_ENDPOINT` and `AZURE_CONTENT_UNDERSTANDING_ENDPOINT`
+- `DOCUMENTINTELLIGENCE_ENDPOINT` and `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT`
+
+This template does not deploy any extra resource for these variables.
+
+- For Azure Content Understanding, the documented SDK endpoint is your Microsoft Foundry resource endpoint, so this template reuses `AI_FOUNDRY_ENDPOINT` directly.
+- For Azure Document Intelligence, this template also defaults `DOCUMENTINTELLIGENCE_ENDPOINT` to the same Foundry endpoint so shared-resource access is available immediately.
+
+Use them from Python like this:
+
+```python
+import os
+
+content_understanding_endpoint = os.environ["CONTENTUNDERSTANDING_ENDPOINT"]
+document_intelligence_endpoint = os.environ["DOCUMENTINTELLIGENCE_ENDPOINT"]
+```
+
+If you want to use Microsoft Entra ID with the Azure Document Intelligence SDK, Microsoft documentation requires a dedicated single-service Document Intelligence resource. In that case, set the endpoint you want to expose before provisioning:
+
+```bash
+azd env set DOCUMENTINTELLIGENCE_ENDPOINT https://<your-document-intelligence-resource>.cognitiveservices.azure.com/
+azd up
+```
+
 ## Pre-configured AI Models
 
 This template declares its default Azure AI Foundry model catalog in [`infra/deployments.yaml`](infra/deployments.yaml).

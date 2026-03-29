@@ -16,6 +16,7 @@ log_error() { printf "${RED}[ERROR]${NC} %s\n" "$1"; }
 log_info "Updating package list..."
 sudo apt-get update -qq
 sudo apt-get upgrade -y -qq
+sudo apt-get install ripgrep -y -qq
 
 # Install uv if not already installed
 if ! command -v uv &> /dev/null; then
