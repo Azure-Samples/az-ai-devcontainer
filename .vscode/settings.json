@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^cd /workspaces/az-ai-devcontainer && uv run infra/scripts/sync_deployments_catalog\\.py --dry-run --sync-available-capacity$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}

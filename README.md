@@ -64,7 +64,9 @@ uv run python infra/scripts/sync_deployments_catalog.py --dry-run
 uv run python infra/scripts/sync_deployments_catalog.py
 ```
 
-The catalog sync preserves local curation fields such as `runModes`, `allowedRegions`, `requiresRegistration`, `registrationUrl`, and `notes`. Existing `sku.capacity` values are also preserved by default so the sync does not overwrite your chosen quota allocations. Use `--sync-capacity` only if you explicitly want to reset them to Azure's current default capacity.
+The catalog sync preserves local curation fields such as `runModes`, `allowedRegions`, `requiresRegistration`, `registrationUrl`, and `notes`. Existing `sku.capacity` values are also preserved by default so the sync does not overwrite your chosen quota allocations. Use `--sync-capacity` only if you explicitly want to reset them to Azure's current default capacity. Use `--sync-available-capacity` to pull the currently available deployment capacity for each model in your target region from the live Azure capacity API.
+
+`infra/scripts/deploy_models.py` now runs in best-effort mode for expected Azure-side deployment blockers. Models that are currently blocked by quota, deprecation, marketplace restrictions, missing provider metadata, or unsupported SKU/model combinations are reported as `blocked` and do not fail the whole reconciliation run. Unexpected errors still fail the command.
 
 `--append-new` is intentionally not part of the normal workflow right now. Keep new model additions curated manually so each new entry can be reviewed for region limits, registration requirements, and deployment intent before it is committed to the catalog.
 

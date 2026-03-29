@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import os
+import re
 import subprocess
 from dataclasses import dataclass
 from datetime import date, datetime
@@ -25,6 +26,12 @@ from dotenv import load_dotenv
 from ruamel.yaml import YAML
 
 DEFAULT_RUN_MODES = ("manual", "hook")
+SOFT_BLOCKER_ERROR_CODES = {
+    "InsufficientQuota",
+    "InvalidModelProviderData",
+    "InvalidResourceProperties",
+    "ServiceModelDeprecated",
+}
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CATALOG_PATH = REPO_ROOT / "infra" / "deployments.yaml"
 yaml = YAML(typ="safe")
@@ -167,6 +174,41 @@ def format_entry_error(entry: dict[str, Any], error: Exception) -> str:
     if guidance and guidance.strip() not in detail:
         return f"{detail}{guidance}"
     return detail
+
+
+def extract_error_code(error: HttpResponseError) -> str | None:
+    code = getattr(error, "code", None)
+    if code:
+        return str(code)
+
+    payload = getattr(error, "error", None)
+    if payload is not None:
+        code = getattr(payload, "code", None)
+        if code:
+            return str(code)
+
+    match = re.match(r"^\(([^)]+)\)", str(error).strip())
+    if match:
+        return match.group(1)
+    return None
+
+
+def is_soft_blocker(entry: dict[str, Any], error: HttpResponseError) -> bool:
+    detail = str(error)
+    error_code = extract_error_code(error)
+
+    if error_code in SOFT_BLOCKER_ERROR_CODES:
+        return True
+
+    if error_code == "UserError" and (
+        "Marketplace Subscription purchase eligibility check failed" in detail
+        or "Marketplace purchases are disabled" in detail
+    ):
+        return True
+
+    return entry.get("requiresRegistration", False) and (
+        "registration" in detail.lower() or "gated access" in detail.lower()
+    )
 
 
 def skip_result(
@@ -455,10 +497,14 @@ def main(
                 )
             )
         except HttpResponseError as error:
-            hard_failures += 1
+            status = "blocked" if is_soft_blocker(entry, error) else "error"
+            if status == "error":
+                hard_failures += 1
             results.append(
                 DeploymentResult(
-                    name=name, status="error", detail=format_entry_error(entry, error)
+                    name=name,
+                    status=status,
+                    detail=format_entry_error(entry, error),
                 )
             )
         except Exception as error:  # noqa: BLE001
