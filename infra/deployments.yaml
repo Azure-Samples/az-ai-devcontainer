@@ -630,7 +630,7 @@
     version: "1"
   versionUpgradeOption: OnceCurrentVersionExpired
 
-# - name: Mistral-Nemo # Model not available in Sweden Central
+# - name: Mistral-Nemo # Requires marketplace purchase
 #   sku:
 #     name: GlobalStandard
 #     capacity: 1
