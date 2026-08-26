@@ -10,7 +10,7 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$repo_root"
 
 if command -v uv >/dev/null 2>&1; then
-  uv run python infra/scripts/deploy_models.py --mode hook
+  uv run python infra/scripts/models.py deploy --mode hook
 else
-  python3 infra/scripts/deploy_models.py --mode hook
+  python3 infra/scripts/models.py deploy --mode hook
 fi

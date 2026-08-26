@@ -31,6 +31,8 @@ SOFT_BLOCKER_ERROR_CODES = {
     "InvalidModelProviderData",
     "InvalidResourceProperties",
     "ServiceModelDeprecated",
+    "ServiceModelDeprecating",
+    "SpecialFeatureOrQuotaIdRequired",
 }
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CATALOG_PATH = REPO_ROOT / "infra" / "deployments.yaml"
@@ -401,6 +403,15 @@ def print_summary(results: list[DeploymentResult]) -> None:
     typer.echo(f"Summary: {summary}")
 
 
+def find_unmanaged_deployments(
+    catalog_entries: list[dict[str, Any]],
+    existing_deployments: dict[str, Deployment],
+) -> list[str]:
+    """Return deployed model names that are absent from the catalog."""
+    catalog_names = {str(entry["name"]) for entry in catalog_entries if "name" in entry}
+    return sorted(set(existing_deployments) - catalog_names)
+
+
 @app.command()
 def main(
     catalog: Annotated[
@@ -440,6 +451,12 @@ def main(
         typer.Option(
             hidden=True,
             help="Deprecated compatibility flag. Registration-required entries are attempted by default.",
+        ),
+    ] = False,
+    prune: Annotated[
+        bool,
+        typer.Option(
+            help="Delete live deployments that are not present in the catalog."
         ),
     ] = False,
 ) -> None:
@@ -514,6 +531,45 @@ def main(
                     name=name, status="error", detail=format_entry_error(entry, error)
                 )
             )
+
+    if prune:
+        for name in find_unmanaged_deployments(
+            catalog_entries,
+            existing_deployments,
+        ):
+            if settings.dry_run:
+                results.append(
+                    DeploymentResult(
+                        name=name,
+                        status="planned-delete",
+                        detail="deployment is not in the curated catalog",
+                    )
+                )
+                continue
+            if client is None:
+                raise RuntimeError("Client is required for live deletes.")
+            try:
+                client.deployments.begin_delete(
+                    settings.resource_group,
+                    settings.account_name,
+                    name,
+                ).result()
+                results.append(
+                    DeploymentResult(
+                        name=name,
+                        status="deleted",
+                        detail="deployment was not in the curated catalog",
+                    )
+                )
+            except Exception as error:  # noqa: BLE001
+                hard_failures += 1
+                results.append(
+                    DeploymentResult(
+                        name=name,
+                        status="error",
+                        detail=f"failed to delete unmanaged deployment: {error}",
+                    )
+                )
 
     print_summary(results)
     if hard_failures:

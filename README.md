@@ -73,30 +73,55 @@ azd up
 
 ## Pre-configured AI Models
 
-This template declares its default Azure AI Foundry model catalog in [`infra/deployments.yaml`](infra/deployments.yaml).
+This template keeps an intentionally small, curated Microsoft Foundry model catalog in [`infra/deployments.yaml`](infra/deployments.yaml). It is not a mirror of every model Azure exposes, but it is deliberately cross-provider — alongside the OpenAI/Microsoft defaults it includes one representative model from other providers available in this Foundry account/region (currently DeepSeek, MoonshotAI Kimi, and Meta Llama) so you can compare providers without hand-editing YAML. Adding a new provider's model may be blocked by things outside this repo's control:
 
-The Foundry account and project are provisioned by Bicep first. Model deployments are then reconciled in a separate post-provision step by [`infra/scripts/deploy_models.py`](infra/scripts/deploy_models.py), which is triggered automatically by AZD and can also be run manually.
+- **Marketplace purchase policy** — third-party models (e.g. Anthropic Claude, Cohere, Mistral non-OSS) are billed via Azure Marketplace. Sandbox/internal subscriptions often have marketplace purchases disabled by tenant policy (`UserError: Marketplace Subscription purchase eligibility check failed`) — this must be fixed by a tenant admin, not by this repo's scripts.
+- **Serverless-only SKUs** — some models (e.g. Alibaba `qwen3-32b`) aren't offered as a standard `GlobalStandard` Cognitive Services deployment at all; they require a separate Serverless API/Marketplace subscription resource that `models.py` does not manage.
+- **Per-model quota** — each model/region pair has its own Requests-Per-Minute or Tokens-Per-Minute quota; `preview`/`deploy --dry-run` will show `InsufficientQuota` if the catalog's requested capacity exceeds it. Lower `sku.capacity` in `deployments.yaml` to fit, or request a quota increase.
 
-You can refresh API-backed model metadata in [`infra/deployments.yaml`](infra/deployments.yaml) from the live Foundry account with [`infra/scripts/sync_deployments_catalog.py`](infra/scripts/sync_deployments_catalog.py). The sync script uses the Azure management `models` endpoint behind `az cognitiveservices account list-models` and updates the current catalog entries in place.
+The Foundry account and project are provisioned by Bicep first. AZD then runs the same model workflow available to operators through [`infra/scripts/models.py`](infra/scripts/models.py).
 
-To run the model deployment stage manually:
-
-```bash
-uv run python infra/scripts/deploy_models.py --mode manual
-```
-
-To refresh the catalog from Azure before deploying:
+Preview an upgrade before changing files or Azure:
 
 ```bash
-uv run python infra/scripts/sync_deployments_catalog.py --dry-run
-uv run python infra/scripts/sync_deployments_catalog.py
+uv run python infra/scripts/models.py preview
 ```
 
-The catalog sync preserves local curation fields such as `runModes`, `allowedRegions`, `requiresRegistration`, `registrationUrl`, and `notes`. Existing `sku.capacity` values are also preserved by default so the sync does not overwrite your chosen quota allocations. Use `--sync-capacity` only if you explicitly want to reset them to Azure's current default capacity. Use `--sync-available-capacity` to pull the currently available deployment capacity for each model in your target region from the live Azure capacity API.
+Apply the reviewed metadata refresh and reconcile deployments:
 
-`infra/scripts/deploy_models.py` now runs in best-effort mode for expected Azure-side deployment blockers. Models that are currently blocked by quota, deprecation, marketplace restrictions, missing provider metadata, or unsupported SKU/model combinations are reported as `blocked` and do not fail the whole reconciliation run. Unexpected errors still fail the command.
+```bash
+uv run python infra/scripts/models.py upgrade --apply
+```
 
-`--append-new` is intentionally not part of the normal workflow right now. Keep new model additions curated manually so each new entry can be reviewed for region limits, registration requirements, and deployment intent before it is committed to the catalog.
+For deployment-only checks or reconciliation:
+
+```bash
+uv run python infra/scripts/models.py deploy --dry-run
+uv run python infra/scripts/models.py deploy
+```
+
+The reconciler is non-destructive by default. To identify deployments that are
+no longer in the curated catalog:
+
+```bash
+uv run python infra/scripts/models.py deploy --dry-run --prune
+```
+
+After reviewing the `planned-delete` entries, remove them explicitly with
+`uv run python infra/scripts/models.py deploy --prune`.
+
+The sync preserves local curation fields and configured capacity by default. Add `--sync-capacity` to use Azure's default capacity, or `--sync-available-capacity` to use the currently available regional capacity. Review capacity changes carefully before applying them.
+
+To add a model, first confirm that its exact model/version supports the selected SKU and that the subscription has quota:
+
+```bash
+az cognitiveservices model list --location "$AZURE_LOCATION" --subscription "$AZURE_SUBSCRIPTION_ID"
+az cognitiveservices usage list --location "$AZURE_LOCATION" --subscription "$AZURE_SUBSCRIPTION_ID"
+```
+
+Then add one reviewed entry to `infra/deployments.yaml` and run the preview command. Do not bulk-append the live Azure catalog: it contains deprecated, gated, marketplace, and over-quota models that are not suitable defaults.
+
+Expected Azure-side blockers such as deprecating models, gated access, marketplace policy, and insufficient quota are reported as `blocked` without failing the whole AZD provision. Unexpected errors still fail.
 
 To skip the automatic post-provision rollout for an environment:
 
@@ -104,28 +129,10 @@ To skip the automatic post-provision rollout for an environment:
 azd env set DEPLOY_AI_FOUNDRY_MODELS false
 ```
 
-The active catalog includes a mix of OpenAI, Microsoft, and partner models. Some entries remain commented out because they are region-limited, require registration, or need extra access configuration.
-
-### Commented Out (available in other regions or require registration)
-
-Additional models are available but commented out in `deployments.yaml`. Uncomment to enable:
-
-| Provider | Models | Notes |
-|----------|--------|-------|
-| **DeepSeek** | DeepSeek-R1, DeepSeek-V3.1, DeepSeek-V3.2, DeepSeek-V3.2-Speciale | May require different region |
-| **Meta** | Llama-4-Maverick, Llama-3.2 Vision, Meta-Llama-3.x series | May require different region |
-| **Mistral AI** | Mistral-Large-2411/3, Mistral-Nemo, Ministral-3B, Codestral-2501 | May require different region |
-| **Cohere** | Cohere-command-a/r, embed-v-4-0 | May require different region |
-| **xAI** | grok-3, grok-3-mini, grok-4 series | May require different region |
-| **Microsoft** | Phi-4, Phi-3.5 series, MAI-DS-R1, model-router | May require different region |
-| **Moonshot AI** | Kimi-K2-Thinking | May require different region |
-| **OpenAI (Image/Video)** | gpt-image-1 series, sora, sora-2 | Require registration |
-| **Black Forest Labs** | FLUX.2-pro, FLUX.1-Kontext-pro, FLUX-1.1-pro | Image generation |
-
 > [!NOTE]
 > Model availability varies by Azure region. This template is tested in **Sweden Central**.
-> Some models (o3-pro, codex-mini, gpt-5.2-codex) are only available in East US2 & Sweden Central.
-> 
+> Always trust the live catalog and quota queries for the target subscription over static availability notes.
+>
 > For the latest model availability, see [Azure AI Foundry Models Documentation](https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure).
 
 ## Contents
@@ -148,5 +155,3 @@ Additional models are available but commented out in `deployments.yaml`. Uncomme
       - [Many others](.devcontainer/devcontainer.json)
   - `.gitignore` for Python
   - Open Source MIT `LICENSE`
-
-
