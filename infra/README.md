@@ -19,21 +19,37 @@ This template does not currently provision application registrations, secrets, o
 
 If you need authenticated application components, add them explicitly in your own infrastructure and application code rather than relying on a built-in `USE_AUTHENTICATION` workflow.
 
-## Service endpoints exposed through AZD
+## Foundry Tools endpoints and RBAC
 
 After provisioning, AZD writes Bicep outputs into the local environment file used by `azd env get-values`.
 
-- `CONTENTUNDERSTANDING_ENDPOINT` and `AZURE_CONTENT_UNDERSTANDING_ENDPOINT` always reuse the Foundry account endpoint because Azure Content Understanding uses the Microsoft Foundry resource endpoint.
-- `DOCUMENTINTELLIGENCE_ENDPOINT` and `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT` default to the same Foundry endpoint so you can start with a shared endpoint and no extra deployment.
+- `AZURE_AI_SERVICES_ENDPOINT` is the shared `AIServices` Foundry account endpoint.
+- `AZURE_AI_SERVICES_REGION` is the account location for SDKs such as Speech and Translator that also require a region.
+- `AZURE_CONTENT_UNDERSTANDING_ENDPOINT`, `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT`, `AZURE_CONTENT_SAFETY_ENDPOINT`, `AZURE_AI_VISION_ENDPOINT`, `AZURE_AI_LANGUAGE_ENDPOINT`, `AZURE_AI_SPEECH_ENDPOINT`, and `AZURE_AI_TRANSLATOR_ENDPOINT` are service-specific aliases for that same account.
+- `AZURE_CONTENT_UNDERSTANDING_API_VERSION` is the current supported REST API version (`2025-11-01`) for analyzer operations.
 
-If you want to override the Document Intelligence endpoint without changing the template, set it in the AZD environment before running `azd up`:
+The template disables local authentication and assigns the deployment principal
+the **Cognitive Services User** role directly on the shared account. This role
+grants `Microsoft.CognitiveServices/*` data actions, which is the
+least-privilege built-in role needed for passwordless tool API invocation. It
+also assigns **Storage Blob Data Contributor** on the template storage account
+for document input/output scenarios.
+
+Verify local passwordless Document Intelligence and Content Understanding access after provisioning:
+
+```bash
+uv run python infra/scripts/verify_foundry_tools.py
+```
+
+The shared-resource approach avoids duplicate resources. Use a dedicated
+single-service Document Intelligence resource only when you need isolation,
+different regional placement, or separate billing; override its endpoint
+without changing the template:
 
 ```bash
 azd env set DOCUMENTINTELLIGENCE_ENDPOINT https://<your-document-intelligence-resource>.cognitiveservices.azure.com/
 azd up
 ```
-
-This is the recommended path when you need a dedicated single-service Document Intelligence resource, such as Microsoft Entra ID authentication with the Document Intelligence SDK.
 
 ## Reusing existing resources
 

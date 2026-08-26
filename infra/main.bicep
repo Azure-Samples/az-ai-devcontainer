@@ -451,17 +451,59 @@ output AI_FOUNDRY_PROJECT_ID string = aiFoundryAccountProject.id
 @description('AI Foundry account endpoint')
 output AI_FOUNDRY_ENDPOINT string = _aiFoundryEndpoint
 
+@description('Shared Azure AI services endpoint for Foundry Tools')
+output AZURE_AI_SERVICES_ENDPOINT string = _aiFoundryEndpoint
+
+@description('Azure AI services region for SDKs that require it')
+output AZURE_AI_SERVICES_REGION string = empty(aiFoundryLocation) ? location : aiFoundryLocation
+
 @description('Content Understanding endpoint expected by the Azure SDKs')
 output CONTENTUNDERSTANDING_ENDPOINT string = _aiFoundryEndpoint
 
 @description('Content Understanding endpoint alias for Azure-oriented env naming')
 output AZURE_CONTENT_UNDERSTANDING_ENDPOINT string = _aiFoundryEndpoint
 
+@description('Content Understanding REST API version verified for the shared Foundry account')
+output CONTENT_UNDERSTANDING_API_VERSION string = '2025-11-01'
+
+@description('Content Understanding REST API version alias for Azure-oriented env naming')
+output AZURE_CONTENT_UNDERSTANDING_API_VERSION string = '2025-11-01'
+
 @description('Document Intelligence endpoint expected by the Azure SDKs')
 output DOCUMENTINTELLIGENCE_ENDPOINT string = _documentIntelligenceEndpoint
 
 @description('Document Intelligence endpoint alias for Azure-oriented env naming')
 output AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT string = _documentIntelligenceEndpoint
+
+@description('Content Safety endpoint on the shared Azure AI services resource')
+output CONTENT_SAFETY_ENDPOINT string = _aiFoundryEndpoint
+
+@description('Content Safety endpoint alias for Azure-oriented env naming')
+output AZURE_CONTENT_SAFETY_ENDPOINT string = _aiFoundryEndpoint
+
+@description('Vision endpoint on the shared Azure AI services resource')
+output VISION_ENDPOINT string = _aiFoundryEndpoint
+
+@description('Vision endpoint alias for Azure-oriented env naming')
+output AZURE_AI_VISION_ENDPOINT string = _aiFoundryEndpoint
+
+@description('Language endpoint on the shared Azure AI services resource')
+output LANGUAGE_ENDPOINT string = _aiFoundryEndpoint
+
+@description('Language endpoint alias for Azure-oriented env naming')
+output AZURE_AI_LANGUAGE_ENDPOINT string = _aiFoundryEndpoint
+
+@description('Speech endpoint on the shared Azure AI services resource')
+output SPEECH_ENDPOINT string = _aiFoundryEndpoint
+
+@description('Speech endpoint alias for Azure-oriented env naming')
+output AZURE_AI_SPEECH_ENDPOINT string = _aiFoundryEndpoint
+
+@description('Translator endpoint on the shared Azure AI services resource')
+output TRANSLATOR_ENDPOINT string = _aiFoundryEndpoint
+
+@description('Translator endpoint alias for Azure-oriented env naming')
+output AZURE_AI_TRANSLATOR_ENDPOINT string = _aiFoundryEndpoint
 
 @description('AI Foundry Agent Model Deployment Name')
 output AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME string = _aiFoundryAgentModelDeploymentName

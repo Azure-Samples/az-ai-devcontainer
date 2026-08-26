@@ -43,33 +43,62 @@ azd up
 
 🚀 You can start working straight away by modifying `notebooks/SampleNotebook.ipynb`!
 
-## Document Intelligence And Content Understanding
+## Foundry Tools Capabilities
 
-After `azd up`, the AZD environment includes SDK-friendly endpoint variables that the sample notebook already loads via `azd env get-values`:
+The template provisions one Microsoft Foundry `AIServices` resource and uses it
+as the shared Azure AI services resource. It does not create separate Document
+Intelligence, Content Safety, Speech, Vision, Language, or Translator accounts
+by default.
 
-- `CONTENTUNDERSTANDING_ENDPOINT` and `AZURE_CONTENT_UNDERSTANDING_ENDPOINT`
-- `DOCUMENTINTELLIGENCE_ENDPOINT` and `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT`
+| Capability | AZD endpoint variable | Notes |
+| --- | --- | --- |
+| Document Intelligence | `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT` | Prebuilt and custom document extraction |
+| Content Understanding | `AZURE_CONTENT_UNDERSTANDING_ENDPOINT` | Create analyzers when you have a document schema |
+| Content Safety | `AZURE_CONTENT_SAFETY_ENDPOINT` | Text and image moderation |
+| Vision | `AZURE_AI_VISION_ENDPOINT` | Image analysis and OCR |
+| Language | `AZURE_AI_LANGUAGE_ENDPOINT` | Text analytics, PII detection, and custom language |
+| Speech | `AZURE_AI_SPEECH_ENDPOINT` | Speech-to-text, text-to-speech, and diarization |
+| Translator | `AZURE_AI_TRANSLATOR_ENDPOINT` | Text and document translation |
 
-This template does not deploy any extra resource for these variables.
+All service-specific endpoint variables currently resolve to
+`AZURE_AI_SERVICES_ENDPOINT`; use `AZURE_AI_SERVICES_REGION` with SDKs that
+require a region. `AI_FOUNDRY_ENDPOINT` remains the endpoint for Foundry
+project and Content Understanding operations. Use
+`AZURE_CONTENT_UNDERSTANDING_API_VERSION` (`2025-11-01`) for Content
+Understanding REST calls.
 
-- For Azure Content Understanding, the documented SDK endpoint is your Microsoft Foundry resource endpoint, so this template reuses `AI_FOUNDRY_ENDPOINT` directly.
-- For Azure Document Intelligence, this template also defaults `DOCUMENTINTELLIGENCE_ENDPOINT` to the same Foundry endpoint so shared-resource access is available immediately.
+The deployment disables local/key authentication. The deployment principal is
+assigned **Cognitive Services User** directly on the Foundry resource, which
+grants the data-plane access required to invoke these APIs with Microsoft Entra
+ID. The template's storage account also grants that principal **Storage Blob
+Data Contributor** for document input and output.
 
-Use them from Python like this:
+For local development, authenticate through the Azure CLI/VS Code credential
+chain:
 
 ```python
-import os
+from azure.identity import DefaultAzureCredential
 
-content_understanding_endpoint = os.environ["CONTENTUNDERSTANDING_ENDPOINT"]
-document_intelligence_endpoint = os.environ["DOCUMENTINTELLIGENCE_ENDPOINT"]
+credential = DefaultAzureCredential()
 ```
 
-If you want to use Microsoft Entra ID with the Azure Document Intelligence SDK, Microsoft documentation requires a dedicated single-service Document Intelligence resource. In that case, set the endpoint you want to expose before provisioning:
+For an Azure-hosted workload, use its managed identity instead of
+`DefaultAzureCredential`, and assign that identity **Cognitive Services User**
+on the Foundry account plus the least-privilege storage data role it needs.
+
+After `azd up`, verify that the signed-in identity can call both Document
+Intelligence and Content Understanding without keys:
 
 ```bash
-azd env set DOCUMENTINTELLIGENCE_ENDPOINT https://<your-document-intelligence-resource>.cognitiveservices.azure.com/
-azd up
+uv run python infra/scripts/verify_foundry_tools.py
 ```
+
+The access-only baseline does not create a Content Understanding analyzer,
+custom Document Intelligence model, or sample document. Create those after you
+have a workload-specific schema and retention requirements. If you need
+service isolation, a different region, or independent billing, you can still
+override `DOCUMENTINTELLIGENCE_ENDPOINT` with a dedicated resource before
+provisioning.
 
 ## Pre-configured AI Models
 
