@@ -1,174 +1,78 @@
 # AI Agent Instructions
 
-This file provides guidance for AI agents (GitHub Copilot, Claude, etc.) working with this repository.
+## Project
 
-## Project Overview
+This repository is a Python 3.13 development-container template for Microsoft
+Foundry. It provisions Azure infrastructure with Bicep and Azure Developer CLI
+(`azd`) and includes a Jupyter notebook for experimentation.
 
-This is an **Azure AI DevContainer template** for Python-based AI development projects. It provides:
-- A pre-configured Development Container for VS Code and GitHub Codespaces
-- Azure infrastructure and Microsoft Foundry provisioning via Bicep and Azure Developer CLI (AZD)
-- Jupyter Notebook support for AI experimentation
-- Integration with Microsoft Foundry services
+Key locations:
 
-## Repository Structure
+- `.devcontainer/`: container configuration and lifecycle scripts
+- `infra/main.bicep`: Azure infrastructure
+- `infra/deployments.yaml`: curated Foundry model deployments
+- `infra/scripts/`: model maintenance and access-verification CLIs
+- `notebooks/`: clean, documented Jupyter samples
+- `tests/`: pytest tests for repository tooling
 
+## Tooling
+
+- Use `uv` for Python dependency management; never edit dependency declarations
+  or `uv.lock` manually.
+- Run Python with `uv run python <script>`.
+- Add runtime dependencies with `uv add <package>`.
+- Add development dependencies with `uv add --dev <package>`.
+- Use Ruff with an 88-character line length and pytest for tests.
+
+Common checks:
+
+```bash
+uv lock --check
+uv run ruff check .
+uv run ruff format --check .
+uv run pytest
+az bicep build --file infra/main.bicep
 ```
-.
-├── .devcontainer/          # DevContainer configuration
-│   ├── devcontainer.json   # Main configuration
-│   └── post-create.sh      # Setup script run after container creation
-├── .github/                # GitHub configuration
-│   └── copilot-instructions.md  # Copilot-specific guidelines
-├── .vscode/                # VS Code settings
-│   └── extensions.json     # Recommended extensions
-├── infra/                  # Azure infrastructure (Bicep)
-│   ├── main.bicep          # Main infrastructure definition
-│   ├── main.parameters.json # Parameters
-│   ├── deployments.yaml    # AI model deployment configs
-│   ├── hooks/              # AZD lifecycle hooks
-│   ├── scripts/            # Model catalog and deployment utilities
-│   └── abbreviations.json  # Resource naming abbreviations
-├── notebooks/              # Jupyter notebooks
-│   └── SampleNotebook.ipynb
-├── azure.yaml              # Azure Developer CLI configuration
-├── pyproject.toml          # Python project configuration (UV)
-└── README.md               # Project documentation
-```
 
-## File Locations
-
-- Infrastructure changes: `infra/*.bicep`
-- Python dependencies: `pyproject.toml`, managed with `uv add`
-- Notebooks: `notebooks/`
-- DevContainer configuration: `.devcontainer/`
-
-## Technology Stack
-
-| Category | Technology |
-|----------|------------|
-| Language | Python 3.13 |
-| Package Manager | [UV](https://docs.astral.sh/uv/) (preferred) |
-| Infrastructure | [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/) |
-| CLI Tools | Azure CLI (`az`), Azure Developer CLI (`azd`), GitHub CLI (`gh`) |
-| Cloud | Azure (AI Foundry, Storage, Search, App Insights) |
-| Container | DevContainers / GitHub Codespaces |
-
-Always use `uv` for dependency management but also to run commands in the proper
-environment. The DevContainer automatically sets up a Python virtual environment 
-and installs dependencies from `pyproject.toml` when the container is created.
-Run python commands with `uv run python <script>` to ensure they execute in 
-the correct environment. For Python tools use `uvx <tool>` (e.g. `uvx black .` to 
-format code with Black).
-
-## Coding Guidelines
+## Conventions
 
 ### Python
 
-1. **Style**: Follow PEP 8, use Ruff for formatting and linting (line length 88)
-2. **Imports**: Group standard library, third-party, and local imports (Ruff handles this automatically)
-3. **Type Hints**: Use type hints for function signatures
-4. **Docstrings**: Use Google-style docstrings
-5. **Dependencies**: Add via `uv add <package>`, never edit pyproject.toml directly
+- Follow PEP 8 and use type hints for function signatures.
+- Use Google-style docstrings for public functions.
+- Group standard-library, third-party, and local imports.
+- Keep CLI behavior explicit: surface errors and avoid broad silent fallbacks.
 
-```python
-# Example function format
-def process_data(input_data: dict[str, Any], *, verbose: bool = False) -> list[str]:
-    """Process input data and return results.
-    
-    Args:
-        input_data: Dictionary containing the data to process.
-        verbose: If True, print detailed progress.
-    
-    Returns:
-        List of processed string results.
-    
-    Raises:
-        ValueError: If input_data is empty.
-    """
-    ...
-```
+### Bicep
 
-### Bicep / Infrastructure
+- Prefer Azure Verified Modules.
+- Use resource abbreviations from `infra/abbreviations.json`.
+- Add `@description` to parameters and outputs.
+- Apply the `azd-env-name` and `solution` tags to provisioned resources.
+- Export values required by samples or downstream applications.
 
-1. **Naming**: Use abbreviations from `infra/abbreviations.json`
-2. **Modules**: Prefer Azure Verified Modules (AVM) from `br/public:avm/`
-3. **Parameters**: Document all parameters with `@description`
-4. **Outputs**: Export all values needed by applications
-5. **Tags**: Always include `azd-env-name` and `solution` tags
+### Shell
 
-### Shell Scripts
+- Start scripts with `#!/usr/bin/env bash` and `set -euo pipefail`.
+- Keep scripts idempotent and use the existing logging style.
 
-1. **Shebang**: Always start with `#!/usr/bin/env bash`
-2. **Strict Mode**: Always set `set -euo pipefail`
-3. **Idempotency**: Scripts should be safe to run multiple times
-4. **Logging**: Use color-coded log functions for visibility
+### Notebooks
 
-### Jupyter Notebooks
+- Load the active environment with `azd env get-values` in the first code cell.
+- Authenticate with `DefaultAzureCredential`.
+- Include Markdown explanations and clear all outputs before committing.
 
-1. **First Cell**: Always load environment from AZD (`azd env get-values`)
-2. **Credentials**: Use `DefaultAzureCredential()` for Azure authentication
-3. **Outputs**: Clear outputs before committing (keep notebooks clean)
-4. **Documentation**: Include markdown cells explaining each section
+## Safety and scope
 
-## Environment Variables
+- Never hardcode credentials; use environment variables and Azure Identity.
+- Preserve the repository structure unless a task explicitly changes it.
+- Follow existing patterns before adding new abstractions.
+- Update directly related documentation and tests with behavior changes.
+- Validate locally before committing.
 
-Key environment variables (set by AZD after `azd up`):
+## References
 
-| Variable | Description |
-|----------|-------------|
-| `AI_FOUNDRY_PROJECT_ENDPOINT` | Primary Azure AI Foundry project endpoint used by the sample notebook |
-| `AZURE_AI_FOUNDRY_PROJECT_ENDPOINT` | AI Foundry project endpoint |
-| `AI_FOUNDRY_PROJECT_NAME` | Azure AI Foundry project name |
-| `AI_FOUNDRY_NAME` | Azure AI Foundry account name |
-| `AI_FOUNDRY_ENDPOINT` | Azure AI Foundry account endpoint |
-| `AI_FOUNDRY_DEPLOYMENT_NAME` | Default model deployment name |
-| `AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME` | Fallback deployment name used by agent-oriented samples |
-| `AZURE_OPENAI_API_VERSION` | API version for OpenAI calls |
-| `AZURE_RESOURCE_GROUP` | Resource group that contains the deployed resources |
-| `AZURE_SUBSCRIPTION_ID` | Azure subscription that contains the deployed resources |
-| `AZURE_AI_SEARCH_ENDPOINT` | Azure AI Search endpoint (if enabled) |
-| `APPLICATIONINSIGHTS_CONNECTION_STRING` | App Insights connection |
-
-Load these in Python:
-```python
-from dotenv import load_dotenv
-load_dotenv()  # or use AZD env loading pattern from SampleNotebook.ipynb
-```
-
-## Common Tasks
-
-### Adding Python Dependencies
-```bash
-uv add <package-name>
-# For dev dependencies:
-uv add --dev <package-name>
-```
-
-### Running Azure Provisioning
-```bash
-azd auth login  # First time only
-azd up          # Provision and deploy
-azd down        # Tear down resources
-```
-
-### Working with Notebooks
-1. Open notebook in VS Code
-2. Select Python kernel from `.venv`
-3. Run first cell to load environment
-4. Develop interactively
-
-## Important Notes for Agents
-
-1. **Never hardcode credentials** - Always use environment variables or Azure Identity
-2. **Check existing patterns** - Look at existing code before generating new code
-3. **Preserve structure** - Don't reorganize files without explicit request
-4. **Test locally first** - Ensure code works in the DevContainer
-5. **Document changes** - Update relevant documentation when making changes
-6. **Use AVM modules** - For Bicep, prefer Azure Verified Modules over raw resources
-
-## Related Documentation
-
-- [Azure AI Foundry SDK](https://learn.microsoft.com/en-us/azure/ai-studio/how-to/develop/sdk-overview)
-- [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/)
-- [DevContainers Specification](https://containers.dev/)
-- [UV Package Manager](https://docs.astral.sh/uv/)
+- [Microsoft Foundry SDKs and endpoints](https://learn.microsoft.com/azure/foundry/how-to/develop/sdk-overview)
+- [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/)
+- [Development Containers](https://containers.dev/)
+- [uv](https://docs.astral.sh/uv/)

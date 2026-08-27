@@ -1,5 +1,5 @@
 {
-  "name": "Azure AI DevContainer",
+  "name": "Microsoft Foundry Dev Container",
   "image": "mcr.microsoft.com/devcontainers/python:3.13",
   "remoteUser": "vscode",
   "containerEnv": {

@@ -2,7 +2,7 @@
 
 ## Current deployment flow
 
-- The Foundry account, project, and supporting resources are provisioned by Bicep during `azd up` or `azd provision`.
+- The Foundry resource, project, and supporting resources are provisioned by Bicep during `azd up` or `azd provision`.
 - The intentionally small model catalog is sourced from `infra/deployments.yaml`.
 - Use `uv run python infra/scripts/models.py preview` to preview both live catalog metadata changes and deployment reconciliation.
 - Use `uv run python infra/scripts/models.py upgrade --apply` to refresh the curated entries and deploy them.
@@ -23,13 +23,13 @@ If you need authenticated application components, add them explicitly in your ow
 
 After provisioning, AZD writes Bicep outputs into the local environment file used by `azd env get-values`.
 
-- `AZURE_AI_SERVICES_ENDPOINT` is the shared `AIServices` Foundry account endpoint.
-- `AZURE_AI_SERVICES_REGION` is the account location for SDKs such as Speech and Translator that also require a region.
+- `AZURE_AI_SERVICES_ENDPOINT` is the shared `AIServices` Foundry resource endpoint.
+- `AZURE_AI_SERVICES_REGION` is the resource location for SDKs such as Speech and Translator that also require a region.
 - `AZURE_CONTENT_UNDERSTANDING_ENDPOINT`, `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT`, `AZURE_CONTENT_SAFETY_ENDPOINT`, `AZURE_AI_VISION_ENDPOINT`, `AZURE_AI_LANGUAGE_ENDPOINT`, `AZURE_AI_SPEECH_ENDPOINT`, and `AZURE_AI_TRANSLATOR_ENDPOINT` are service-specific aliases for that same account.
 - `AZURE_CONTENT_UNDERSTANDING_API_VERSION` is the current supported REST API version (`2025-11-01`) for analyzer operations.
 
 The template disables local authentication and assigns the deployment principal
-the **Cognitive Services User** role directly on the shared account. This role
+the **Cognitive Services User** role directly on the shared resource. This role
 grants `Microsoft.CognitiveServices/*` data actions, which is the
 least-privilege built-in role needed for passwordless tool API invocation. It
 also assigns **Storage Blob Data Contributor** on the template storage account
@@ -53,7 +53,7 @@ azd up
 
 ## Reusing existing resources
 
-### Reusing an existing Azure AI Foundry resource
+### Reusing an existing Microsoft Foundry resource
 
 ```bash
 azd env new _new_environment_name_
@@ -63,7 +63,9 @@ azd env set AI_FOUNDRY_ENDPOINT _existing_ai_foundry_endpoint_
 azd env set AI_FOUNDRY_API_VERSION _existing_ai_foundry_api_version_
 ```
 
-The template still creates a project under the existing Foundry resource. The post-provision reconciler then ensures the selected model deployments exist on that resource.
+The template still creates a project under the existing Foundry resource. The
+post-provision reconciler then ensures the selected model deployments exist on
+that resource.
 
 ### Reusing an existing Azure AI Search Service
 

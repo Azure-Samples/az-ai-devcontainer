@@ -231,7 +231,7 @@ module aiFoundryAccount 'br/public:avm/res/cognitive-services/account:0.14.2' = 
         roleDefinitionIdOrName: 'Cognitive Services User'
         principalType: 'User'
       }
-      // See also https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/rbac-azure-ai-foundry
+      // See https://learn.microsoft.com/azure/foundry/concepts/rbac-foundry
     ]
   }
 }
@@ -256,7 +256,7 @@ resource aiFoundryAccountAppInsightConnection 'Microsoft.CognitiveServices/accou
     }
   }
   dependsOn: [
-    aiFoundryAccount // Ensure the AI Foundry account is created before the project
+    aiFoundryAccount // Ensure the Foundry resource is created before the project
   ]
 }
 
@@ -269,7 +269,7 @@ resource aiFoundryAccountProject 'Microsoft.CognitiveServices/accounts/projects@
 
   properties: {}
   dependsOn: [
-    aiFoundryAccount // Ensure the AI Foundry account is created before the project
+    aiFoundryAccount // Ensure the Foundry resource is created before the project
   ]
 }
 
@@ -411,15 +411,15 @@ output USE_EXISTING_AI_SEARCH bool = useExistingAiSearch
 @description('Principal ID of the user running the deployment')
 output AZURE_PRINCIPAL_ID string = azurePrincipalId
 
-/* -------------------------- Azure AI Foundry ----------------------------- */
+/* -------------------------- Microsoft Foundry ---------------------------- */
 
 @description('Azure AI Project Endpoint')
 output AI_FOUNDRY_PROJECT_ENDPOINT string = _aiFoundryProjectEndpoint
 
-@description('Azure AI Foundry project endpoint')
+@description('Microsoft Foundry project endpoint')
 output AZURE_AI_FOUNDRY_PROJECT_ENDPOINT string = _aiFoundryProjectEndpoint
 
-@description('Azure AI Foundry Project Endpoint - Base URL for API calls to AI Foundry Project')
+@description('Microsoft Foundry project endpoint used by agent clients')
 // Duplicate of AI_FOUNDRY_PROJECT_ENDPOINT because it is used by SK; 
 // https://learn.microsoft.com/en-us/semantic-kernel/frameworks/agent/agent-types/azure-ai-agent
 output AZURE_AI_AGENT_ENDPOINT string = _aiFoundryProjectEndpoint
@@ -433,7 +433,7 @@ output AI_FOUNDRY_PROJECT_NAME string = _aiFoundryAccountProjectName
 @description('AI Foundry Project resource ID')
 output AI_FOUNDRY_PROJECT_ID string = aiFoundryAccountProject.id
 
-@description('AI Foundry account endpoint')
+@description('Microsoft Foundry resource endpoint')
 output AI_FOUNDRY_ENDPOINT string = _aiFoundryEndpoint
 
 @description('Shared Azure AI services endpoint for Foundry Tools')
@@ -448,7 +448,7 @@ output CONTENTUNDERSTANDING_ENDPOINT string = _aiFoundryEndpoint
 @description('Content Understanding endpoint alias for Azure-oriented env naming')
 output AZURE_CONTENT_UNDERSTANDING_ENDPOINT string = _aiFoundryEndpoint
 
-@description('Content Understanding REST API version verified for the shared Foundry account')
+@description('Content Understanding REST API version verified for the shared Foundry resource')
 output CONTENT_UNDERSTANDING_API_VERSION string = '2025-11-01'
 
 @description('Content Understanding REST API version alias for Azure-oriented env naming')

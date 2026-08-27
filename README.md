@@ -1,10 +1,11 @@
-# Azure AI DevContainer Template
+# Microsoft Foundry Dev Container Template
 
-This repository is a template for working in Development Containers or GitHub Codespaces with Python, Azure AI Foundry, and Jupyter notebooks.
+This repository is a template for working in Development Containers or GitHub
+Codespaces with Python, Microsoft Foundry, and Jupyter notebooks.
 
 Feedback and bug reports are welcome. Please open a GitHub issue if you find something that needs fixing or improvement.
 
-![DevContainer Picture](aigbb-devcontainer.png)
+![Microsoft Foundry development container](microsoft-foundry-devcontainer.png)
 
 ## Getting Started
 
@@ -46,7 +47,7 @@ azd up
 ## Foundry Tools Capabilities
 
 The template provisions one Microsoft Foundry `AIServices` resource and uses it
-as the shared Azure AI services resource. It does not create separate Document
+as the shared Foundry Tools resource. It does not create separate Document
 Intelligence, Content Safety, Speech, Vision, Language, or Translator accounts
 by default.
 
@@ -63,7 +64,7 @@ by default.
 All service-specific endpoint variables currently resolve to
 `AZURE_AI_SERVICES_ENDPOINT`; use `AZURE_AI_SERVICES_REGION` with SDKs that
 require a region. `AI_FOUNDRY_ENDPOINT` remains the endpoint for Foundry
-project and Content Understanding operations. Use
+resource and Content Understanding operations. Use
 `AZURE_CONTENT_UNDERSTANDING_API_VERSION` (`2025-11-01`) for Content
 Understanding REST calls.
 
@@ -84,7 +85,7 @@ credential = DefaultAzureCredential()
 
 For an Azure-hosted workload, use its managed identity instead of
 `DefaultAzureCredential`, and assign that identity **Cognitive Services User**
-on the Foundry account plus the least-privilege storage data role it needs.
+on the Foundry resource plus the least-privilege storage data role it needs.
 
 After `azd up`, verify that the signed-in identity can call both Document
 Intelligence and Content Understanding without keys:
@@ -102,13 +103,21 @@ provisioning.
 
 ## Pre-configured AI Models
 
-This template keeps an intentionally small, curated Microsoft Foundry model catalog in [`infra/deployments.yaml`](infra/deployments.yaml). It is not a mirror of every model Azure exposes, but it is deliberately cross-provider — alongside the OpenAI/Microsoft defaults it includes one representative model from other providers available in this Foundry account/region (currently DeepSeek, MoonshotAI Kimi, and Meta Llama) so you can compare providers without hand-editing YAML. Adding a new provider's model may be blocked by things outside this repo's control:
+This template keeps an intentionally small, curated Microsoft Foundry model
+catalog in [`infra/deployments.yaml`](infra/deployments.yaml). It is not a
+mirror of every model Azure exposes, but it is deliberately cross-provider.
+Alongside the OpenAI/Microsoft defaults, it includes representative models from
+other providers available on this Foundry resource and region so you can
+compare providers without hand-editing YAML. Adding a new provider's model may
+be blocked by things outside this repository's control:
 
 - **Marketplace purchase policy** — third-party models (e.g. Anthropic Claude, Cohere, Mistral non-OSS) are billed via Azure Marketplace. Sandbox/internal subscriptions often have marketplace purchases disabled by tenant policy (`UserError: Marketplace Subscription purchase eligibility check failed`) — this must be fixed by a tenant admin, not by this repo's scripts.
 - **Serverless-only SKUs** — some models (e.g. Alibaba `qwen3-32b`) aren't offered as a standard `GlobalStandard` Cognitive Services deployment at all; they require a separate Serverless API/Marketplace subscription resource that `models.py` does not manage.
 - **Per-model quota** — each model/region pair has its own Requests-Per-Minute or Tokens-Per-Minute quota; `preview`/`deploy --dry-run` will show `InsufficientQuota` if the catalog's requested capacity exceeds it. Lower `sku.capacity` in `deployments.yaml` to fit, or request a quota increase.
 
-The Foundry account and project are provisioned by Bicep first. AZD then runs the same model workflow available to operators through [`infra/scripts/models.py`](infra/scripts/models.py).
+The Foundry resource and project are provisioned by Bicep first. AZD then runs
+the same model workflow available to operators through
+[`infra/scripts/models.py`](infra/scripts/models.py).
 
 Preview an upgrade before changing files or Azure:
 
@@ -162,11 +171,13 @@ azd env set DEPLOY_AI_FOUNDRY_MODELS false
 > Model availability varies by Azure region. This template is tested in **Sweden Central**.
 > Always trust the live catalog and quota queries for the target subscription over static availability notes.
 >
-> For the latest model availability, see [Azure AI Foundry Models Documentation](https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure).
+> For the latest model availability, see
+> [Microsoft Foundry model availability](https://learn.microsoft.com/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure).
 
 ## Contents
 
-  - `notebooks/SampleNotebook.ipynb` contains a sample for using [Azure AI Foundry SDK](https://learn.microsoft.com/en-us/azure/ai-studio/how-to/develop/sdk-overview)
+  - `notebooks/SampleNotebook.ipynb` contains a sample using the
+    [Microsoft Foundry SDK](https://learn.microsoft.com/azure/foundry/how-to/develop/sdk-overview)
   - `pyproject.toml` manages the Python project configuration. Dependencies are installed during container setup by `.devcontainer/post-create.sh`, which runs `uv sync`.
   - `.devcontainer/devcontainer.json` a [Development Container](https://containers.dev/) (works also as a [GitHub Codespace](https://github.com/features/codespaces)) configuration file that includes:
     - Features:
