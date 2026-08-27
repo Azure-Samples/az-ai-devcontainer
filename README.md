@@ -179,8 +179,8 @@ azd env set DEPLOY_AI_FOUNDRY_MODELS false
       - several Visual Studio Code extensions for Azure
       - a YAML extension
       - [Jupyter Notebooks](https://code.visualstudio.com/docs/datascience/jupyter-notebooks)
-      - [UV](https://docs.astral.sh/uv/) for Python dependency management
-      - [Starship](https://starship.rs) to manage the terminal prompt.
       - [Many others](.devcontainer/devcontainer.json)
+    - Setup tools:
+      - [UV](https://docs.astral.sh/uv/) for Python dependency management
   - `.gitignore` for Python
   - Open Source MIT `LICENSE`

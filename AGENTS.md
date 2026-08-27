@@ -35,6 +35,13 @@ This is an **Azure AI DevContainer template** for Python-based AI development pr
 └── README.md               # Project documentation
 ```
 
+## File Locations
+
+- Infrastructure changes: `infra/*.bicep`
+- Python dependencies: `pyproject.toml`, managed with `uv add`
+- Notebooks: `notebooks/`
+- DevContainer configuration: `.devcontainer/`
+
 ## Technology Stack
 
 | Category | Technology |

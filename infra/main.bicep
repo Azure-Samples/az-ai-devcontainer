@@ -157,8 +157,6 @@ var _azureAiSearchName = useExistingAiSearch
 @description('Model deployment configurations')
 var deployments = loadYamlContent('./deployments.yaml')
 
-var _aiFoundryAgentModelDeploymentName = deployments[0].name
-
 @description('AI Foundry Endpoint - Base URL for API calls to AI Foundry')
 var _aiFoundryEndpoint = useExistingAiFoundry ? aiFoundryEndpoint : aiFoundryAccount!.outputs.endpoint
 
@@ -275,7 +273,7 @@ resource aiFoundryAccountProject 'Microsoft.CognitiveServices/accounts/projects@
   ]
 }
 
-@description('Azure OpenAI Model Deployment Name')
+@description('Default model deployment name')
 var _aiFoundryDeploymentName = deployments[0].name
 
 // ------------------------------ Storage Account ------------------------------
@@ -368,19 +366,6 @@ module aiSearchService 'br/public:avm/res/search/search-service:0.12.0' = if (us
     ]
   }
 }
-
-/* ------------------------------ CosmosDB  --------------------------------- */
-
-/* module cosmosDbAccount 'br/public:avm/res/document-db/database-account:0.12.0' = {
-  name: '${deployment().name}-cosmosDbAccount'
-  params: {
-    name: _cosmosDbAccountName
-    location: location
-    sqlRoleAssignmentsPrincipalIds: [
-      azurePrincipalId
-    ]
-  }
-} */
 
 /* ---------------------------- Observability  ------------------------------ */
 
@@ -506,7 +491,7 @@ output TRANSLATOR_ENDPOINT string = _aiFoundryEndpoint
 output AZURE_AI_TRANSLATOR_ENDPOINT string = _aiFoundryEndpoint
 
 @description('AI Foundry Agent Model Deployment Name')
-output AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME string = _aiFoundryAgentModelDeploymentName
+output AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME string = _aiFoundryDeploymentName
 
 @description('AI Foundry API Version - API version to use when calling AI Foundry')
 output AI_FOUNDRY_API_VERSION string = _aiFoundryApiVersion
@@ -516,9 +501,6 @@ output AZURE_OPENAI_API_VERSION string = _azureOpenAiApiVersion
 
 @description('Default deployment name from the declared model catalog')
 output AI_FOUNDRY_DEPLOYMENT_NAME string = _aiFoundryDeploymentName
-
-@description('Declared model deployment catalog loaded from infra/deployments.yaml')
-output AI_FOUNDRY_DEPLOYMENTS object[] = deployments
 
 /* ------------------------------ AI Search --------------------------------- */
 
@@ -549,9 +531,3 @@ output AZURE_LOG_ANALYTICS_WORKSPACE_NAME string = logAnalyticsWorkspace.outputs
 
 @description('Application Insights connection string')
 output APPLICATIONINSIGHTS_CONNECTION_STRING string = appInsightsComponent.outputs.connectionString
-
-@description('Semantic Kernel Diagnostics')
-output SEMANTICKERNEL_EXPERIMENTAL_GENAI_ENABLE_OTEL_DIAGNOSTICS bool = true
-
-@description('Semantic Kernel Diagnostics: if set, content of the messages is traced. Set to false in production')
-output SEMANTICKERNEL_EXPERIMENTAL_GENAI_ENABLE_OTEL_DIAGNOSTICS_SENSITIVE bool = true
