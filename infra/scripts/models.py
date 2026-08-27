@@ -3,13 +3,20 @@
 
 from __future__ import annotations
 
-import argparse
 import subprocess
 import sys
 from pathlib import Path
+from typing import Annotated, Literal
+
+import typer
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS_DIR = Path(__file__).resolve().parent
+app = typer.Typer(
+    add_completion=False,
+    help="Preview, update, and reconcile the curated Foundry model catalog.",
+    pretty_exceptions_show_locals=False,
+)
 
 
 def run_script(script: str, *arguments: str) -> None:
@@ -31,136 +38,126 @@ def run_script(script: str, *arguments: str) -> None:
         raise SystemExit(result.returncode)
 
 
-def parse_args() -> argparse.Namespace:
-    """Parse command-line arguments."""
-    parser = argparse.ArgumentParser(
-        description=(
-            "Preview, update, and reconcile the curated Foundry model catalog."
-        )
-    )
-    subparsers = parser.add_subparsers(dest="command", required=True)
-
-    preview = subparsers.add_parser(
-        "preview",
-        help="Preview catalog metadata changes and deployment reconciliation.",
-    )
-    preview.add_argument(
-        "--sync-available-capacity",
-        action="store_true",
-        help="Preview capacities currently available in the target region.",
-    )
-
-    sync = subparsers.add_parser(
-        "sync",
-        help="Refresh curated entries from the live account model catalog.",
-    )
-    sync.add_argument(
-        "--sync-capacity",
-        action="store_true",
-        help="Replace configured capacities with Azure's default capacities.",
-    )
-    sync.add_argument(
-        "--sync-available-capacity",
-        action="store_true",
-        help="Replace capacities with currently available regional capacity.",
-    )
-
-    deploy = subparsers.add_parser(
-        "deploy",
-        help="Reconcile the curated catalog with the Foundry account.",
-    )
-    deploy.add_argument("--mode", choices=("manual", "hook"), default="manual")
-    deploy.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Report deployment changes without applying them.",
-    )
-    deploy.add_argument(
-        "--prune",
-        action="store_true",
-        help="Delete deployments absent from the curated catalog.",
-    )
-
-    upgrade = subparsers.add_parser(
-        "upgrade",
-        help="Refresh catalog metadata, then reconcile deployments.",
-    )
-    upgrade.add_argument(
-        "--apply",
-        action="store_true",
-        help="Write catalog changes and apply deployment changes.",
-    )
-    upgrade.add_argument(
-        "--sync-capacity",
-        action="store_true",
-        help="Replace configured capacities with Azure's default capacities.",
-    )
-    upgrade.add_argument(
-        "--sync-available-capacity",
-        action="store_true",
-        help="Replace capacities with currently available regional capacity.",
-    )
-    upgrade.add_argument(
-        "--prune",
-        action="store_true",
-        help="Delete deployments absent from the curated catalog when applying.",
-    )
-
-    return parser.parse_args()
-
-
-def sync_arguments(args: argparse.Namespace, *, dry_run: bool) -> list[str]:
+def sync_arguments(
+    *,
+    dry_run: bool,
+    sync_capacity: bool,
+    sync_available_capacity: bool,
+) -> list[str]:
     """Build arguments for catalog synchronization."""
     arguments: list[str] = []
     if dry_run:
         arguments.append("--dry-run")
-    if getattr(args, "sync_capacity", False):
+    if sync_capacity:
         arguments.append("--sync-capacity")
-    if getattr(args, "sync_available_capacity", False):
+    if sync_available_capacity:
         arguments.append("--sync-available-capacity")
     return arguments
 
 
-def main() -> None:
-    """Run the selected model workflow."""
-    args = parse_args()
-
-    if args.command == "preview":
-        run_script(
-            "sync_deployments_catalog.py",
-            *sync_arguments(args, dry_run=True),
-        )
-        run_script("deploy_models.py", "--mode", "manual", "--dry-run")
-        return
-
-    if args.command == "sync":
-        run_script(
-            "sync_deployments_catalog.py",
-            *sync_arguments(args, dry_run=False),
-        )
-        return
-
-    if args.command == "deploy":
-        arguments = ["--mode", args.mode]
-        if args.dry_run:
-            arguments.append("--dry-run")
-        if args.prune:
-            arguments.append("--prune")
-        run_script("deploy_models.py", *arguments)
-        return
-
-    dry_run = not args.apply
+@app.command()
+def preview(
+    sync_available_capacity: Annotated[
+        bool,
+        typer.Option(
+            help="Preview capacities currently available in the target region."
+        ),
+    ] = False,
+) -> None:
+    """Preview catalog metadata changes and deployment reconciliation."""
     run_script(
         "sync_deployments_catalog.py",
-        *sync_arguments(args, dry_run=dry_run),
+        *sync_arguments(
+            dry_run=True,
+            sync_capacity=False,
+            sync_available_capacity=sync_available_capacity,
+        ),
+    )
+    run_script("deploy_models.py", "--mode", "manual", "--dry-run")
+
+
+@app.command("sync")
+def sync_catalog(
+    sync_capacity: Annotated[
+        bool,
+        typer.Option(help="Replace configured capacities with Azure defaults."),
+    ] = False,
+    sync_available_capacity: Annotated[
+        bool,
+        typer.Option(help="Use currently available regional capacity."),
+    ] = False,
+) -> None:
+    """Refresh curated entries from the live resource model catalog."""
+    run_script(
+        "sync_deployments_catalog.py",
+        *sync_arguments(
+            dry_run=False,
+            sync_capacity=sync_capacity,
+            sync_available_capacity=sync_available_capacity,
+        ),
+    )
+
+
+@app.command()
+def deploy(
+    mode: Annotated[
+        Literal["manual", "hook"],
+        typer.Option(help="Execution mode used for catalog filtering."),
+    ] = "manual",
+    dry_run: Annotated[
+        bool,
+        typer.Option(help="Report deployment changes without applying them."),
+    ] = False,
+    prune: Annotated[
+        bool,
+        typer.Option(help="Delete deployments absent from the curated catalog."),
+    ] = False,
+) -> None:
+    """Reconcile the curated catalog with the Foundry resource."""
+    arguments = ["--mode", mode]
+    if dry_run:
+        arguments.append("--dry-run")
+    if prune:
+        arguments.append("--prune")
+    run_script("deploy_models.py", *arguments)
+
+
+@app.command()
+def upgrade(
+    apply: Annotated[
+        bool,
+        typer.Option(help="Write catalog changes and apply deployment changes."),
+    ] = False,
+    sync_capacity: Annotated[
+        bool,
+        typer.Option(help="Replace configured capacities with Azure defaults."),
+    ] = False,
+    sync_available_capacity: Annotated[
+        bool,
+        typer.Option(help="Use currently available regional capacity."),
+    ] = False,
+    prune: Annotated[
+        bool,
+        typer.Option(help="Delete deployments absent from the catalog when applying."),
+    ] = False,
+) -> None:
+    """Refresh catalog metadata, then reconcile deployments."""
+    dry_run = not apply
+    run_script(
+        "sync_deployments_catalog.py",
+        *sync_arguments(
+            dry_run=dry_run,
+            sync_capacity=sync_capacity,
+            sync_available_capacity=sync_available_capacity,
+        ),
     )
     deploy_arguments = ["--mode", "manual"]
     if dry_run:
         deploy_arguments.append("--dry-run")
-    if args.prune:
+    if prune:
         deploy_arguments.append("--prune")
     run_script("deploy_models.py", *deploy_arguments)
 
 
 if __name__ == "__main__":
-    main()
+    app()

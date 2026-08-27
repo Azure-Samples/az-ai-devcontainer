@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reconcile Azure AI Foundry model deployments from infra/deployments.yaml."""
+"""Reconcile Microsoft Foundry model deployments from infra/deployments.yaml."""
 
 from __future__ import annotations
 
@@ -446,13 +446,6 @@ def main(
     location: Annotated[
         str | None, typer.Option(help="Override AZURE_LOCATION.")
     ] = None,
-    allow_registration_required: Annotated[
-        bool,
-        typer.Option(
-            hidden=True,
-            help="Deprecated compatibility flag. Registration-required entries are attempted by default.",
-        ),
-    ] = False,
     prune: Annotated[
         bool,
         typer.Option(
@@ -460,8 +453,6 @@ def main(
         ),
     ] = False,
 ) -> None:
-    del allow_registration_required
-
     try:
         settings = build_settings(
             catalog=catalog,

@@ -34,13 +34,6 @@ Repository = "https://github.com/Azure-Samples/az-ai-devcontainer"
 Issues = "https://github.com/Azure-Samples/az-ai-devcontainer/issues"
 Documentation = "https://github.com/Azure-Samples/az-ai-devcontainer#readme"
 
-[project.optional-dependencies]
-dev = [
-    "ruff>=0.8.0",
-    "pytest>=8.0.0",
-    "pytest-cov>=5.0.0",
-]
-
 [tool.ruff]
 line-length = 88
 target-version = "py313"
@@ -64,3 +57,10 @@ ignore = [
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=5.0.0",
+    "ruff>=0.8.0",
+]

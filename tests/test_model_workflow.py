@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 from types import ModuleType
 
+import pytest
 from azure.core.exceptions import HttpResponseError
 from azure.mgmt.cognitiveservices.models import Deployment
 
@@ -73,3 +74,20 @@ def test_unmanaged_deployments_are_found_for_explicit_pruning() -> None:
         [{"name": "gpt-5.4-mini"}],
         existing,
     ) == ["legacy-model"]
+
+
+def test_model_workflow_forwards_deploy_options(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The Typer facade must preserve deployment mode and safety options."""
+    module = load_script("models.py")
+    calls: list[tuple[str, ...]] = []
+    monkeypatch.setattr(
+        module,
+        "run_script",
+        lambda script, *arguments: calls.append((script, *arguments)),
+    )
+
+    module.deploy(mode="hook", dry_run=True, prune=True)
+
+    assert calls == [("deploy_models.py", "--mode", "hook", "--dry-run", "--prune")]

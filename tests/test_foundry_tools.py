@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import io
 import sys
 from pathlib import Path
 from types import ModuleType
@@ -64,3 +65,38 @@ def test_missing_endpoint_is_reported(
 
     with pytest.raises(ValueError, match="No endpoint configured"):
         module.resolve_endpoint(None)
+
+
+def test_foundry_tools_requests_use_bearer_token(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Foundry Tools requests must authenticate with the acquired token."""
+    module = load_script()
+    requests = []
+
+    class Response(io.BytesIO):
+        def __enter__(self) -> Response:
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            self.close()
+
+    def fake_urlopen(request: object, *, timeout: int) -> Response:
+        requests.append(request)
+        assert timeout == 30
+        return Response(b'{"value": []}')
+
+    monkeypatch.setattr(module, "urlopen", fake_urlopen)
+
+    assert module.list_document_models("https://foundry.example", "test-token") == 0
+    assert (
+        module.list_content_understanding_analyzers(
+            "https://foundry.example", "test-token"
+        )
+        == 0
+    )
+    assert len(requests) == 2
+    assert all(
+        request.get_header("Authorization") == "Bearer test-token"
+        for request in requests
+    )

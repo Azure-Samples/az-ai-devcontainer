@@ -3,13 +3,13 @@
 
 from __future__ import annotations
 
-import argparse
 import json
 import os
-import sys
+from typing import Annotated
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+import typer
 from azure.core.exceptions import ClientAuthenticationError
 from azure.identity import DefaultAzureCredential
 
@@ -52,43 +52,31 @@ def resolve_endpoint(explicit_endpoint: str | None) -> str:
 
 
 def get_bearer_token() -> str:
-    """Get an Entra bearer token for Azure AI services.
-
-    Returns:
-        A bearer token accepted by Azure AI services data-plane APIs.
-
-    Raises:
-        ClientAuthenticationError: If the active Azure identity cannot get a token.
-    """
+    """Get an Entra bearer token for Foundry Tools."""
     return DefaultAzureCredential().get_token(COGNITIVE_SERVICES_SCOPE).token
 
 
-def list_document_models(endpoint: str, token: str) -> int:
-    """List Document Intelligence models using an Entra bearer token.
-
-    Args:
-        endpoint: Document Intelligence or Foundry shared-resource endpoint.
-        token: Microsoft Entra bearer token for Azure AI services.
-
-    Returns:
-        The number of models returned by the API.
-
-    Raises:
-        ClientAuthenticationError: If the active Azure identity cannot get a token.
-        HTTPError: If the endpoint rejects the authenticated request.
-        URLError: If the endpoint cannot be reached.
-        ValueError: If the API response has no model list.
-    """
+def get_json(url: str, token: str) -> object:
+    """Get a JSON payload from a Foundry Tools endpoint."""
     request = Request(
+        url,
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    with urlopen(request, timeout=30) as response:
+        return json.load(response)
+
+
+def list_document_models(endpoint: str, token: str) -> int:
+    """List Document Intelligence models using an Entra bearer token."""
+    payload = get_json(
         (
             f"{endpoint}/documentintelligence/documentModels"
             f"?api-version={DOCUMENT_INTELLIGENCE_API_VERSION}"
         ),
-        headers={"Authorization": f"Bearer {token}"},
+        token,
     )
-    with urlopen(request, timeout=30) as response:
-        payload = json.load(response)
-
+    if not isinstance(payload, dict):
+        raise ValueError("Document Intelligence response was not a JSON object.")
     models = payload.get("value")
     if not isinstance(models, list):
         raise ValueError("Document Intelligence response did not contain a model list.")
@@ -96,30 +84,16 @@ def list_document_models(endpoint: str, token: str) -> int:
 
 
 def list_content_understanding_analyzers(endpoint: str, token: str) -> int:
-    """List Content Understanding analyzers using an Entra bearer token.
-
-    Args:
-        endpoint: Content Understanding or Foundry shared-resource endpoint.
-        token: Microsoft Entra bearer token for Azure AI services.
-
-    Returns:
-        The number of analyzers returned by the API.
-
-    Raises:
-        HTTPError: If the endpoint rejects the authenticated request.
-        URLError: If the endpoint cannot be reached.
-        ValueError: If the API response has no analyzer list.
-    """
-    request = Request(
+    """List Content Understanding analyzers using an Entra bearer token."""
+    payload = get_json(
         (
             f"{endpoint}/contentunderstanding/analyzers"
             f"?api-version={CONTENT_UNDERSTANDING_API_VERSION}"
         ),
-        headers={"Authorization": f"Bearer {token}"},
+        token,
     )
-    with urlopen(request, timeout=30) as response:
-        payload = json.load(response)
-
+    if not isinstance(payload, dict):
+        raise ValueError("Content Understanding response was not a JSON object.")
     analyzers = payload.get("value")
     if not isinstance(analyzers, list):
         raise ValueError(
@@ -128,44 +102,33 @@ def list_content_understanding_analyzers(endpoint: str, token: str) -> int:
     return len(analyzers)
 
 
-def parse_args() -> argparse.Namespace:
-    """Parse command-line arguments."""
-    parser = argparse.ArgumentParser(
-        description=(
-            "Verify passwordless Document Intelligence access on the shared "
-            "Microsoft Foundry resource."
-        )
-    )
-    parser.add_argument(
-        "--endpoint",
-        help=(
-            "Document Intelligence endpoint. Defaults to "
-            "AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT, DOCUMENTINTELLIGENCE_ENDPOINT, "
-            "AZURE_AI_SERVICES_ENDPOINT, or AI_FOUNDRY_ENDPOINT."
+def main(
+    endpoint: Annotated[
+        str | None,
+        typer.Option(
+            help=(
+                "Document Intelligence endpoint. Defaults to the configured "
+                "Foundry Tools endpoint."
+            )
         ),
-    )
-    return parser.parse_args()
-
-
-def main() -> int:
-    """Run non-destructive shared Foundry Tools access checks."""
-    args = parse_args()
+    ] = None,
+) -> None:
+    """Verify passwordless access on the shared Microsoft Foundry resource."""
     try:
-        endpoint = resolve_endpoint(args.endpoint)
+        resolved_endpoint = resolve_endpoint(endpoint)
         token = get_bearer_token()
-        model_count = list_document_models(endpoint, token)
-        analyzer_count = list_content_understanding_analyzers(endpoint, token)
+        model_count = list_document_models(resolved_endpoint, token)
+        analyzer_count = list_content_understanding_analyzers(resolved_endpoint, token)
     except (ClientAuthenticationError, HTTPError, URLError, ValueError) as error:
-        print(f"Verification failed: {error}", file=sys.stderr)
-        return 1
+        typer.echo(f"Verification failed: {error}", err=True)
+        raise typer.Exit(code=1) from None
 
-    print(
+    typer.echo(
         "Foundry Tools access verified with DefaultAzureCredential: "
         f"{model_count} Document Intelligence models and {analyzer_count} "
-        f"Content Understanding analyzers available at {endpoint}."
+        f"Content Understanding analyzers available at {resolved_endpoint}."
     )
-    return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    typer.run(main)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Refresh infra/deployments.yaml from the Azure AI Foundry model catalog.
+"""Refresh infra/deployments.yaml from the Microsoft Foundry model catalog.
 
 The script uses the same ARM endpoint as `az cognitiveservices account list-models`
 and updates only the fields backed by the API:
@@ -18,17 +18,16 @@ Local catalog-only fields such as `enabled`, `runModes`, `allowedRegions`,
 
 from __future__ import annotations
 
-import argparse
 import json
 import os
 import re
 import subprocess
-import sys
 from dataclasses import dataclass
 from io import StringIO
 from pathlib import Path
-from typing import Any
+from typing import Annotated, Any, Literal
 
+import typer
 from azure.identity import DefaultAzureCredential
 from azure.mgmt.cognitiveservices import CognitiveServicesManagementClient
 from dotenv import load_dotenv
@@ -54,69 +53,6 @@ class CatalogModel:
     available_capacity: int | None
     is_default_version: bool
     lifecycle_status: str | None
-
-
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description=(
-            "Update infra/deployments.yaml with model versions and SKU defaults "
-            "from the Azure AI Foundry account model catalog."
-        )
-    )
-    parser.add_argument(
-        "--catalog",
-        type=Path,
-        default=DEFAULT_CATALOG_PATH,
-        help="Path to infra/deployments.yaml.",
-    )
-    parser.add_argument(
-        "--api-version",
-        default=DEFAULT_API_VERSION,
-        help="Management API version used for the account models endpoint.",
-    )
-    parser.add_argument(
-        "--sku-name",
-        default=DEFAULT_SKU_NAME,
-        help="Only sync models that expose this SKU.",
-    )
-    parser.add_argument(
-        "--default-upgrade-option",
-        default=DEFAULT_UPGRADE_OPTION,
-        choices=(
-            "NoAutoUpgrade",
-            "OnceCurrentVersionExpired",
-            "OnceNewDefaultVersionAvailable",
-        ),
-        help="Version upgrade option assigned to newly appended entries.",
-    )
-    parser.add_argument(
-        "--sync-capacity",
-        action="store_true",
-        help="Update existing sku.capacity values from the API default capacity.",
-    )
-    parser.add_argument(
-        "--sync-available-capacity",
-        action="store_true",
-        help=(
-            "Update existing sku.capacity values from the currently available "
-            "capacity in the target Azure region."
-        ),
-    )
-    parser.add_argument(
-        "--append-new",
-        action="store_true",
-        help="Append models that exist in Azure but are not yet present in the catalog.",
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Report the changes without writing the YAML file.",
-    )
-    parser.add_argument("--account-name", help="Override AI_FOUNDRY_NAME.")
-    parser.add_argument("--resource-group", help="Override AZURE_RESOURCE_GROUP.")
-    parser.add_argument("--subscription-id", help="Override AZURE_SUBSCRIPTION_ID.")
-    parser.add_argument("--location", help="Override AZURE_LOCATION.")
-    return parser.parse_args()
 
 
 def load_environment() -> None:
@@ -404,41 +340,94 @@ def render_summary(lines: list[str]) -> None:
         print(line)
 
 
-def main() -> int:
-    args = parse_args()
+def main(
+    catalog_path: Annotated[
+        Path,
+        typer.Option("--catalog", help="Path to the deployment catalog YAML file."),
+    ] = DEFAULT_CATALOG_PATH,
+    api_version: Annotated[
+        str,
+        typer.Option(help="Management API version for the resource models endpoint."),
+    ] = DEFAULT_API_VERSION,
+    sku_name: Annotated[
+        str,
+        typer.Option(help="Only synchronize models that expose this SKU."),
+    ] = DEFAULT_SKU_NAME,
+    default_upgrade_option: Annotated[
+        Literal[
+            "NoAutoUpgrade",
+            "OnceCurrentVersionExpired",
+            "OnceNewDefaultVersionAvailable",
+        ],
+        typer.Option(help="Upgrade option assigned to newly appended entries."),
+    ] = DEFAULT_UPGRADE_OPTION,
+    sync_capacity: Annotated[
+        bool,
+        typer.Option(help="Use Azure's default capacity for existing entries."),
+    ] = False,
+    sync_available_capacity: Annotated[
+        bool,
+        typer.Option(help="Use currently available regional capacity."),
+    ] = False,
+    append_new: Annotated[
+        bool,
+        typer.Option(help="Append models not already present in the catalog."),
+    ] = False,
+    dry_run: Annotated[
+        bool,
+        typer.Option(help="Report changes without writing the catalog."),
+    ] = False,
+    account_name: Annotated[
+        str | None,
+        typer.Option(help="Override AI_FOUNDRY_NAME."),
+    ] = None,
+    resource_group: Annotated[
+        str | None,
+        typer.Option(help="Override AZURE_RESOURCE_GROUP."),
+    ] = None,
+    subscription_id: Annotated[
+        str | None,
+        typer.Option(help="Override AZURE_SUBSCRIPTION_ID."),
+    ] = None,
+    location: Annotated[
+        str | None,
+        typer.Option(help="Override AZURE_LOCATION."),
+    ] = None,
+) -> None:
+    """Refresh curated deployment metadata from the Foundry model catalog."""
     load_environment()
 
-    if args.sync_capacity and args.sync_available_capacity:
-        print(
+    if sync_capacity and sync_available_capacity:
+        typer.echo(
             "Choose only one of --sync-capacity or --sync-available-capacity.",
-            file=sys.stderr,
+            err=True,
         )
-        return 1
+        raise typer.Exit(code=1)
 
     try:
         account_name = require_setting(
-            args.account_name or os.getenv("AI_FOUNDRY_NAME"), "AI_FOUNDRY_NAME"
+            account_name or os.getenv("AI_FOUNDRY_NAME"), "AI_FOUNDRY_NAME"
         )
         resource_group = require_setting(
-            args.resource_group or os.getenv("AZURE_RESOURCE_GROUP"),
+            resource_group or os.getenv("AZURE_RESOURCE_GROUP"),
             "AZURE_RESOURCE_GROUP",
         )
         subscription_id = require_setting(
-            args.subscription_id or os.getenv("AZURE_SUBSCRIPTION_ID"),
+            subscription_id or os.getenv("AZURE_SUBSCRIPTION_ID"),
             "AZURE_SUBSCRIPTION_ID",
         )
-        yaml, catalog = load_yaml_catalog(args.catalog)
+        yaml, catalog = load_yaml_catalog(catalog_path)
         api_models = fetch_account_models(
             subscription_id=subscription_id,
             resource_group=resource_group,
             account_name=account_name,
-            api_version=args.api_version,
-            sku_name=args.sku_name,
+            api_version=api_version,
+            sku_name=sku_name,
         )
 
-        if args.sync_available_capacity:
+        if sync_available_capacity:
             location = require_setting(
-                args.location or os.getenv("AZURE_LOCATION"),
+                location or os.getenv("AZURE_LOCATION"),
                 "AZURE_LOCATION",
             )
             client = create_client(subscription_id)
@@ -461,8 +450,8 @@ def main() -> int:
                 for name, model in api_models.items()
             }
     except Exception as error:  # noqa: BLE001
-        print(f"Failed to initialize deployment catalog sync: {error}", file=sys.stderr)
-        return 1
+        typer.echo(f"Failed to initialize deployment catalog sync: {error}", err=True)
+        raise typer.Exit(code=1) from None
 
     existing_entries = index_entries(catalog)
     summary: list[str] = []
@@ -474,15 +463,15 @@ def main() -> int:
         model = api_models.get(name)
         if model is None:
             summary.append(
-                f"[missing] {name}: not returned by Azure for sku={args.sku_name}"
+                f"[missing] {name}: not returned by Azure for sku={sku_name}"
             )
             continue
 
         changes = apply_model_to_entry(
             entry,
             model,
-            sync_capacity=args.sync_capacity,
-            sync_available_capacity=args.sync_available_capacity,
+            sync_capacity=sync_capacity,
+            sync_available_capacity=sync_available_capacity,
         )
         if changes:
             updated_count += 1
@@ -491,19 +480,19 @@ def main() -> int:
             unchanged_count += 1
             summary.append(f"[unchanged] {name}: already matches Azure")
 
-    if args.append_new:
+    if append_new:
         for name, model in api_models.items():
             if name in existing_entries:
                 continue
-            catalog.append(build_new_entry(model, args.default_upgrade_option))
+            catalog.append(build_new_entry(model, default_upgrade_option))
             appended_count += 1
             summary.append(f"[appended] {name}: added new catalog entry")
 
-    if not args.dry_run and (updated_count or appended_count):
-        with args.catalog.open("w", encoding="utf-8") as handle:
+    if not dry_run and (updated_count or appended_count):
+        with catalog_path.open("w", encoding="utf-8") as handle:
             yaml.dump(catalog, handle)
 
-    if args.dry_run and (updated_count or appended_count):
+    if dry_run and (updated_count or appended_count):
         summary.append("[dry-run] No file changes were written.")
 
     stale_count = sum(1 for line in summary if line.startswith("[missing]"))
@@ -513,8 +502,7 @@ def main() -> int:
         f"appended={appended_count}, missing={stale_count}"
     )
     render_summary(summary)
-    return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    typer.run(main)
